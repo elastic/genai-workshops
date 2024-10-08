@@ -1,0 +1,141 @@
+GET /_inference
+
+
+PUT /_inference/rerank/semantic-reranking
+{
+  "service": "elasticsearch",
+  "service_settings": {
+    "num_allocations": 1,
+    "num_threads": 1,
+    "model_id": "cross-encoder__ms-marco-minilm-l-6-v2"
+  },
+  "task_settings": {
+    "return_documents": true
+  }
+}
+
+
+
+GET /semantic_text_trip_advisor_newyork/_search
+{
+  "retriever": {
+    "standard": {
+      "query": {
+        "match": {
+          "review.text": "stellar cocktail program, city skylines, no limit on price"
+        }
+      }
+    }
+  },
+  "_source": "false",
+  "fields": [
+    "review.text",
+    "restaurant.name",
+    "restaurant.rating",
+    "review.title"
+    ]
+}
+
+
+GET /semantic_text_trip_advisor_newyork/_search
+{
+  "retriever": {
+    "standard": {
+      "query": {
+        "semantic": {
+          "field": "review.semantic_text",
+          "query": "stellar cocktail program, city skylines, no limit on price"
+        }
+      }
+    }
+  },
+  "_source": "false",
+  "fields": [
+    "review.text",
+    "restaurant.name",
+    "restaurant.rating",
+    "review.title"
+    ]
+}
+
+
+
+
+GET /semantic_text_trip_advisor_newyork/_search
+{
+  "retriever": {
+    "text_similarity_reranker": {
+      "retriever": {
+        "standard": {
+          "query": {
+            "semantic": {
+              "field": "review.semantic_text",
+              "query": "stellar cocktail program, city skylines"
+            }
+          }
+        }
+      },
+      "field": "review.text",
+      "inference_id": "semantic-reranking",
+      "inference_text": "stellar cocktail program, city skylines",
+      "rank_window_size": 10
+    }
+  },
+  "_source": "false",
+  "fields": [
+    "review.text",
+    "restaurant.name",
+    "restaurant.rating",
+    "review.title"
+    ]
+}
+
+
+
+PUT _inference/rerank/cohere_rerank 
+{
+    "service": "cohere",
+    "service_settings": {
+        "api_key": "xEP5QvcjbWWLs7rI6G15x9M8osltHb2oQNfN5RQO", 
+        "model_id": "rerank-english-v3.0"
+    },
+    "task_settings": {
+        "top_n": 10,
+        "return_documents": true
+    }
+}
+
+
+
+GET /semantic_text_trip_advisor_newyork/_search
+{
+  "retriever": {
+    "text_similarity_reranker": {
+      "retriever": {
+        "standard": {
+          "query": {
+            "semantic": {
+              "field": "review.semantic_text",
+              "query": "stellar cocktail program, city skylines"
+            }
+          }
+        }
+      },
+      "field": "review.text",
+      "inference_id": "cohere_rerank",
+      "inference_text": "stellar cocktail program, city skylines",
+      "rank_window_size": 10
+    }
+  },
+  "_source": "false",
+  "fields": [
+    "review.text",
+    "restaurant.name",
+    "restaurant.rating",
+    "review.title"
+    ]
+}
+
+
+
+
