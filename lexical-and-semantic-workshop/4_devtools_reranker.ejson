@@ -1,3 +1,10 @@
+##########################
+#
+#   Semantic Rerankers
+#
+##########################
+
+
 GET /_inference
 
 
@@ -91,12 +98,11 @@ GET /semantic_text_trip_advisor_newyork/_search
 }
 
 
-
 PUT _inference/rerank/cohere_rerank 
 {
     "service": "cohere",
     "service_settings": {
-        "api_key": "xEP5QvcjbWWLs7rI6G15x9M8osltHb2oQNfN5RQO", 
+        "api_key": "YOUR_COHERE_KEY", 
         "model_id": "rerank-english-v3.0"
     },
     "task_settings": {
