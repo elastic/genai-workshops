@@ -1,0 +1,289 @@
+##########################
+#
+#   SYNONYM TUTORIAL
+#
+##########################
+
+## start over
+DELETE /books_test
+DELETE /_synonyms/book-dynamic-synonym-set
+
+## initial set of synonyms
+PUT _synonyms/book-dynamic-synonym-set
+{
+  "synonyms_set": [
+    { "synonyms": "fire, flame" },
+    { "synonyms": "recall, remember" }
+  ]
+}
+
+## create index, synonyms filter and analyzers are in the settings
+PUT /books_test
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "synonyms_filter": {
+          "type": "synonym_graph",
+          "synonyms_set": "book-dynamic-synonym-set",
+          "updateable": true
+        }
+      },
+      "analyzer": {
+        "my_index_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase"]
+        },
+        "analyzer_with_syn": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase", "synonyms_filter"]
+        }
+      }
+    }
+  },
+  "mappings": {}
+}
+
+## An index mapping can be added to be not edited once data is indexed
+## Notice the copy_to
+PUT /books_test/_mapping
+{
+  "properties": {
+    "title": {
+      "type": "text",
+      "copy_to": "title_syn"
+    },
+    "title_syn": {
+      "type": "text",
+      "analyzer": "my_index_analyzer",
+      "search_analyzer": "analyzer_with_syn"
+    },
+    "genre": {
+      "type": "keyword"
+    }
+  }
+}
+
+## Index does not yet know about 'author' field
+get /books_test/_mapping
+
+## Insert Some data
+POST /books_test/_bulk
+{"index": {}}
+{"title": "A Tale of Two Cities", "author": "Charles Dickens", "lang": "English", "pub_y": 1859, "Approximate sales": ">200 million", "genre": "Historical fiction"}
+{"index": {}}
+{"title": "The Little Prince (Le Petit Prince)", "author": "Antoine de Saint-Exupéry", "lang": "French", "pub_y": 1943, "Approximate sales": "200 million", "genre": "Fantasy, children's fiction"}
+{"index": {}}
+{"title": "The Alchemist (O Alquimista)", "author": "Paulo Coelho", "lang": "Portuguese", "pub_y": 1988, "Approximate sales": "150 million", "genre": "Fantasy"}
+{"index": {}}
+{"title": "Harry Potter and the Philosopher's Stone", "author": "J. K. Rowling", "lang": "English", "pub_y": 1997, "Approximate sales": "120 million", "genre": "Fantasy, children's fiction"}
+{"index": {}}
+{"title": "And Then There Were None", "author": "Agatha Christie", "lang": "English", "pub_y": 1939, "Approximate sales": "100 million", "genre": "Mystery"}
+{"index": {}}
+{"title": "Dream of the Red Chamber (紅樓夢)", "author": "Cao Xueqin", "lang": "Chinese", "pub_y": 1791, "Approximate sales": "100 million", "genre": "Family saga"}
+{"index": {}}
+{"title": "The Hobbit", "author": "J. R. R. Tolkien", "lang": "English", "pub_y": 1937, "Approximate sales": "100 million", "genre": "Fantasy, children's fiction"}
+{"index": {}}
+{"title": "Alice's Adventures in Wonderland", "author": "Lewis Carroll", "lang": "English", "pub_y": 1865, "Approximate sales": "100 million", "genre": "Fantasy, absurdist fiction"}
+{"index": {}}
+{"title": "The Lion, the Witch and the Wardrobe", "author": "C.S. Lewis", "lang": "English", "pub_y": 1950, "Approximate sales": "85 million", "genre": "Fantasy, children's fiction"}
+{"index": {}}
+{"title": "She: A History of Adventure", "author": "H. Rider Haggard", "lang": "English", "pub_y": 1887, "Approximate sales": "83 million", "genre": "Adventure"}
+{"index": {}}
+{"title": "The Da Vinci Code", "author": "Dan Brown", "lang": "English", "pub_y": 2003, "Approximate sales": "80 million", "genre": "Mystery thriller"}
+{"index": {}}
+{"title": "Harry Potter and the Chamber of Secrets", "author": "J. K. Rowling", "lang": "English", "pub_y": 1998, "Approximate sales": "77 million", "genre": "Fantasy, children's fiction"}
+{"index": {}}
+{"title": "The Catcher in the Rye", "author": "J. D. Salinger", "lang": "English", "pub_y": 1951, "Approximate sales": "65 million", "genre": "Coming-of-age"}
+{"index": {}}
+{"title": "Harry Potter and the Prisoner of Azkaban", "author": "J. K. Rowling", "lang": "English", "pub_y": 1999, "Approximate sales": "65 million", "genre": "Fantasy, children's fiction"}
+{"index": {}}
+{"title": "Harry Potter and the Goblet of Fire", "author": "J. K. Rowling", "lang": "English", "pub_y": 2000, "Approximate sales": "65 million", "genre": "Fantasy, children's fiction"}
+{"index": {}}
+{"title": "Harry Potter and the Order of Phoenix", "author": "J. K. Rowling", "lang": "English", "pub_y": 2003, "Approximate sales": "65 million", "genre": "Fantasy, children's fiction"}
+{"index": {}}
+{"title": "Harry Potter and the Half-Blood Prince", "author": "J. K. Rowling", "lang": "English", "pub_y": 2005, "Approximate sales": "65 million", "genre": "Fantasy, children's fiction"}
+{"index": {}}
+{"title": "Harry Potter and the Deathly Hallows", "author": "J. K. Rowling", "lang": "English", "pub_y": 2007, "Approximate sales": "65 million", "genre": "Fantasy, children's fiction"}
+{"index": {}}
+{"title": "The Bridges of Madison County", "author": "Robert James Waller", "lang": "English", "pub_y": 1992, "Approximate sales": "60 million", "genre": "Romance"}
+{"index": {}}
+{"title": "One Hundred Years of Solitude (Cien años de soledad)", "author": "Gabriel García Márquez", "lang": "Spanish", "pub_y": 1967, "Approximate sales": "50 million", "genre": "Magic realism"}
+{"index": {}}
+{"title": "Lolita", "author": "Vladimir Nabokov", "lang": "English", "pub_y": 1955, "Approximate sales": "50 million", "genre": "Novel"}
+{"index": {}}
+{"title": "Heidi", "author": "Johanna Spyri", "lang": "German", "pub_y": 1880, "Approximate sales": "50 million", "genre": "Children's fiction"}
+{"index": {}}
+{"title": "The Common Sense Book of Baby and Child Care", "author": "Benjamin Spock", "lang": "English", "pub_y": 1946, "Approximate sales": "50 million", "genre": "Manual"}
+{"index": {}}
+{"title": "Anne of Green Gables", "author": "Lucy Maud Montgomery", "lang": "English", "pub_y": 1908, "Approximate sales": "50 million", "genre": "Children's novel"}
+{"index": {}}
+{"title": "Black Beauty", "author": "Anna Sewell", "lang": "English", "pub_y": 1877, "Approximate sales": "50 million", "genre": "Children's literature"}
+{"index": {}}
+{"title": "The Name of the Rose (Il Nome della Rosa)", "author": "Umberto Eco", "lang": "Italian", "pub_y": 1980, "Approximate sales": "50 million", "genre": "Historical novel, mystery"}
+{"index": {}}
+{"title": "The Eagle Has Landed", "author": "Jack Higgins", "lang": "English", "pub_y": 1975, "Approximate sales": "50 million", "genre": "War, thriller"}
+{"index": {}}
+{"title": "Watership Down", "author": "Richard Adams", "lang": "English", "pub_y": 1972, "Approximate sales": "50 million", "genre": "Fantasy"}
+{"index": {}}
+{"title": "The Hite Report", "author": "Shere Hite", "lang": "English", "pub_y": 1976, "Approximate sales": "50 million", "genre": "Sexology"}
+{"index": {}}
+{"title": "Charlotte's Web", "author": "E. B. White; illustrated by Garth Williams", "lang": "English", "pub_y": 1952, "Approximate sales": "50 million", "genre": "Children's fiction"}
+{"index": {}}
+{"title": "The Ginger Man", "author": "J. P. Donleavy", "lang": "English", "pub_y": 1955, "Approximate sales": "50 million", "genre": "Novel"}
+{"index": {}}
+{"title": "The Purpose Driven Life", "author": "Rick Warren", "lang": "English", "pub_y": 2002, "Approximate sales": "50 million", "genre": "Philosophical Manual"}
+
+## 'author' field will follow server defaults. Indices can set to turn off automatic mappings
+get /books_test/_mapping
+
+get /books_test/_search
+
+
+## A simple search
+get /books_test/_search
+{
+  "query": {
+    "match": {
+      "title": "Da Vinci code"
+    }
+  },
+  "_source": false,
+  "fields": ["title", "pub_y"]
+}
+
+## search templates can help save a lot of coding later
+## search template that adds some aggregations, lets' you optionaly switch the field being searched
+POST _scripts/book_search_template
+{
+  "script": {
+    "lang": "mustache",
+    "source": """
+    {
+      "query": {
+        {{#query}}
+          "match": {
+            "{{#query_field}}{{query_field}}{{/query_field}}{{^query_field}}title{{/query_field}}": "{{query}}"
+          }
+        {{/query}}
+        {{^query}}
+          "match_all": {}
+        {{/query}}
+      },
+      "_source": false,
+      "fields": ["title", "pub_y"],
+      "sort": [
+        {
+          "pub_y": {
+            "order": "desc"
+          }
+        }
+      ],
+      "size": 5,
+      "aggs": {
+        "quarter_century_after_y": {
+          "histogram": {
+            "field": "pub_y",
+            "interval": 25,
+            "min_doc_count": 1,
+            "order": {
+              "_key": "desc"
+            }
+          },
+          "aggs": {
+            "top_genres": {
+              "terms": {
+                "field": "genre",
+                "size": 3
+              }
+            }
+          }
+        }
+      }
+    }
+    """
+  }
+}
+
+## test a render of the template
+POST _render/template
+{
+  "id": "book_search_template",
+  "params": {
+    "query": "x",
+    "query_field": "title"
+  }
+}
+
+## use the search tempalate
+POST /books_test/_search/template
+{
+  "id": "book_search_template",
+  "params": {
+    "query": "Code"
+  }
+}
+
+
+
+
+
+
+## this should have no results
+POST /books_test/_search/template
+{
+  "id": "book_search_template",
+  "params": {
+    "query": "flame"
+  }
+}
+
+## but this can use the synonym  "fire, flame"
+POST /books_test/_search/template
+{
+  "id": "book_search_template",
+  "params": {
+    "query": "flame",
+    "query_field": "title_syn"
+  }
+}
+
+
+## this should have no results, shadow is in there
+POST /books_test/_search/template
+{
+  "id": "book_search_template",
+  "params": {
+    "query": "magical armoire",
+    "query_field": "title_syn"
+  }
+}
+
+
+## let's dynamically generate a new synonym
+PUT _synonyms/book-dynamic-synonym-set
+{
+    "synonyms_set": [
+        { "synonyms": "fire, flame" },
+        { "synonyms": "recall, remember" },
+        { "synonyms": "armoire => wardrobe" }
+    ]
+}
+
+## we should now get a hit
+POST /books_test/_search/template
+{
+  "id": "book_search_template",
+  "params": {
+    "query": "magical armoire",
+    "query_field": "title_syn"
+  }
+}
+
+
+## list current synonyms
+GET /_synonyms/book-dynamic-synonym-set
+
+############# END SYNONYM TUTORIAL ###########
