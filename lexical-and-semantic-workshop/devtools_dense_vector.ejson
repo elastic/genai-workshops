@@ -1,0 +1,346 @@
+##########################
+#
+#   Dense Vectors 
+#
+##########################
+
+
+## Start over
+DELETE /multilingual_test
+DELETE /_ingest/pipeline/multilingual_test_ingest
+
+
+GET /_cat/ml/trained_models?format=json
+
+
+GET /_ml/trained_models/.multilingual-e5-small_linux-x86_64/_stats
+
+
+PUT _ingest/pipeline/multilingual_test_ingest
+{
+  "description": "Test of doing vectorization at ingest",
+  "processors": [
+    {
+      "inference": {
+        "model_id": ".multilingual-e5-small_linux-x86_64",
+        "input_output": [
+          {
+            "input_field": "my_text",
+            "output_field": "my_vector"
+          }
+        ]
+      }
+    }
+  ]
+}
+
+POST _ingest/pipeline/multilingual_test_ingest/_simulate
+{
+  "docs": [{
+    "_source": {"my_text": "Hay más de 120 especies diferentes de patos en todo el mundo, que van desde el ánade real hasta el colorido pato de madera.", "lang": "spanish", "my_text_english": "There are over 120 different species of ducks around the world, ranging from the common mallard to the colorful wood duck."}
+    }]
+}
+
+
+PUT /multilingual_test
+{
+  "mappings": {
+    "properties": {
+      "my_vector": {
+        "type": "dense_vector",
+        "dims": 384
+      },
+      "my_text" : {
+        "type" : "text"
+      },
+      "my_text_english": {
+        "type": "text",
+        "index": false
+      }
+    }
+  }
+}
+
+
+PUT /multilingual_test/_bulk
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Il existe plus de 120 espèces différentes de canards dans le monde, allant du colvert commun au canard branchu coloré.", "lang": "french", "my_text_english": "There are over 120 different species of ducks around the world, ranging from the common mallard to the colorful wood duck."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Les canards sont répartis en deux groupes principaux en fonction de leur comportement alimentaire. Les canards de surface se nourrissent à la surface de l'eau, tandis que les canards plongeurs plongent sous l'eau pour attraper leur proie.", "lang": "french", "my_text_english": "Ducks are categorized into two main groups based on their feeding behavior. Dabbling ducks feed on the water’s surface, while diving ducks dive underwater to catch their prey."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Los patos tienen una glándula especial cerca de sus colas llamada glándula uropígea, que produce aceite para impermeabilizar sus plumas.", "lang": "spanish", "my_text_english": "Ducks have a special gland near their tails called the uropygial gland, which produces oil to waterproof their feathers."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Muchas especies de patos migran a climas más cálidos durante el invierno, algunas viajando miles de millas durante la migración.", "lang": "spanish", "my_text_english": "Many duck species migrate to warmer climates during the winter, some traveling thousands of miles during migration."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "アヒルのヒナは孵化後、最初に見た動く物体に刷り込みを行い、それが通常は母親で、サバイバル行動を学びます。", "lang": "japanese", "my_text_english": "Ducklings imprint on the first moving object they see after hatching, usually their mother, which helps them learn survival behaviors."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "アヒルは340度近い広い視野を持っており、色や紫外線も見ることができます。", "lang": "japanese", "my_text_english": "Ducks have a wide field of vision, almost 340 degrees, and can see in color and ultraviolet light."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "鸭子是杂食动物，既吃植物也吃动物，包括水生植物、小鱼、昆虫和甲壳类动物。", "lang": "mandarin", "my_text_english": "Ducks are omnivores, eating both plants and animals, including aquatic plants, small fish, insects, and crustaceans."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "并不是所有的鸭子都会呱呱叫，有些种类的鸭子发出口哨声、咕噜声和咕哝声。", "lang": "mandarin", "my_text_english": "Not all ducks quack. Some ducks make whistles, grunts, and coos depending on the species."}
+
+
+GET /multilingual_test/_mapping
+
+
+GET /multilingual_test/_search
+{
+  "query": {
+    "match": {
+      "my_text_english": "What kind of ducks feed on the surface?"
+    }
+  }
+}
+
+
+
+GET /multilingual_test/_search
+{
+  "query": {
+    "knn": {
+      "field": "my_vector",
+      "query_vector_builder": {
+        "text_embedding": {
+          "model_id": ".multilingual-e5-small_linux-x86_64",
+          "model_text": "What kind of ducks feed on the surface?"
+        }
+      }
+    }
+  }
+}
+
+
+GET /multilingual_test/_search
+{
+  "query": {
+    "knn": {
+      "field": "my_vector",
+      "query_vector_builder": {
+        "text_embedding": {
+          "model_id": ".multilingual-e5-small_linux-x86_64",
+          "model_text": "what do the bircalls of ducks sound like?"
+        }
+      }
+    }
+  },
+  "_source": false,
+  "fields": ["my_text_english", "my_text", "lang"]
+}
+
+## Relevance isn't balanced across languages
+## It's not magic, notice the right answer is the 2nd hit 
+GET /multilingual_test/_search
+{
+  "query": {
+    "knn": {
+      "field": "my_vector",
+      "query_vector_builder": {
+        "text_embedding": {
+          "model_id": ".multilingual-e5-small_linux-x86_64",
+          "model_text": "are ducks vegan? do they eat meat?"
+        }
+      }
+    }
+  },
+  "_source": false,
+  "fields": ["my_text_english", "my_text", "lang"]
+}
+
+
+## Here's how to pre-filter within a language
+GET /multilingual_test/_search
+{
+  "query": {
+    "knn": {
+      "field": "my_vector",
+      "filter": {
+        "term": {
+          "lang.keyword": "mandarin"
+        }
+      },
+      "query_vector_builder": {
+        "text_embedding": {
+          "model_id": ".multilingual-e5-small_linux-x86_64",
+          "model_text": "are ducks vegan? do they eat meat?"
+        }
+      }
+    }
+  },
+  "_source": false,
+  "fields": ["my_text_english", "my_text", "lang"]
+}
+
+
+#######################
+#
+# Inference APIs, Auto-Chunking, and Semantic Text
+#
+######################
+
+POST _ingest/pipeline/multilingual_test_ingest/_simulate
+{
+  "docs": [{
+    "_source": {"my_text": """
+Motivation: THIS IS TOO MUCH TEXT ABOUT DUCKS ... we'll need chunking
+
+The mallard (/ˈmælɑːrd, ˈmælərd/) or wild duck (Anas platyrhynchos) is a dabbling duck that breeds throughout the temperate and subtropical Americas, Eurasia, and North Africa. It has been introduced to New Zealand, Australia, Peru, Brazil, Uruguay, Argentina, Chile, Colombia, the Falkland Islands, and South Africa. This duck belongs to the subfamily Anatinae of the waterfowl family Anatidae. Males (drakes) have green heads, while the females (hens) have mainly brown-speckled plumage. Both sexes have an area of white-bordered black or iridescent purple or blue feathers called a speculum on their wings; males especially tend to have blue speculum feathers. The mallard is 50–65 cm (20–26 in) long, of which the body makes up around two-thirds the length. The wingspan is 81–98 cm (32–39 in) and the bill is 4.4 to 6.1 cm (1.7 to 2.4 in) long. It is often slightly heavier than most other dabbling ducks, weighing 0.7–1.6 kg (1.5–3.5 lb). Mallards live in wetlands, eat water plants and small animals, and are social animals preferring to congregate in groups or flocks of varying sizes.
+
+The female lays 8 to 13 creamy white to greenish-buff spotless eggs, on alternate days. Incubation takes 27 to 28 days and fledging takes 50 to 60 days. The ducklings are precocial and fully capable of swimming as soon as they hatch.
+
+The mallard is considered to be a species of least concern by the International Union for Conservation of Nature (IUCN). Unlike many waterfowl, mallards are considered an invasive species in some regions. It is a very adaptable species, being able to live and even thrive in urban areas which may have supported more localised, sensitive species of waterfowl before development. The non-migratory mallard interbreeds with indigenous wild ducks of closely related species through genetic pollution by producing fertile offspring. Complete hybridisation of various species of wild duck gene pools could result in the extinction of many indigenous waterfowl. This species is the main ancestor of most breeds of domestic duck, and its naturally evolved wild gene pool has been genetically polluted by the domestic and feral mallard populations.
+
+"""}}]}
+
+
+
+GET /_inference
+
+
+PUT _inference/completion/openai_chat_completions
+{
+    "service": "openai",
+    "service_settings": {
+        "api_key": "sk-UFgChmNzty3On94S1S1Z9w",
+        "model_id": "gpt-4o",
+        "url": "https://litellm-proxy-service-1059491012611.us-central1.run.app/v1/chat/completions"
+    }
+}
+
+
+
+POST _inference/completion/openai_chat_completions
+{
+  "input": """
+Translate the following from Cantonese to English:
+美國郵政署自1934年起便有鴨票。  講鴨子夠啦，讓我們轉去一個更大的數據集。
+"""
+}
+
+POST _inference/text_embedding/e5-small
+{
+  "input": "I can also vectize ducks with the inference API"
+}
+
+
+DELETE /trying_semantic_text
+
+PUT /trying_semantic_text
+{
+  "mappings": {
+    "properties": {
+      "big_text_field": {
+        "type": "semantic_text",
+        "inference_id": "e5-small"
+      }
+    }
+  }
+}
+
+GET /trying_semantic_text
+
+POST /trying_semantic_text/_doc/doc1
+{
+  "big_text_field":"""
+The mallard (/ˈmælɑːrd, ˈmælərd/) or wild duck (Anas platyrhynchos) is a dabbling duck that breeds throughout the temperate and subtropical Americas, Eurasia, and North Africa. It has been introduced to New Zealand, Australia, Peru, Brazil, Uruguay, Argentina, Chile, Colombia, the Falkland Islands, and South Africa. This duck belongs to the subfamily Anatinae of the waterfowl family Anatidae. Males (drakes) have green heads, while the females (hens) have mainly brown-speckled plumage. Both sexes have an area of white-bordered black or iridescent purple or blue feathers called a speculum on their wings; males especially tend to have blue speculum feathers. The mallard is 50–65 cm (20–26 in) long, of which the body makes up around two-thirds the length. The wingspan is 81–98 cm (32–39 in) and the bill is 4.4 to 6.1 cm (1.7 to 2.4 in) long. It is often slightly heavier than most other dabbling ducks, weighing 0.7–1.6 kg (1.5–3.5 lb). Mallards live in wetlands, eat water plants and small animals, and are social animals preferring to congregate in groups or flocks of varying sizes.
+
+The female lays 8 to 13 creamy white to greenish-buff spotless eggs, on alternate days. Incubation takes 27 to 28 days and fledging takes 50 to 60 days. The ducklings are precocial and fully capable of swimming as soon as they hatch.
+
+The mallard is considered to be a species of least concern by the International Union for Conservation of Nature (IUCN). Unlike many waterfowl, mallards are considered an invasive species in some regions. It is a very adaptable species, being able to live and even thrive in urban areas which may have supported more localised, sensitive species of waterfowl before development. The non-migratory mallard interbreeds with indigenous wild ducks of closely related species through genetic pollution by producing fertile offspring. Complete hybridisation of various species of wild duck gene pools could result in the extinction of many indigenous waterfowl. This species is the main ancestor of most breeds of domestic duck, and its naturally evolved wild gene pool has been genetically polluted by the domestic and feral mallard populations.
+
+Taxonomy and evolutionary history
+
+An American black duck (upper left) and a male mallard (lower right) in eclipse plumage
+The mallard was one of the many bird species originally described in the 1758 10th edition of Systema Naturae by Carl Linnaeus.[3] He gave it two binomial names: Anas platyrhynchos and Anas boschas.[4] The latter was generally preferred until 1906 when Einar Lönnberg established that A. platyrhynchos had priority, as it appeared on an earlier page in the text.[5] The scientific name comes from Latin Anas, "duck" and Ancient Greek πλατυρυγχος, platyrhynchus, "broad-billed" (from πλατύς, platys, "broad" and ρυγχός, rhunkhos, "bill").[6] The genome of Anas platyrhynchos was sequenced in 2013.[7]
+
+The name mallard originally referred to any wild drake, and it is sometimes still used this way.[8] It was derived from the Old French malart or mallart for "wild drake" although its true derivation is unclear.[9] It may be related to, or at least influenced by, an Old High German masculine proper name Madelhart, clues lying in the alternative English forms "maudelard" and "mawdelard".[10] Masle (male) has also been proposed as an influence.[11]
+
+Mallards frequently interbreed with their closest relatives in the genus Anas, such as the American black duck, and also with species more distantly related, such as the northern pintail, leading to various hybrids that may be fully fertile.[12] The mallard has hybridised with more than 40 species in the wild, and an additional 20 species in captivity,[13] though fertile hybrids typically have two Anas parents.[14] Mallards and their domestic conspecifics are fully interfertile; many wild mallard populations in North America contain significant amounts of domestic mallard DNA.[15][16]
+
+Genetic analysis has shown that certain mallards appear to be closer to their Indo-Pacific relatives, while others are related to their American relatives.[17] Mitochondrial DNA data for the D-loop sequence suggest that mallards may have evolved in the general area of Siberia. Mallard bones rather abruptly appear in food remains of ancient humans and other deposits of fossil bones in Europe, without a good candidate for a local predecessor species.[18] The large Ice Age palaeosubspecies that made up at least the European and West Asian populations during the Pleistocene has been named Anas platyrhynchos palaeoboschas.[19]
+
+
+Call
+Duration: 36 seconds.0:36
+A group of mallards quacking
+Problems playing this file? See media help.
+Mallards are differentiated in their mitochondrial DNA between North American and Eurasian populations,[20] but the nuclear genome displays a notable lack of genetic structure.[21] Haplotypes typical of American mallard relatives and eastern spot-billed ducks can be found in mallards around the Bering Sea.[22] The Aleutian Islands hold a population of mallards that appear to be evolving towards becoming a subspecies, as gene flow with other populations is very limited.[18]
+
+Also, the paucity of morphological differences between the Old World mallards and the New World mallard demonstrates the extent to which the genome is shared among them such that birds like the Chinese spot-billed duck are highly similar to the Old World mallard, and birds such as the Hawaiian duck are highly similar to the New World mallard.[23]
+
+The size of the mallard varies clinally; for example, birds from Greenland, though larger, have smaller bills, paler plumage, and stockier bodies than birds further south and are sometimes classified as a separate subspecies, the Greenland mallard (A. p. conboschas).[24]
+
+Description
+
+Juvenile male and female
+The mallard is a medium-sized waterfowl species that is often slightly heavier than most other dabbling ducks. It is 50–65 cm (20–26 in) long – of which the body makes up around two-thirds – has a wingspan of 81–98 cm (32–39 in),[25]: 505  and weighs 0.7–1.6 kg (1.5–3.5 lb).[26] Among standard measurements, the wing chord is 25.7 to 30.6 cm (10.1 to 12.0 in), the bill is 4.4 to 6.1 cm (1.7 to 2.4 in), and the tarsus is 4.1 to 4.8 cm (1.6 to 1.9 in).[27]
+
+The breeding male mallard is unmistakable, with a glossy bottle-green head and a white collar that demarcates the head from the purple-tinged brown breast, grey-brown wings, and a pale grey belly.[28] The rear of the male is black, with white-bordered dark tail feathers.[25]: 506  The bill of the male is a yellowish-orange tipped with black, with that of the female generally darker and ranging from black to mottled orange and brown.[29] The female mallard is predominantly mottled, with each individual feather showing sharp contrast from buff to very dark brown, a coloration shared by most female dabbling ducks, and has buff cheeks, eyebrow, throat, and neck, with a darker crown and eye-stripe.[25]: 506  Mallards, like other sexually-dimorphic birds, can sometimes go though spontaneous sex reversal,[30] often caused by damaged or nonfunctioning sex organs, such as the ovaries in mallard hens.[31] This phenomenon can cause female mallards to exhibit male plumage, and vice versa (phenotypic feminisation or masculinisation).
+
+Both male and female mallards have distinct iridescent purple-blue speculum feathers edged with white, which are prominent in flight or at rest but temporarily shed during the annual summer moult.[32] Upon hatching, the plumage of the duckling is yellow on the underside and face (with streaks by the eyes) and black on the back (with some yellow spots) all the way to the top and back of the head.[33] Its legs and bill are also black.[33] As it nears a month in age, the duckling's plumage starts becoming drab, looking more like the female, though more streaked, and its legs lose their dark grey colouring.
+
+
+Adult drake mallard
+[25]: 506  Two months after hatching, the fledgling period has ended, and the duckling is now a juvenile.[34] The duckling is able to fly 50–60 days after hatching. Its bill soon loses its dark grey colouring, and its sex can finally be distinguished visually by three factors: 1) the bill is yellow in males, but black and orange in females;[35] 2) the breast feathers are reddish-brown in males, but brown in females;[35] and 3) in males, the centre tail feather (drake feather) is curled, but in females, the centre tail feather is straight.[35] During the final period of maturity leading up to adulthood (6–10 months of age), the plumage of female juveniles remains the same while the plumage of male juveniles gradually changes to its characteristic colours.[36] This change in plumage also applies to adult mallard males when they transition in and out of their non-breeding eclipse plumage at the beginning and the end of the summer moulting period.[36] The adulthood age for mallards is fourteen months, and the average life expectancy is three years, but they can live to twenty.[37]
+
+Several species of duck have brown-plumaged females that can be confused with the female mallard.[38] The female gadwall (Mareca strepera) has an orange-lined bill, white belly, black and white speculum that is seen as a white square on the wings in flight, and is a smaller bird.[25]: 506  More similar to the female mallard in North America are the American black duck (A. rubripes), which is notably darker-hued in both sexes than the mallard,[39] and the mottled duck (A. fulvigula), which is somewhat darker than the female mallard, and with slightly different bare-part colouration and no white edge on the speculum.[39]
+
+
+Mallards are among the most common bird species to exhibit aberrant colouration, typically due to genetic mutations.[40] The female pictured here is leucistic; leucism in birds often results in 'cream-coloured', 'apricot'[41] or muted feathers on certain parts of the body.[42]
+In captivity, domestic ducks come in wild-type plumages, white, and other colours.[43] Most of these colour variants are also known in domestic mallards not bred as livestock, but kept as pets, aviary birds, etc., where they are rare but increasing in availability.[43]
+
+A noisy species, the female has the deep quack stereotypically associated with ducks.[25]: 507  The female will often call with a sequence of 2-10 quacks in a row, starting loud and with the volume gradually decreasing.[44] Male mallards make a sound phonetically similar to that of the female, a typical quack, but it is deeper and quieter compared to that of the female. Research conducted by Middlesex University on two English mallard populations found that the vocalisations of the mallard varies depending on their environment and have something akin to a regional accent, with urban mallards in London being much louder and more vociferous compared to rural mallards in Cornwall, serving as an adaptation to persistent levels of anthropogenic noise.[45][46]
+
+When incubating a nest, or when offspring are present, females vocalise differently, making a call that sounds like a truncated version of the usual quack. This maternal vocalisation is highly attractive to their young. The repetition and frequency modulation of these quacks form the auditory basis for species identification in offspring, a process known as acoustic conspecific identification.[47] In addition, females hiss if the nest or offspring are threatened or interfered with. When taking off, the wings of a mallard produce a characteristic faint whistling noise.[48]
+
+The mallard is a rare example of both Allen's Rule and Bergmann's Rule in birds.[49] Bergmann's Rule, which states that polar forms tend to be larger than related ones from warmer climates, has numerous examples in birds,[50] as in case of the Greenland mallard which is larger than the mallards further south.[24] Allen's Rule says that appendages like ears tend to be smaller in polar forms to minimise heat loss, and larger in tropical and desert equivalents to facilitate heat diffusion, and that the polar taxa are stockier overall.[51] Examples of this rule in birds are rare as they lack external ears, but the bill of ducks is supplied with a few blood vessels to prevent heat loss,[52] and, as in the Greenland mallard, the bill is smaller than that of birds farther south, illustrating the rule.[24]
+
+Due to the variability of the mallard's genetic code, which gives it its vast interbreeding capability, mutations in the genes that decide plumage colour are very common and have resulted in a wide variety of hybrids, such as Brewer's duck (mallard × gadwall, Mareca strepera).[53]
+"""}
+
+
+GET _cat/indices/trying_semantic_text?format=json
+
+GET /trying_semantic_text/_doc/doc1
+
+GET /trying_semantic_text/_search
+{
+  "query": {
+    "semantic": {
+      "field": "big_text_field",
+      "query": "What is the habitat of these animals, wha"
+    }
+  }
+}
+
+
+GET /trying_semantic_text/_search
+{
+  "query": {
+    "nested": {
+      "path": "big_text_field.inference.chunks",
+      "query": {
+        "knn": {
+          "field": "big_text_field.inference.chunks.embeddings",
+          "query_vector_builder": {
+            "text_embedding": {
+              "model_id": "e5-small",
+              "model_text": "what is the derivation of the mallard duck's name?"
+            }
+          }
+        }
+      },
+      "inner_hits": {
+        "size": 1,
+        "name": "trying_semantic_text.big_text_field",
+        "_source": [
+          "big_text_field.inference.chunks.text"
+        ]
+      }
+    }
+  },
+  "_source": false
+}
+
+
+

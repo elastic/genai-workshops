@@ -1,0 +1,112 @@
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Il existe plus de 120 espèces différentes de canards dans le monde, allant du colvert commun au canard branchu coloré.", "lang": "french", "my_text_english": "There are over 120 different species of ducks around the world, ranging from the common mallard to the colorful wood duck."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Les canards sont répartis en deux groupes principaux en fonction de leur comportement alimentaire. Les canards de surface se nourrissent à la surface de l'eau, tandis que les canards plongeurs plongent sous l'eau pour attraper leur proie.", "lang": "french", "my_text_english": "Ducks are categorized into two main groups based on their feeding behavior. Dabbling ducks feed on the water’s surface, while diving ducks dive underwater to catch their prey."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Los patos tienen una glándula especial cerca de sus colas llamada glándula uropígea, que produce aceite para impermeabilizar sus plumas.", "lang": "spanish", "my_text_english": "Ducks have a special gland near their tails called the uropygial gland, which produces oil to waterproof their feathers."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Muchas especies de patos migran a climas más cálidos durante el invierno, algunas viajando miles de millas durante la migración.", "lang": "spanish", "my_text_english": "Many duck species migrate to warmer climates during the winter, some traveling thousands of miles during migration."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "アヒルのヒナは孵化後、最初に見た動く物体に刷り込みを行い、それが通常は母親で、サバイバル行動を学びます。", "lang": "japanese", "my_text_english": "Ducklings imprint on the first moving object they see after hatching, usually their mother, which helps them learn survival behaviors."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "アヒルは340度近い広い視野を持っており、色や紫外線も見ることができます。", "lang": "japanese", "my_text_english": "Ducks have a wide field of vision, almost 340 degrees, and can see in color and ultraviolet light."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "鸭子是杂食动物，既吃植物也吃动物，包括水生植物、小鱼、昆虫和甲壳类动物。", "lang": "mandarin", "my_text_english": "Ducks are omnivores, eating both plants and animals, including aquatic plants, small fish, insects, and crustaceans."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "并不是所有的鸭子都会呱呱叫，有些种类的鸭子发出口哨声、咕噜声和咕哝声。", "lang": "mandarin", "my_text_english": "Not all ducks quack. Some ducks make whistles, grunts, and coos depending on the species."}
+
+
+
+
+####################
+
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Il existe plus de 120 espèces différentes de canards dans le monde, allant du colvert commun au canard branchu coloré.", "lang": "french", "my_text_english": "There are over 120 different species of ducks around the world, ranging from the common mallard to the colorful wood duck."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Les canards sont répartis en deux groupes principaux en fonction de leur comportement alimentaire. Les canards de surface se nourrissent à la surface de l'eau, tandis que les canards plongeurs plongent sous l'eau pour attraper leur proie.", "lang": "french", "my_text_english": "Ducks are categorized into two main groups based on their feeding behavior. Dabbling ducks feed on the water’s surface, while diving ducks dive underwater to catch their prey."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Les canards ont une glande spéciale près de leur queue appelée glande uropygienne, qui produit une huile pour imperméabiliser leurs plumes.", "lang": "french", "my_text_english": "Ducks have a special gland near their tails called the uropygial gland, which produces oil to waterproof their feathers."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "De nombreuses espèces de canards migrent vers des climats plus chauds en hiver, certaines parcourant des milliers de kilomètres.", "lang": "french", "my_text_english": "Many duck species migrate to warmer climates during the winter, some traveling thousands of miles during migration."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Les canetons impriment sur le premier objet en mouvement qu'ils voient après l'éclosion, généralement leur mère, ce qui les aide à apprendre des comportements de survie.", "lang": "french", "my_text_english": "Ducklings imprint on the first moving object they see after hatching, usually their mother, which helps them learn survival behaviors."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Les canards ont un champ de vision large, presque de 340 degrés, et peuvent voir en couleur et en lumière ultraviolette.", "lang": "french", "my_text_english": "Ducks have a wide field of vision, almost 340 degrees, and can see in color and ultraviolet light."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Les canards sont omnivores, ils mangent à la fois des plantes et des animaux, y compris des plantes aquatiques, de petits poissons, des insectes et des crustacés.", "lang": "french", "my_text_english": "Ducks are omnivores, eating both plants and animals, including aquatic plants, small fish, insects, and crustaceans."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Tous les canards ne cancanent pas. Certains canards produisent des sifflements, des grognements et des roucoulements selon l'espèce.", "lang": "french", "my_text_english": "Not all ducks quack. Some ducks make whistles, grunts, and coos depending on the species."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Certaines espèces de canards sont monogames pendant une saison de reproduction, tandis que d'autres peuvent former des liens à long terme avec un seul partenaire.", "lang": "french", "my_text_english": "Some duck species are monogamous for a breeding season, while others may form long-term bonds with a single mate."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Les canards ont été domestiqués depuis des milliers d'années, principalement pour leur viande, leurs œufs et leurs plumes.", "lang": "french", "my_text_english": "Ducks have been domesticated for thousands of years, mainly for meat, eggs, and feathers."}
+
+
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Hay más de 120 especies diferentes de patos en todo el mundo, que van desde el ánade real común hasta el colorido pato de madera.", "lang": "spanish", "my_text_english": "There are over 120 different species of ducks around the world, ranging from the common mallard to the colorful wood duck."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Los patos se dividen en dos grupos principales según su comportamiento alimentario. Los patos chapoteadores se alimentan en la superficie del agua, mientras que los patos buceadores se sumergen para atrapar a sus presas.", "lang": "spanish", "my_text_english": "Ducks are categorized into two main groups based on their feeding behavior. Dabbling ducks feed on the water’s surface, while diving ducks dive underwater to catch their prey."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Los patos tienen una glándula especial cerca de sus colas llamada glándula uropígea, que produce aceite para impermeabilizar sus plumas.", "lang": "spanish", "my_text_english": "Ducks have a special gland near their tails called the uropygial gland, which produces oil to waterproof their feathers."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Muchas especies de patos migran a climas más cálidos durante el invierno, algunas viajando miles de millas durante la migración.", "lang": "spanish", "my_text_english": "Many duck species migrate to warmer climates during the winter, some traveling thousands of miles during migration."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Los patitos imprimen en el primer objeto en movimiento que ven después de nacer, generalmente su madre, lo que les ayuda a aprender comportamientos de supervivencia.", "lang": "spanish", "my_text_english": "Ducklings imprint on the first moving object they see after hatching, usually their mother, which helps them learn survival behaviors."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Los patos tienen un campo de visión amplio, de casi 340 grados, y pueden ver en color y luz ultravioleta.", "lang": "spanish", "my_text_english": "Ducks have a wide field of vision, almost 340 degrees, and can see in color and ultraviolet light."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Los patos son omnívoros, comen tanto plantas como animales, incluidas plantas acuáticas, peces pequeños, insectos y crustáceos.", "lang": "spanish", "my_text_english": "Ducks are omnivores, eating both plants and animals, including aquatic plants, small fish, insects, and crustaceans."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "No todos los patos graznan. Algunos patos emiten silbidos, gruñidos y arrullos, dependiendo de la especie.", "lang": "spanish", "my_text_english": "Not all ducks quack. Some ducks make whistles, grunts, and coos depending on the species."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Algunas especies de patos son monógamas durante una temporada de reproducción, mientras que otras pueden formar vínculos a largo plazo con una sola pareja.", "lang": "spanish", "my_text_english": "Some duck species are monogamous for a breeding season, while others may form long-term bonds with a single mate."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "Los patos han sido domesticados durante miles de años, principalmente por su carne, huevos y plumas.", "lang": "spanish", "my_text_english": "Ducks have been domesticated for thousands of years, mainly for meat, eggs, and feathers."}
+
+
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "世界中に120種類以上のアヒルが存在し、一般的なマガモからカラフルなウッドダックまで様々です。", "lang": "japanese", "my_text_english": "There are over 120 different species of ducks around the world, ranging from the common mallard to the colorful wood duck."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "アヒルは採餌行動に基づいて2つのグループに分類されます。表面で採餌するアヒルと、水中で潜って餌を捕るアヒルです。", "lang": "japanese", "my_text_english": "Ducks are categorized into two main groups based on their feeding behavior. Dabbling ducks feed on the water’s surface, while diving ducks dive underwater to catch their prey."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "アヒルの尾の近くには、羽を防水するための油を生成する特別な腺（ウロピジアル腺）があります。", "lang": "japanese", "my_text_english": "Ducks have a special gland near their tails called the uropygial gland, which produces oil to waterproof their feathers."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "多くのアヒルの種は、冬の間に暖かい気候に移動し、何千マイルも移動することがあります。", "lang": "japanese", "my_text_english": "Many duck species migrate to warmer climates during the winter, some traveling thousands of miles during migration."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "アヒルのヒナは孵化後、最初に見た動く物体に刷り込みを行い、それが通常は母親で、サバイバル行動を学びます。", "lang": "japanese", "my_text_english": "Ducklings imprint on the first moving object they see after hatching, usually their mother, which helps them learn survival behaviors."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "アヒルは340度近い広い視野を持っており、色や紫外線も見ることができます。", "lang": "japanese", "my_text_english": "Ducks have a wide field of vision, almost 340 degrees, and can see in color and ultraviolet light."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "アヒルは雑食性で、植物や動物、特に水生植物、小魚、昆虫、甲殻類を食べます。", "lang": "japanese", "my_text_english": "Ducks are omnivores, eating both plants and animals, including aquatic plants, small fish, insects, and crustaceans."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "すべてのアヒルが「ガーガー」と鳴くわけではありません。種によって、口笛、うなり声、鳴き声など様々です。", "lang": "japanese", "my_text_english": "Not all ducks quack. Some ducks make whistles, grunts, and coos depending on the species."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "一部のアヒルの種は、繁殖シーズンの間一夫一妻制で、他の種は一生パートナーと結びつきます。", "lang": "japanese", "my_text_english": "Some duck species are monogamous for a breeding season, while others may form long-term bonds with a single mate."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "アヒルは何千年もの間、主に肉、卵、羽毛のために家畜化されてきました。", "lang": "japanese", "my_text_english": "Ducks have been domesticated for thousands of years, mainly for meat, eggs, and feathers."}
+
+
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "世界上有120多种不同的鸭子，从常见的野鸭到色彩斑斓的林鸭。", "lang": "mandarin", "my_text_english": "There are over 120 different species of ducks around the world, ranging from the common mallard to the colorful wood duck."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "鸭子根据进食方式分为两大类。潜水鸭潜入水下捕捉猎物，浮水鸭则在水面进食。", "lang": "mandarin", "my_text_english": "Ducks are categorized into two main groups based on their feeding behavior. Dabbling ducks feed on the water’s surface, while diving ducks dive underwater to catch their prey."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "鸭子尾巴附近有一个特殊的腺体，叫做尾脂腺，它分泌的油可以防水。", "lang": "mandarin", "my_text_english": "Ducks have a special gland near their tails called the uropygial gland, which produces oil to waterproof their feathers."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "许多鸭子在冬天迁徙到温暖的地区，有些种类的鸭子会迁徙数千英里。", "lang": "mandarin", "my_text_english": "Many duck species migrate to warmer climates during the winter, some traveling thousands of miles during migration."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "鸭宝宝会认定出生后看到的第一个移动物体通常是母亲，并通过跟随母亲学习生存技能。", "lang": "mandarin", "my_text_english": "Ducklings imprint on the first moving object they see after hatching, usually their mother, which helps them learn survival behaviors."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "鸭子的视野非常宽广，几乎达到340度，它们还能看到颜色和紫外线。", "lang": "mandarin", "my_text_english": "Ducks have a wide field of vision, almost 340 degrees, and can see in color and ultraviolet light."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "鸭子是杂食动物，既吃植物也吃动物，包括水生植物、小鱼、昆虫和甲壳类动物。", "lang": "mandarin", "my_text_english": "Ducks are omnivores, eating both plants and animals, including aquatic plants, small fish, insects, and crustaceans."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "并不是所有的鸭子都会呱呱叫，有些种类的鸭子发出口哨声、咕噜声和咕哝声。", "lang": "mandarin", "my_text_english": "Not all ducks quack. Some ducks make whistles, grunts, and coos depending on the species."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "有些鸭子在繁殖季节是单配偶制，而有些鸭子可能会形成长期伴侣关系。", "lang": "mandarin", "my_text_english": "Some duck species are monogamous for a breeding season, while others may form long-term bonds with a single mate."}
+{"index": {"pipeline": "multilingual_test_ingest"}}
+{"my_text": "鸭子被驯化已有数千年，主要用于提供肉、蛋和羽毛。", "lang": "mandarin", "my_text_english": "Ducks have been domesticated for thousands of years, mainly for meat, eggs, and feathers."}
+
+
+
+{"index": {"pipeline": "multilingual_test_ingest"}}

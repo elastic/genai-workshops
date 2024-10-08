@@ -1,0 +1,47 @@
+##########################
+#
+#   Hyrbrid Search and Retrievers
+#
+##########################
+
+GET /_cat/indices/semantic_text_trip_advisor_newyork?format=json
+
+GET /semantic_text_trip_advisor_newyork/_search?size=10
+
+GET /semantic_text_trip_advisor_newyork/_mapping
+
+
+GET /semantic_text_trip_advisor_newyork/_search
+{
+  "query": {
+       "match": {
+         "review.text":"vegan restaurants in the east village" 
+    }
+  },
+    "_source": false,
+    "fields": [
+      "review.text",
+      "restaurant.name",
+      "restaurant.rating",
+      "review.title"
+      ]
+}
+
+
+
+GET semantic_text_trip_advisor_newyork/_search
+{
+  "query": {
+    "semantic": {
+      "field": "review.semantic_text",
+      "query": "vegan restaurants in the east village"
+    }
+  },
+  "_source": "false",
+  "fields": [
+    "review.text",
+    "restaurant.name",
+    "restaurant.rating",
+    "review.title"
+    ]
+}
