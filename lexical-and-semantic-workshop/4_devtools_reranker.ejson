@@ -5,9 +5,12 @@
 ##########################
 
 
-GET /_inference
+
+## the cross encoder should be in there now
+GET /_cat/ml/trained_models?format=json
 
 
+## let's create a rerank inference endpoint
 PUT /_inference/rerank/semantic-reranking
 {
   "service": "elasticsearch",
@@ -22,16 +25,12 @@ PUT /_inference/rerank/semantic-reranking
 }
 
 
-
+## keyword search here falls short
 GET /semantic_text_trip_advisor_newyork/_search
 {
-  "retriever": {
-    "standard": {
-      "query": {
-        "match": {
-          "review.text": "stellar cocktail program, city skylines, no limit on price"
-        }
-      }
+  "query": {
+    "match": {
+      "review.text": "stellar cocktail program, city skylines"
     }
   },
   "_source": "false",
@@ -44,6 +43,8 @@ GET /semantic_text_trip_advisor_newyork/_search
 }
 
 
+## Semantic search is a bit better
+## We'll use the new 'retriever framework'
 GET /semantic_text_trip_advisor_newyork/_search
 {
   "retriever": {
@@ -51,7 +52,7 @@ GET /semantic_text_trip_advisor_newyork/_search
       "query": {
         "semantic": {
           "field": "review.semantic_text",
-          "query": "stellar cocktail program, city skylines, no limit on price"
+          "query": "stellar cocktail program, city skylines"
         }
       }
     }
@@ -67,7 +68,7 @@ GET /semantic_text_trip_advisor_newyork/_search
 
 
 
-
+## 2nd stage re-ranker using the retriever framework
 GET /semantic_text_trip_advisor_newyork/_search
 {
   "retriever": {
@@ -98,6 +99,7 @@ GET /semantic_text_trip_advisor_newyork/_search
 }
 
 
+### Get the cohere key from the instructions Bar -->
 PUT _inference/rerank/cohere_rerank 
 {
     "service": "cohere",
@@ -143,5 +145,5 @@ GET /semantic_text_trip_advisor_newyork/_search
 }
 
 
-
+############# END RERANK TUTORIAL ###########
 

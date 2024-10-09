@@ -4,13 +4,17 @@
 #
 ##########################
 
+## let's take a look at our bigger data set
 GET /_cat/indices/semantic_text_trip_advisor_newyork?format=json
 
+
+## Let's look at the data
 GET /semantic_text_trip_advisor_newyork/_search?size=10
 
+## and the mapping
 GET /semantic_text_trip_advisor_newyork/_mapping
 
-
+## Full text search
 GET /semantic_text_trip_advisor_newyork/_search
 {
   "query": {
@@ -28,7 +32,7 @@ GET /semantic_text_trip_advisor_newyork/_search
 }
 
 
-
+## Full Semantic Search
 GET semantic_text_trip_advisor_newyork/_search
 {
   "query": {
@@ -45,3 +49,44 @@ GET semantic_text_trip_advisor_newyork/_search
     "review.title"
     ]
 }
+
+## Hybrid search using Reciprocal Rank Fusion
+GET semantic_text_trip_advisor_newyork/_search
+{
+    "retriever": {
+        "rrf": { 
+            "retrievers": [
+                {
+                    "standard": { 
+                        "query": {
+                            "match": {
+                                "review.text": "vegan restaurants in the east village"
+                            }
+                        }
+                    }
+                },
+                {
+                    "standard": {
+                        "query": {
+                            "semantic": {
+                                "field": "review.semantic_text",
+                                "query": "vegan restaurants in the east village"
+                              }
+                        }
+                    }
+                }
+            ],
+            "rank_window_size": 70,
+            "rank_constant": 30
+        }
+    },
+    "_source": false,
+    "fields": [
+      "review.text",
+      "restaurant.name",
+      "restaurant.rating",
+      "review.title"
+      ]
+}
+
+############# END HYBRID SEARCH TUTORIAL ###########

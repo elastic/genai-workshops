@@ -4,11 +4,8 @@
 #
 ##########################
 
-## start over
-DELETE /books_test
-DELETE /_synonyms/book-dynamic-synonym-set
 
-## initial set of synonyms
+## Initial set of synonyms
 PUT _synonyms/book-dynamic-synonym-set
 {
   "synonyms_set": [
@@ -17,7 +14,7 @@ PUT _synonyms/book-dynamic-synonym-set
   ]
 }
 
-## create index, synonyms filter and analyzers are in the settings
+## Create an index that uses the synonym set for the 'title_syn" field
 PUT /books_test
 {
   "settings": {
@@ -43,33 +40,26 @@ PUT /books_test
       }
     }
   },
-  "mappings": {}
-}
-
-## An index mapping can be added to be not edited once data is indexed
-## Notice the copy_to
-PUT /books_test/_mapping
-{
-  "properties": {
-    "title": {
-      "type": "text",
-      "copy_to": "title_syn"
-    },
-    "title_syn": {
-      "type": "text",
-      "analyzer": "my_index_analyzer",
-      "search_analyzer": "analyzer_with_syn"
-    },
-    "genre": {
-      "type": "keyword"
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "text",
+        "copy_to": "title_syn"
+      },
+      "title_syn": {
+        "type": "text",
+        "analyzer": "my_index_analyzer",
+        "search_analyzer": "analyzer_with_syn"
+      },
+      "genre": {
+        "type": "keyword"
+      }
     }
   }
 }
 
-## Index does not yet know about 'author' field
-get /books_test/_mapping
 
-## Insert Some data
+## Insert Some data - these are the best selling books of all time according to Wikipeida
 POST /books_test/_bulk
 {"index": {}}
 {"title": "A Tale of Two Cities", "author": "Charles Dickens", "lang": "English", "pub_y": 1859, "Approximate sales": ">200 million", "genre": "Historical fiction"}
@@ -136,18 +126,61 @@ POST /books_test/_bulk
 {"index": {}}
 {"title": "The Purpose Driven Life", "author": "Rick Warren", "lang": "English", "pub_y": 2002, "Approximate sales": "50 million", "genre": "Philosophical Manual"}
 
-## 'author' field will follow server defaults. Indices can set to turn off automatic mappings
-get /books_test/_mapping
 
-get /books_test/_search
+## Run an empty Search
+GET /books_test/_search
 
 
-## A simple search
-get /books_test/_search
+## Run an empty Search with a nested search facet
+GET /books_test/_search
+{
+  "_source": false,
+  "size": 0,
+  "query": { "match_all": {} }, 
+  "aggs": {
+    "quarter_century_after_y": {
+      "histogram": {
+        "field": "pub_y",
+        "interval": 25,
+        "min_doc_count": 1,
+        "order": {
+          "_key": "desc"
+        }
+      },
+      "aggs": {
+        "top_genres": {
+          "terms": {
+            "field": "genre",
+            "size": 2
+          }
+        }
+      }
+    }
+  }
+}
+
+
+## Simple Text Search on a specific field
+## we use fields to return specific fields only
+GET /books_test/_search
 {
   "query": {
     "match": {
       "title": "Da Vinci code"
+    }
+  },
+  "_source": false,
+  "fields": ["title", "pub_y"]
+}
+
+## This should generate no results. 
+## The word in the book is Fire
+## We'll need to target the index
+get /books_test/_search
+{
+  "query": {
+    "match": {
+      "title": "flame"
     }
   },
   "_source": false,
@@ -212,7 +245,17 @@ POST _render/template
 {
   "id": "book_search_template",
   "params": {
-    "query": "x",
+    "query": "something",
+    "query_field": "title_syn"
+  }
+}
+
+## test a render with no query
+POST _render/template
+{
+  "id": "book_search_template",
+  "params": {
+    "query": "",
     "query_field": "title"
   }
 }
@@ -222,7 +265,8 @@ POST /books_test/_search/template
 {
   "id": "book_search_template",
   "params": {
-    "query": "Code"
+    "query": "Code",
+    "query_field": "title"
   }
 }
 
@@ -231,16 +275,21 @@ POST /books_test/_search/template
 
 
 
-## this should have no results
+## 🚨 this should have no results 🚨
 POST /books_test/_search/template
 {
   "id": "book_search_template",
   "params": {
-    "query": "flame"
+    "query": "flame", 
+    "query_field": "title"
   }
 }
 
-## but this can use the synonym  "fire, flame"
+
+## Remember "title_syn" has this synonym set
+GET _synonyms/book-dynamic-synonym-set
+
+## So this will find the book with the word 'fire' in the title
 POST /books_test/_search/template
 {
   "id": "book_search_template",
@@ -251,7 +300,8 @@ POST /books_test/_search/template
 }
 
 
-## this should have no results, shadow is in there
+## Let's do a dynamic example
+## 🚨 this should have no results 🚨
 POST /books_test/_search/template
 {
   "id": "book_search_template",
@@ -262,7 +312,9 @@ POST /books_test/_search/template
 }
 
 
-## let's dynamically generate a new synonym
+## Dynamically Edit the synonym set
+## The synonym analyzer will reload
+## This is _not_ a reindex
 PUT _synonyms/book-dynamic-synonym-set
 {
     "synonyms_set": [
@@ -272,7 +324,7 @@ PUT _synonyms/book-dynamic-synonym-set
     ]
 }
 
-## we should now get a hit
+## run the same query with the synonym change
 POST /books_test/_search/template
 {
   "id": "book_search_template",
@@ -282,8 +334,5 @@ POST /books_test/_search/template
   }
 }
 
-
-## list current synonyms
-GET /_synonyms/book-dynamic-synonym-set
 
 ############# END SYNONYM TUTORIAL ###########

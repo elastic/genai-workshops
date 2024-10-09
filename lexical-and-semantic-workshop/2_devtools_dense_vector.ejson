@@ -10,12 +10,11 @@ DELETE /multilingual_test
 DELETE /_ingest/pipeline/multilingual_test_ingest
 
 
+## Look at the ML models installed inside Elasticsearch
 GET /_cat/ml/trained_models?format=json
 
 
-GET /_ml/trained_models/.multilingual-e5-small_linux-x86_64/_stats
-
-
+## Make an ingest pipeline that runs that e5 model
 PUT _ingest/pipeline/multilingual_test_ingest
 {
   "description": "Test of doing vectorization at ingest",
@@ -34,6 +33,8 @@ PUT _ingest/pipeline/multilingual_test_ingest
   ]
 }
 
+
+## We can test an ingest pipeline 
 POST _ingest/pipeline/multilingual_test_ingest/_simulate
 {
   "docs": [{
@@ -41,7 +42,7 @@ POST _ingest/pipeline/multilingual_test_ingest/_simulate
     }]
 }
 
-
+## Create the index - note the english version is not searchable
 PUT /multilingual_test
 {
   "mappings": {
@@ -61,7 +62,7 @@ PUT /multilingual_test
   }
 }
 
-
+## Load some data
 PUT /multilingual_test/_bulk
 {"index": {"pipeline": "multilingual_test_ingest"}}
 {"my_text": "Il existe plus de 120 espèces différentes de canards dans le monde, allant du colvert commun au canard branchu coloré.", "lang": "french", "my_text_english": "There are over 120 different species of ducks around the world, ranging from the common mallard to the colorful wood duck."}
@@ -80,10 +81,11 @@ PUT /multilingual_test/_bulk
 {"index": {"pipeline": "multilingual_test_ingest"}}
 {"my_text": "并不是所有的鸭子都会呱呱叫，有些种类的鸭子发出口哨声、咕噜声和咕哝声。", "lang": "mandarin", "my_text_english": "Not all ducks quack. Some ducks make whistles, grunts, and coos depending on the species."}
 
-
+## Let's look at the vector embedding index
+## it is quantized to int8 per-Elasticsearch segment
 GET /multilingual_test/_mapping
 
-
+## 🚨 prove we cannot searching in english 🚨
 GET /multilingual_test/_search
 {
   "query": {
@@ -94,7 +96,8 @@ GET /multilingual_test/_search
 }
 
 
-
+## run a multi-lingual vector search
+## Elasticsearch computes our query vector at search time
 GET /multilingual_test/_search
 {
   "query": {
@@ -110,7 +113,8 @@ GET /multilingual_test/_search
   }
 }
 
-
+## We are querying in english but doing vector similary in
+## a multilingual vector space
 GET /multilingual_test/_search
 {
   "query": {
@@ -148,36 +152,15 @@ GET /multilingual_test/_search
 }
 
 
-## Here's how to pre-filter within a language
-GET /multilingual_test/_search
-{
-  "query": {
-    "knn": {
-      "field": "my_vector",
-      "filter": {
-        "term": {
-          "lang.keyword": "mandarin"
-        }
-      },
-      "query_vector_builder": {
-        "text_embedding": {
-          "model_id": ".multilingual-e5-small_linux-x86_64",
-          "model_text": "are ducks vegan? do they eat meat?"
-        }
-      }
-    }
-  },
-  "_source": false,
-  "fields": ["my_text_english", "my_text", "lang"]
-}
-
-
 #######################
 #
 # Inference APIs, Auto-Chunking, and Semantic Text
 #
 ######################
 
+
+## Let's try to vectorize a big wikipeida file
+## not the truncation 🚨WARNING🚨
 POST _ingest/pipeline/multilingual_test_ingest/_simulate
 {
   "docs": [{
@@ -193,12 +176,8 @@ The mallard is considered to be a species of least concern by the International 
 """}}]}
 
 
-
-GET /_inference
-
-
-
-
+## To Auto-Chunk the data into a multi-chunk document we'll use the inference API
+### REmember the inference API
 POST _inference/completion/openai_chat_completions
 {
   "input": """
@@ -207,14 +186,20 @@ Translate the following from Cantonese to English:
 """
 }
 
+
+## Let's look at what inference endpoints already exist
+GET /_inference
+
+## Use the e5 endpoint 
 POST _inference/text_embedding/e5-small
 {
   "input": "I can also vectize ducks with the inference API"
 }
 
 
-DELETE /trying_semantic_text
 
+## Create a new index to test multi-chunk indexing
+## We'll use a special "semantic_text" type
 PUT /trying_semantic_text
 {
   "mappings": {
@@ -227,8 +212,11 @@ PUT /trying_semantic_text
   }
 }
 
+## The complexity under the hood is handled for you
 GET /trying_semantic_text
 
+
+## index the big wikipedia page
 POST /trying_semantic_text/_doc/doc1
 {
   "big_text_field":"""
@@ -288,11 +276,14 @@ The mallard is a rare example of both Allen's Rule and Bergmann's Rule in birds.
 Due to the variability of the mallard's genetic code, which gives it its vast interbreeding capability, mutations in the genes that decide plumage colour are very common and have resulted in a wide variety of hybrids, such as Brewer's duck (mallard × gadwall, Mareca strepera).[53]
 """}
 
-
+## how many documents did that turn into
 GET _cat/indices/trying_semantic_text?format=json
 
+## retrieve the document to see the nested chunks
 GET /trying_semantic_text/_doc/doc1
 
+
+## searching is easy
 GET /trying_semantic_text/_search
 {
   "query": {
@@ -304,6 +295,8 @@ GET /trying_semantic_text/_search
 }
 
 
+## you can still get sub-document hits to find the best chunks
+## this question about the origin of the Mallard's name is in the 2nd chunk
 GET /trying_semantic_text/_search
 {
   "query": {
@@ -333,4 +326,4 @@ GET /trying_semantic_text/_search
 }
 
 
-
+############# END DENSE VECTOR TUTORIAL ###########
