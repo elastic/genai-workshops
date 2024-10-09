@@ -197,16 +197,6 @@ The mallard is considered to be a species of least concern by the International 
 GET /_inference
 
 
-PUT _inference/completion/openai_chat_completions
-{
-    "service": "openai",
-    "service_settings": {
-        "api_key": "sk-UFgChmNzty3On94S1S1Z9w",
-        "model_id": "gpt-4o",
-        "url": "https://litellm-proxy-service-1059491012611.us-central1.run.app/v1/chat/completions"
-    }
-}
-
 
 
 POST _inference/completion/openai_chat_completions
