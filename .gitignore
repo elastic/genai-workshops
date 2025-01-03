@@ -173,3 +173,21 @@ cython_debug/
 *lock
 package-lock.json
 
+
+
+## App specific
+.deepeval-*
+
+deepeval_results.json
+deepeval_results_*.csv
+search_evaluation_results.csv
+search_evaluation_results.json
+
+query_transform_cache.json
+rag_cache.json
+
+.deepeval_*
+.temp-deepeval*
+temp_testrun*
+
+

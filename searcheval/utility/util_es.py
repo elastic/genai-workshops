@@ -1,0 +1,147 @@
+from elasticsearch import Elasticsearch, helpers, OrjsonSerializer
+from elasticsearch import BadRequestError
+import os
+
+es_host = os.getenv("ES_SERVER")
+es_api_key = os.getenv("ES_API_KEY")
+
+## The singleton Elasticsearch client instance
+es = Elasticsearch(
+    hosts=[f"{es_host}"],
+    # basic_auth=(es_username, es_password),
+    api_key=es_api_key,
+    serializer=OrjsonSerializer(),
+    http_compress=True,
+    max_retries=10,
+    connections_per_node=100,
+    request_timeout=120,
+    retry_on_timeout=True,
+)
+
+
+def get_es() -> Elasticsearch:
+    """
+    Get the Elasticsearch singleton client instance.
+
+    Returns:
+        Elasticsearch: The Elasticsearch client instance.
+    """
+    return es
+
+
+def check_and_create_index(es:Elasticsearch, index_name:str, settings:dict, mappings:dict):
+    """
+    Check if an Elasticsearch index exists, and create it if it does not.
+
+    Parameters:
+    es (Elasticsearch): An instance of the Elasticsearch client.
+    index_name (str): The name of the index to check or create.
+    settings (dict): The settings for the index to be created.
+    mappings (dict): The mappings for the index to be created.
+
+    Returns:
+    None
+    """
+    # Check if the index exists
+    if not es.indices.exists(index=index_name):
+        # Create the index with the settings
+        es.indices.create(index=index_name, settings=settings, mappings=mappings)
+    else:
+        print(f"Index '{index_name}' already exists.")
+
+def check_and_create_synonyms(es:Elasticsearch, synonym_set_name:str, synonym_set:list): 
+    """
+    Check and create a synonym set in Elasticsearch.
+
+    This function checks if a synonym set exists in Elasticsearch and creates it if it does not.
+
+    Args:
+        es (Elasticsearch): An instance of the Elasticsearch client.
+        synonym_set_name (str): The name of the synonym set to be created or checked.
+        synonym_set (list): A list of synonyms to be included in the synonym set.
+
+    Returns:
+        None
+    """
+    resp = es.synonyms.put_synonym(
+        id=synonym_set_name,
+        synonyms_set=synonym_set
+    )
+    print(resp)
+
+
+
+def _batchify(docs, batch_size):
+    for i in range(0, len(docs), batch_size):
+        yield docs[i:i + batch_size]
+
+
+def bulkLoadIndex( es, json_docs, index_name, id_param, batch_size=10):
+    def bulkLoadIndex(es, json_docs, index_name, id_param, batch_size=10):
+        """
+        Bulk loads JSON documents into an Elasticsearch index.
+
+        Parameters:
+        es (Elasticsearch): An instance of the Elasticsearch client.
+        json_docs (list): A list of JSON documents to be indexed.
+        index_name (str): The name of the Elasticsearch index.
+        id_param (str): The key in the JSON documents to be used as the document ID.
+        batch_size (int, optional): The number of documents to be processed in each batch. Default is 10.
+
+        Raises:
+        BadRequestError: If the specified index does not exist.
+
+        Returns:
+        None
+        """
+
+    # Create the index with the mapping if it doesn't exist
+    if not es.indices.exists(index=index_name):
+        raise BadRequestError(f"Index [{index_name}] needs to exist before bulk loading")
+
+    batches = list(_batchify(json_docs, batch_size))
+
+    for batch in batches:
+        # Convert the JSON documents to the format required for bulk insertion
+        bulk_docs = [
+            {
+                "_op_type": "index",
+                "_index": index_name,
+                "_source": doc,
+                "_id": doc[id_param]
+            }
+            for doc in batch
+        ]
+
+        # Perform bulk insertion
+        success, errors =  helpers.bulk(es, bulk_docs, raise_on_error=False)
+        if errors:
+            for error in errors:
+                print(error)
+
+
+
+def search_to_context(es: Elasticsearch, index_name: str, body: dict, rag_context: str, trim_context_len: int) -> list:
+    """
+    Executes a search query on the specified Elasticsearch index and extracts a specific context field from the results.
+
+    Args:
+        es (Elasticsearch): An instance of the Elasticsearch client.
+        index_name (str): The name of the Elasticsearch index to search.
+        body (dict): The search query body.
+        rag_context (str): The field name to extract from the search results.
+        trim_context_len (int): The maximum number of search results to process.
+
+    Returns:
+        list: A list of context values extracted from the search results.
+    """
+    results = es.search(index=index_name, body=body)
+
+    context = []
+    # results['hits']['hits'] is the list of hits returned by Elasticsearch
+    for hit in results['hits']['hits'][:trim_context_len]:
+        # Safely get the value in case `rag_context` is missing
+        context_value = hit["_source"].get(rag_context, "")
+        context.append(str(context_value))
+
+    return context
