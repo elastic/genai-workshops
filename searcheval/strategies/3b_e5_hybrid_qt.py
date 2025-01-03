@@ -3,7 +3,7 @@ from utility.util_query_transform_cache import transform_query as cached_transfo
 
 
 def is_disabled() -> bool:
-    return False
+    return True
 
 
 

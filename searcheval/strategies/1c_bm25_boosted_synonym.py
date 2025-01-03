@@ -1,10 +1,13 @@
 
+
+
+
 def is_disabled() -> bool:
     return False
 
 def get_parameters() -> dict:
     return {
-        "index_name": "star_wars_simple"
+        "index_name": "star_wars_custom"
     }
 
 def build_query(query_string: str) -> dict:
@@ -14,10 +17,11 @@ def build_query(query_string: str) -> dict:
             "multi_match": {
                 "query": query_string,
                 "fields": [
-                    "title^5", 
-                    "lore"
+                    "title.with_synonyms^5", 
+                    "lore.with_synonyms"
                 ]
-                }
             }
         }
+    }
+
 

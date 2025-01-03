@@ -30,6 +30,9 @@ def vis_search_eval_json(json_file: str):
     average_df.set_index("query", inplace=True)
     df = pd.concat([df, average_df])
 
+    # Sort columns by strategy name in ascending order
+    df = df[sorted(df.columns)]
+
     # Create a custom colormap
     cmap = LinearSegmentedColormap.from_list("custom_cmap", ["red", "yellow", "green"])
 
