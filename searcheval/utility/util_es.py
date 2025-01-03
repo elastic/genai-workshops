@@ -2,21 +2,38 @@ from elasticsearch import Elasticsearch, helpers, OrjsonSerializer
 from elasticsearch import BadRequestError
 import os
 
-es_host = os.getenv("ES_SERVER")
-es_api_key = os.getenv("ES_API_KEY")
+es_host = os.getenv("ES_SERVER", None)
+es_api_key = os.getenv("ES_API_KEY", None)
 
 ## The singleton Elasticsearch client instance
-es = Elasticsearch(
-    hosts=[f"{es_host}"],
-    # basic_auth=(es_username, es_password),
-    api_key=es_api_key,
-    serializer=OrjsonSerializer(),
-    http_compress=True,
-    max_retries=10,
-    connections_per_node=100,
-    request_timeout=120,
-    retry_on_timeout=True,
-)
+
+if es_host and es_api_key:
+    es = Elasticsearch(
+        hosts=[f"{es_host}"],
+        # basic_auth=(es_username, es_password),
+        api_key=es_api_key,
+        serializer=OrjsonSerializer(),
+        http_compress=True,
+        max_retries=10,
+        connections_per_node=100,
+        request_timeout=120,
+        retry_on_timeout=True,
+    )
+else:
+    es_host="http://kubernetes-vm:9200"
+    es_username="elastic"
+    es_password="changeme"
+    es = Elasticsearch(
+        hosts=[f"{es_host}"],
+        basic_auth=(es_username, es_password),
+        # api_key=es_api_key,
+        serializer=OrjsonSerializer(),
+        http_compress=True,
+        max_retries=10,
+        connections_per_node=100,
+        request_timeout=120,
+        retry_on_timeout=True,
+    )
 
 
 def get_es() -> Elasticsearch:
