@@ -2,7 +2,7 @@ from deepeval import evaluate
 from deepeval.metrics import AnswerRelevancyMetric
 from deepeval.test_case import LLMTestCase
 
-from deepeval.metrics import GEval
+from utility.PGEval import PGEval
 from deepeval.test_case import LLMTestCaseParams
 
 from deepeval.dataset import EvaluationDataset
@@ -18,7 +18,7 @@ answer_relevancy_metric = AnswerRelevancyMetric(
 
 
 ## Evaluates whether the answer is factual and complete based on the golden answer
-correctness_metric = GEval(
+correctness_metric = PGEval(
     name="Correctness",
     criteria="Determine whether the actual output is factually correct based on the expected output.",
     # NOTE: you can only provide either criteria or evaluation_steps, and not both

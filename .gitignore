@@ -177,6 +177,7 @@ package-lock.json
 
 ## App specific
 .deepeval-*
+.deepeval
 
 deepeval_results.json
 deepeval_results_*.csv
