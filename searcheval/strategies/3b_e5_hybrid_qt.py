@@ -3,14 +3,15 @@ from utility.util_query_transform_cache import transform_query as cached_transfo
 
 
 def is_disabled() -> bool:
-    return True
+    return False
 
 
 
 def get_parameters() -> dict:
     return {
         "index_name": "star_wars_sem_e5",
-        "query_transform_prompt": "Given the following question, rephrase the question to be a simple standalone question meant to find the right entry in an encyclopedia. Rewrite the question in English. Keep the answer to a single sentence. Do not use quotes.",
+        "query_transform_prompt": "Given the following question, rephrase the question to be a simple standalone question in English. Keep the answer to a single sentence. Do not use quotes.",
+        "rag_context": "lore_semantic",
     }
 
 
@@ -18,7 +19,7 @@ def query_transform(query_string: str, llm_util, prompt:str) -> str:
     
     transformed_query = cached_transform_query(query_string, prompt, llm_util)
 
-    # print(f'Original Question: {query_string}\n\tRewritten Question: {transformed_query}')
+    print(f'Original Question: {query_string}\n\tRewritten Question: {transformed_query}')
     return transformed_query
 
 
@@ -45,7 +46,7 @@ def build_query(query_string: str) -> dict:
                   }
                 },
                 "inner_hits": {
-                  "size": 2,
+                  "size": 3,
                   "name": "star_wars_sem_e5.lore_semantic",
                   "_source": [
                     "lore_semantic.inference.chunks.text"
@@ -64,12 +65,13 @@ def build_query(query_string: str) -> dict:
                   "title^3",
                   "lore"
                 ],
-                "fuzziness": 1
+                #"fuzziness": 1
               }
             }
           }
         }
       ]
     }
-  }
+  },
+  "_source": False
 }

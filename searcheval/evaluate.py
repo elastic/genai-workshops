@@ -10,6 +10,7 @@ import traceback
 
 # from utility.util_es import get_es
 from utility.util_llm import LLMUtil
+from utility.util_query_transform_cache import close_cache
 
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -78,10 +79,10 @@ def run_evaluation(es, golden_data, strategy_modules):
     for strategy_name, module in strategy_modules.items():
 
         if hasattr(module, "is_disabled") and module.is_disabled(): ## or strategy_name != "1a_bm25" :
-            print(f"Skipping strategy: {strategy_name}")
+            print(f"\tSkipping strategy: {strategy_name}")
             continue
 
-        print(f"Starting strategy: {strategy_name}")
+        print(f"\tStarting strategy: {strategy_name}")
         rank_eval_body = _build_rank_eval_request(golden_data, module)
         # print(json.dumps(rank_eval_body, indent=4))
 
@@ -141,6 +142,8 @@ def run_evaluation(es, golden_data, strategy_modules):
                         "scores": {}
                     }
                 results[query_text]['scores'][strategy_name] = None
+    
+    
     return results
 
 
@@ -235,6 +238,8 @@ def _build_rank_eval_request(golden_data, strategy_module):
             # }
         }
     }
+    
+    close_cache()
     
     return rank_eval_body
 
@@ -366,6 +371,6 @@ def _build_rank_eval_request(golden_data, strategy_module):
 
 
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
 

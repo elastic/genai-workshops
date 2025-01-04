@@ -1,13 +1,17 @@
 from elasticsearch import Elasticsearch, helpers, OrjsonSerializer
 from elasticsearch import BadRequestError
 import os
+import json
 
+## attempt to load environment variables
+## if they aren't there we'll assume we are in Instruqt and accessing kubernetes-vm
 es_host = os.getenv("ES_SERVER", None)
 es_api_key = os.getenv("ES_API_KEY", None)
 
 ## The singleton Elasticsearch client instance
 
 if es_host and es_api_key:
+    print("Using ES with configured Host and API key")
     es = Elasticsearch(
         hosts=[f"{es_host}"],
         # basic_auth=(es_username, es_password),
@@ -20,6 +24,7 @@ if es_host and es_api_key:
         retry_on_timeout=True,
     )
 else:
+    print("Connecting to ES inside local Kubernetes")
     es_host="http://kubernetes-vm:9200"
     es_username="elastic"
     es_password="changeme"
@@ -156,9 +161,24 @@ def search_to_context(es: Elasticsearch, index_name: str, body: dict, rag_contex
 
     context = []
     # results['hits']['hits'] is the list of hits returned by Elasticsearch
+    
+
     for hit in results['hits']['hits'][:trim_context_len]:
-        # Safely get the value in case `rag_context` is missing
-        context_value = hit["_source"].get(rag_context, "")
-        context.append(str(context_value))
+    
+        inner_hits = hit.get('inner_hits', [])
+
+        if len(inner_hits) > 0:
+            # print("inner hits")
+            for inner_hit  in inner_hits.get(f"{index_name}.{rag_context}", {})["hits"]["hits"]:
+                # print(json.dumps(inner_hit, indent=2))    
+                context_value = inner_hit["_source"].get("text", "")
+                context.append(str(context_value))
+        
+        else:
+            # print("normal hits")
+            
+            # Safely get the value in case `rag_context` is missing
+            context_value = hit["_source"].get(rag_context, "")
+            context.append(str(context_value))
 
     return context

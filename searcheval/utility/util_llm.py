@@ -44,6 +44,9 @@ class LLMUtil:
         
         return self.cache_helper.rag(system_prompt, retrieval_context, query_string, model_name, self)
 
+    def flush_cache(self):
+        self.cache_helper._persist_to_disk()
+
 
     def rag(self, system_prompt: str, retrieval_context: list, query_string: str, model_name: str = "gpt-4o") -> str:
         messages = [
@@ -61,8 +64,8 @@ class LLMUtil:
             # Extract the content of the first (and typically only) completion
             rag_answer = completion.choices[0].message.content.strip()
 
-            print(f"question: {query_string}")
-            print(f"\t{rag_answer}")
+            # print(f"RAG question: {query_string}")
+            print(f"\tRAG answer: {rag_answer}")
 
             return rag_answer
         

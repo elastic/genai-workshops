@@ -6,7 +6,8 @@ def is_disabled() -> bool:
 
 def get_parameters() -> dict:
     return {
-        "index_name": "star_wars_sem_e5"
+        "index_name": "star_wars_sem_e5",
+        "rag_context": "lore_semantic"
     }
 
 def build_query(query_string: str) -> dict:
@@ -32,7 +33,7 @@ def build_query(query_string: str) -> dict:
                   }
                 },
                 "inner_hits": {
-                  "size": 2,
+                  "size": 3,
                   "name": "star_wars_sem_e5.lore_semantic",
                   "_source": [
                     "lore_semantic.inference.chunks.text"
@@ -48,7 +49,7 @@ def build_query(query_string: str) -> dict:
               "multi_match": {
                 "query": query_string,
                 "fields": [
-                  "title^3",
+                  "title^5",
                   "lore"
                 ]
               }
@@ -57,5 +58,6 @@ def build_query(query_string: str) -> dict:
         }
       ]
     }
-  }
+  },
+  "_source": False
 }

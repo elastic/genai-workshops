@@ -5,7 +5,8 @@ def is_disabled() -> bool:
 
 def get_parameters() -> dict:
     return {
-        "index_name": "star_wars_sem_elser"
+        "index_name": "star_wars_sem_elser",
+        "rag_context": "lore_semantic"
     }
 
 def build_query(query_string: str) -> dict:
