@@ -1,18 +1,19 @@
-"What type of starship is the Milenium Falcon, and who was its first private owner?",misspelling,Millennium_Falcon,"The Millennium Falcon is a Corellian YT-1300 light freighter. Its original owner, was Lando Calrissian."
 "What was the name of the clone army's template, and who was responsible for its creation?",multi-part question,"Clone_template, First_Battle_of_Geonosis",The clone army's template was the human bounty hunter Jango Fett. The creation of the clone army was arranged by the deceased Jedi Master Sifo-Dyas
 What is the official title of Padmé Amidala during her time on Naboo?,specific context,"Padm%C3%A9_Amidala, Gungan-Naboo_dispute","During her time on Naboo, Padmé Amidala held the official title of Queen of Naboo"
 "Who is the Sith apprentice known as Darth Maul, and what weapon is he famous for using?",multi-part question,"Maul, Darth_Maul%27s_double-bladed_lightsaber",The Sith apprentice known as Darth Maul is a Force-sensitive Dathomirian Zabrak male who was trained by Darth Sidious. He is famous for using a double-bladed lightsaber
-"Who constructed C-3PO, and for what purpose was he built?",multi-part question,"3PO-series_protocol_droid, C-3PO",C-3PO was constructed by a young Anakin Skywalker. He was designed to interact with organics and was programmed primarily for etiquette and protocol
-
-
-
-
+"Who constructed C-3PO, and what was his primary task and programming?",multi-part question,"3PO-series_protocol_droid, C-3PO",C-3PO was constructed by a young Anakin Skywalker. He was designed to interact with organics and was programmed primarily for etiquette and protocols
 that's not what I wanted you dumb computer. Dang. Who is Luke Skywalker's sister?,poorly worded question,"Luke_Skywalker, Sola_Naberrie",Luke Skywalker's sister is Leia Organa
 Who trained Luke Skywalker in the ways of the Force after Obi-Wan Kenobi's death?,indirect reference,"Luke_Skywalker, Jedi_training","After Obi-Wan Kenobi's death, Luke Skywalker was trained in the ways of the Force by Grand Master Yoda"
-"Oye, Han's ride-or-die best hermano in space smuggling? Who was that bro?",mix of languages,Han_Solo,Chewbacca was the close companion and smuggling partner of Han Solo.
-What are the names of the twin suns of Tatooine?,indirect reference,"Tatooine, Tatoo_II, Tatoo_I",The twin suns of Tatooine are named Tatoo I and Tatoo II 
-What snow planet serves as the home base for the Rebel Alliance after the battle of Yavin?,indirect reference,Echo_Base,The planet Hoth
-"I'm interested in Luke skywalker. I need to know so I can win an argument. I have lots of questions. Importantly, who is his aunt?",poorly worded question,Luke_Skywalker,Luke Skywalker's aunt is Aunt Beru
 
-Baby yoda is my favorite character. Who are his friends?,behind the scenes context,Din_Grogu,"The Mandalorian known as Din Djarin, Greef Karga the magistrate of Nevarro, Peli Motto a mechanic, and Kuiil an Ugnaugh farmer are known to be friends of Grogu (aka Baby Yoda)"
-"What is as faster ship in atmosphere, the x-wing or the A wing?",compound words and metadata,"RZ-1_A-wing_interceptor,T-65B_X-wing_starfighter",The A-Wing interceptor fly at 1300 kilometers per hour in atmosphere compared to the T-65G X-Wing starfighter's 1050 kilometers per hour.
+
+
+
+
+What are the names of the twin suns of Tatooine?,indirect reference,"Tatooine, Tatoo_II, Tatoo_I",The twin suns of Tatooine are named Tatoo I and Tatoo II 
+"Oye, Han's ride-or-die best amigo? Who was that bro?",mix of languages,Han_Solo,Chewbacca was the close companion of Han Solo.
+What planet serves as the home base for the Rebel Alliance after the battle of Yavin?,indirect reference,Echo_Base,The planet Hoth
+"I'm interested in Luke skywalker. I need to know so I can win an argument. I have lots of questions. Importantly, who is his aunt?",poorly worded question,Luke_Skywalker,Luke Skywalker's aunt is Aunt Beru
+What was Han Solo's response when Greedo offered to take his ship instead of the debt to Jabba the Hutt?,more,Greedo,"
+When Greedo threatened Han Solo and demanded that he either pay the money to Jabba or hand over his starship, the Millennium Falcon, Solo replied that he would rather die than give up his ship"
+Who successfully captured Han Solo to collect the bounty placed on him by Jabba the Hutt?,more,"Jabba_Desilijic_Tiure, Fetts",Boba Fett captured Han Solo to collect Jabba the Hutt's bountys
+why did luke die after confronting Kylo Ren?,more,Force_projection,"Luke Skywalker died after confronting Kylo Ren because he used the Force projection technique, which was extremely taxing"

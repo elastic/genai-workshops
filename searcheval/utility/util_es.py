@@ -143,7 +143,7 @@ def bulkLoadIndex( es, json_docs, index_name, id_param, batch_size=10):
 
 
 
-def search_to_context(es: Elasticsearch, index_name: str, body: dict, rag_context: str, trim_context_len: int) -> list:
+def search_to_context(es: Elasticsearch, index_name: str, query_string: str, body: dict, rag_context: str, rerank_inner_hits: bool, trim_context_len: int) -> list:
     """
     Executes a search query on the specified Elasticsearch index and extracts a specific context field from the results.
 
@@ -162,23 +162,42 @@ def search_to_context(es: Elasticsearch, index_name: str, body: dict, rag_contex
     context = []
     # results['hits']['hits'] is the list of hits returned by Elasticsearch
     
+    if rerank_inner_hits:
+        results_to_examine = results['hits']['hits'][:trim_context_len]
+        for hit in results_to_examine:
+            inner_hits = hit.get('inner_hits', [])
+            if len(inner_hits) > 0:
+                for inner_hit  in inner_hits.get(f"{index_name}.{rag_context}", {})["hits"]["hits"]:
+                    context_value = inner_hit["_source"].get("text", "")
+                    context.append(str(context_value))
+        reranked_resp = es.inference.inference(
+            task_type="rerank",
+            inference_id= "my-elastic-rerank",  #"cohere_rerank"
+            input=context,
+            query=query_string
+        )
+        top_results = [item['text'] for item in reranked_resp['rerank'][:trim_context_len]]
+        return top_results
+    else:
 
-    for hit in results['hits']['hits'][:trim_context_len]:
-    
-        inner_hits = hit.get('inner_hits', [])
-
-        if len(inner_hits) > 0:
-            # print("inner hits")
-            for inner_hit  in inner_hits.get(f"{index_name}.{rag_context}", {})["hits"]["hits"]:
-                # print(json.dumps(inner_hit, indent=2))    
-                context_value = inner_hit["_source"].get("text", "")
-                context.append(str(context_value))
+        for hit in results['hits']['hits'][:trim_context_len]:
         
-        else:
-            # print("normal hits")
-            
-            # Safely get the value in case `rag_context` is missing
-            context_value = hit["_source"].get(rag_context, "")
-            context.append(str(context_value))
+            inner_hits = hit.get('inner_hits', [])
 
-    return context
+            if len(inner_hits) > 0:
+                # print("inner hits")
+                for inner_hit  in inner_hits.get(f"{index_name}.{rag_context}", {})["hits"]["hits"]:
+                    # print(json.dumps(inner_hit, indent=2))    
+                    context_value = inner_hit["_source"].get("text", "")
+                    context.append(str(context_value))
+            
+            else:
+                # print("normal hits")
+                
+                # Safely get the value in case `rag_context` is missing
+                context_value = hit["_source"].get(rag_context, "")
+                context.append(str(context_value))
+
+        return context
+
+      

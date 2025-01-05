@@ -76,7 +76,8 @@ def run_evaluation(es, golden_data, strategy_modules):
 
     ## Search rank Evaluation
     print("\b### SEARCH RANK EVAL")
-    for strategy_name, module in strategy_modules.items():
+    for strategy_name in sorted(strategy_modules.keys()):
+        module = strategy_modules[strategy_name]
 
         if hasattr(module, "is_disabled") and module.is_disabled(): ## or strategy_name != "1a_bm25" :
             print(f"\tSkipping strategy: {strategy_name}")
@@ -149,7 +150,7 @@ def run_evaluation(es, golden_data, strategy_modules):
 
 
 
-def output_eval_results(output_csv_path, output_json_path, results, golden_data, strategy_modules):
+def output_eval_results(output_json_path, results, golden_data, strategy_modules):
     strategy_names = list(strategy_modules.keys())
     strategy_names.sort()  # Sort the list in ascending order
 
@@ -158,40 +159,7 @@ def output_eval_results(output_csv_path, output_json_path, results, golden_data,
         json.dump(results, json_file, indent=4)
 
 
-    # Save results to CSV file
-    with open(output_csv_path, mode="w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        
-        # Header: query plus one column per strategy
-        header_row = ["query"] + strategy_names
-        writer.writerow(header_row)
-        
-        # Write each query row
-        per_strategy_sums = {s: 0.0 for s in strategy_names}
-        per_strategy_counts = {s: 0 for s in strategy_names}
-        
-        for query_text, row_scores in results.items():
-            row_to_write = [query_text]
-            for s in strategy_names:
-                strat_section = row_scores['scores'].get(s, None)
-                score = strat_section.get('ndgc', None) if strat_section is not None else None
-                row_to_write.append(score if score is not None else "")
-                if score is not None:
-                    per_strategy_sums[s] += score
-                    per_strategy_counts[s] += 1
-            writer.writerow(row_to_write)
-
-        # Write total (avg) row
-        total_row = ["Average NDCG Score"] 
-        for s in strategy_names:
-            if per_strategy_counts[s] > 0:
-                avg_score = per_strategy_sums[s] / per_strategy_counts[s]
-                total_row.append(avg_score)
-            else:
-                total_row.append("")
-        writer.writerow(total_row)
-
-    print(f"Evaluation complete. Results written to {output_csv_path} and {output_json_path}")
+    print(f"Evaluation complete. Results written to  {output_json_path}")
 
 def _build_rank_eval_request(golden_data, strategy_module):
     """

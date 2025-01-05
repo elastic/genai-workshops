@@ -19,7 +19,8 @@ def build_query(query_string: str) -> dict:
                 "fields": [
                     "title.with_synonyms^5", 
                     "lore.with_synonyms"
-                ]
+                ],
+                "fuzziness": "AUTO"
             }
         }
     }

@@ -16,7 +16,8 @@ def build_query(query_string: str) -> dict:
                 "fields": [
                     "title", 
                     "lore"
-                ]
-                }
+                ],
+                "fuzziness": "AUTO"
             }
         }
+    }
