@@ -347,7 +347,7 @@ def run_deepeval(es, strategy_modules, golden_data : list, rag_system_prompt: st
                 scores[metric.name] = {"score": metric.score, "reason": metric.reason }
             
             deepEvalScores[quid]["strategies"][strategy_name]["scores"] = scores
-        llm_util.flush_cache()0
+        llm_util.flush_cache()
         
     ## before close, let's save our LLM cache's to disk
     llm_util.flush_cache()
