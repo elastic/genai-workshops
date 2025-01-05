@@ -158,13 +158,16 @@ def output_search_eval_results(output_json_path, results, golden_data, strategy_
     print(f"### Evaluation complete. \n\tResults written to  {output_json_path}")
 
 
-def _query_transform(query_string:str, prompt:str) -> str:
+
+def _query_transform(query_string:str, prompt:str) -> tuple[str, int]:
     """
     Calls OpenAI ChatGPT (e.g., GPT-4) to transform the user_query
     using the system_prompt as context. Returns the model's text response.
     """
-    transformed_query = llm_util.transform_query_cache(query_string, prompt )
-    return transformed_query
+    
+    response = llm_util.transform_query_cache(query_string, prompt )
+    
+    return response
 
 
 
@@ -183,7 +186,11 @@ def _build_rank_eval_request(golden_data, strategy_module):
         qid = f"query_{i+1}"
 
         query_transform_prompt = strategy_module.get_parameters().get("query_transform_prompt", None)
-        query_string = item["query"] if not query_transform_prompt else _query_transform(item["query"], query_transform_prompt)
+        if query_transform_prompt:
+            response = _query_transform(item["query"], query_transform_prompt)
+            query_string = response["answer"]
+        else:
+            query_string = item["query"]
 
         query_dsl = strategy_module.build_query(query_string)
         
@@ -231,7 +238,7 @@ Console.print = lambda *args, **kwargs: None
 from utility.util_deep_eval import generateLLMTestCase, evaluateTestCases
 from deepeval.evaluate import TestResult
 from utility.util_llm import LLMUtil
-from utility.util_es import search_to_context
+from utility.util_es import search_to_context, get_es
 
 
 def run_deepeval(es, strategy_modules, golden_data : list, rag_system_prompt: str, doc_limit: int, inner_hits_size: int, citation_limit: int) -> dict:
@@ -268,12 +275,21 @@ def run_deepeval(es, strategy_modules, golden_data : list, rag_system_prompt: st
                 query = item["query"]
 
 
+                tokens_used = 0
+
                 ## correct answer from the golden data
                 correct_answer = item["natural_answer"]
 
                 ## pre-process the query string
                 query_transform_prompt = strategy_module.get_parameters().get("query_transform_prompt", None)
-                query_string = item["query"] if not query_transform_prompt else _query_transform(item["query"], query_transform_prompt)
+                if query_transform_prompt:
+                    response = _query_transform(item["query"], query_transform_prompt)
+                    query_string = response["answer"]
+                    total_tokens = response["total_tokens"]
+                    tokens_used += total_tokens
+                else:
+                    query_string = item["query"]
+
 
                 ## do the RAG
                 index_name = strategy_module.get_parameters()['index_name']
@@ -293,12 +309,16 @@ def run_deepeval(es, strategy_modules, golden_data : list, rag_system_prompt: st
                 system_prompt = rag_system_prompt.format(context=context)
 
                 ## perform the RAG
-                actual_output = llm_util.rag_cache(system_prompt, top_context_citations, query_string)
+                rag_reponse = llm_util.rag_cache(system_prompt, top_context_citations, query_string)
+                actual_output = rag_reponse["answer"]
+                rag_tokens = rag_reponse["total_tokens"]
+                tokens_used += rag_tokens
 
 
                 ## fill in query and strategy responses in score sheet
                 stratResult = {
                     "actual_output": actual_output,
+                    "tokens_used": tokens_used,
                     "retrieval_context": [f"[{i+1}] {text}" for i, text in enumerate(top_context_citations)]
                 }
                 if qid not in deepEvalScores:
@@ -327,6 +347,7 @@ def run_deepeval(es, strategy_modules, golden_data : list, rag_system_prompt: st
                 scores[metric.name] = {"score": metric.score, "reason": metric.reason }
             
             deepEvalScores[quid]["strategies"][strategy_name]["scores"] = scores
+        llm_util.flush_cache()0
         
     ## before close, let's save our LLM cache's to disk
     llm_util.flush_cache()
@@ -339,130 +360,52 @@ def output_deepeval_results(output_json_path, deepEvalScores):
 
 
 
-# def main():
-
-#     OUTPUT_CSV = "search_evaluation_results.csv"
-#     STRATEGIES_FOLDER = "strategies"       # Folder containing *.py strategy files
-#     GOLDEN_DATA_CSV = "golden_data.csv"    # CSV with columns: query, best_ids, natural_answer (or similar)
-
-#     # 1. Connect to Elasticsearch
-#     es = get_es()
-#     print(f"Connected to Elasticsearch version: {es.info()['version']['number']}")
-    
-#     # 2. Load the golden data set
-#     golden_data = load_golden_data(GOLDEN_DATA_CSV)
-#     print(f"Identified {len(golden_data)} golden data entry(ies) to use for search evaluation")
-    
-#     # 3. Load strategies from the strategies folder
-#     strategy_modules = load_strategies(STRATEGIES_FOLDER)  # {name: module}
-#     print(f"Identified {len(strategy_modules)} strategy(ies) to evaluate")
-
-#     # 4. Evaluate each strategy
-#     results = run_evaluation(es, golden_data, strategy_modules)
-
-#     # 5. Output the evaluation results
-#     output_eval_results(OUTPUT_CSV, results, strategy_modules)
+#################
+## MAIN FUNCTIONS FOR USING WITHOUT PYTHON NOTEBOOK
+#################
 
 
-    # ## We will store results in a structure like:
-    # ## {
-    # ##   query_text1: { "bm25": 0.88, "semantic": 0.79, ... },
-    # ##   query_text2: { "bm25": 0.92, ... },
-    # ##   ...
-    # ## }
-    # results = {}
+def main():
+    print("### Starting evaluation using Elasticsearch _rank_eval API")
 
-    # ## Search rank Evaluation
-    # print("\b### SEARCH RANK EVAL")
-    # for strategy_name, module in strategy_modules.items():
+    # 1. Connect to Elasticsearch
+    es = get_es()
+    print(f"\tConnected to Elasticsearch version: {es.info()['version']['number']}")
 
-    #     if hasattr(module, "is_disabled") and module.is_disabled(): ## or strategy_name != "1a_bm25" :
-    #         print(f"Skipping strategy: {strategy_name}")
-    #         continue
+    # 2. Load the golden data set
+    golden_data = load_golden_data(GOLDEN_DATA_CSV)
+    print(f"\tIdentified {len(golden_data)} golden data entry(ies) to use for search evaluation")
 
-    #     print(f"Starting strategy: {strategy_name}")
-    #     rank_eval_body = build_rank_eval_request(golden_data, module)
-    #     # print(json.dumps(rank_eval_body, indent=4))
+    # 3. Load strategies from the strategies folder
+    strategy_modules = load_strategies(STRATEGIES_FOLDER)  
+    print(f"\tIdentified {len(strategy_modules)} strategy(ies) to evaluate")
 
-    #     index_name = module.get_parameters()['index_name']
-        
-    #     # 4. Call the _rank_eval API
-    #     try:
-    #         response = es.rank_eval(body=rank_eval_body, index=index_name)
-    #         # print(response)
-    #         ## response structure reference:
-    #         ## {
-    #         ##   "metric_score": 0.85,   # overall metric
-    #         ##   "details": {
-    #         ##       "query_1": { "metric_score": 1.0, "unrated_docs": [], ... },
-    #         ##       "query_2": { "metric_score": 0.5, ... },
-    #         ##       ...
-    #         ##   }
-    #         ## }
+    # 4. Evaluate each strategy
+    results = run_search_evaluation(es, golden_data, strategy_modules)
 
-    #         ## Update results
-    #         for i, item in enumerate(golden_data):
-    #             qid = f"query_{i+1}"
-    #             query_text = item["query"]
-                
-    #             ndcg_for_this_query = response["details"][qid]["metric_score"]
-                
-    #             if query_text not in results:
-    #                 results[query_text] = {}
-    #             results[query_text][strategy_name] = ndcg_for_this_query
+    # 5. Output the evaluation results
+    output_search_eval_results(SEARCH_OUTPUT_JSON, results, golden_data, strategy_modules)
 
-    #         # print(json.dumps(response, indent=4))
-    #     except Exception as e:
-    #         print(f"Error running rank_eval for strategy {strategy_name}: {e}")
-    #         traceback.print_exc()  
-    #         print(json.dumps(rank_eval_body, indent=4))
+    rag_system_prompt = """
+Instructions:
 
-    #         # Optionally fill with None or 0
-    #         for item in golden_data:
-    #             query_text = item["query"]
-    #             if query_text not in results:
-    #                 results[query_text] = {}
-    #             results[query_text][strategy_name] = None
+- You are an assistant for question-answering tasks.
+- Answer questions truthfully and factually using only the context presented.
+- Do not jump to conclusions or make assumptions.
+- If the answer is not present in the provided context, just say that you don't know rather than making up an answer or using your own knowledge from outside the prompt.
+- You must always cite the document where the answer was extracted using inline academic citation style [], using the position or multiple positions. Example:  [1][3].
+- Use markdown format for code examples or bulleted lists.
+- You are correct, factual, precise, and reliable.
 
 
-    # strategy_names = list(strategy_modules.keys())
-    # strategy_names.sort()  # Sort the list in ascending order
+Context:
+{context}
+"""
+    deepEvalScores = run_deepeval(es, strategy_modules, golden_data, rag_system_prompt,6, 3, 9)
 
-    # with open(OUTPUT_CSV, mode="w", newline="", encoding="utf-8") as f:
-    #     writer = csv.writer(f)
-        
-    #     # Header: query plus one column per strategy
-    #     header_row = ["query"] + strategy_names
-    #     writer.writerow(header_row)
-        
-    #     # Write each query row
-    #     per_strategy_sums = {s: 0.0 for s in strategy_names}
-    #     per_strategy_counts = {s: 0 for s in strategy_names}
-        
-    #     for query_text, row_scores in results.items():
-    #         row_to_write = [query_text]
-    #         for s in strategy_names:
-    #             score = row_scores.get(s, None)
-    #             row_to_write.append(score if score is not None else "")
-    #             if score is not None:
-    #                 per_strategy_sums[s] += score
-    #                 per_strategy_counts[s] += 1
-    #         writer.writerow(row_to_write)
-
-    #     # Write total (avg) row
-    #     total_row = ["TOTAL"]
-    #     for s in strategy_names:
-    #         if per_strategy_counts[s] > 0:
-    #             avg_score = per_strategy_sums[s] / per_strategy_counts[s]
-    #             total_row.append(avg_score)
-    #         else:
-    #             total_row.append("")
-    #     writer.writerow(total_row)
-
-    # print(f"Evaluation complete. Results written to {OUTPUT_CSV}")
-
-
-
+    ## save the scores to disk
+    output_deepeval_results(DEEPEVAL_OUTPUT_JSON, deepEvalScores)
+    print(f"\nDeepEval scores saved to {DEEPEVAL_OUTPUT_JSON}")
 
 
 if __name__ == "__main__":

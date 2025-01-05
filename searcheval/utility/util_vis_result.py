@@ -80,10 +80,13 @@ def vis_deep_eval_correct_tests(json_file: str):
 
     # Transform the data into a DataFrame
     rows = []
+    total_tokens = {strategy: 0 for strategy in list(data.values())[0]["strategies"].keys()}
+
     for query, details in data.items():
         row = {"query": details['query']}
         for strategy, strategy_details in details["strategies"].items():
             row[strategy] = strategy_details["scores"]["Correctness (GEval)"]["score"]
+            total_tokens[strategy] += strategy_details["tokens_used"]
         rows.append(row)
 
     df = pd.DataFrame(rows)
@@ -98,6 +101,10 @@ def vis_deep_eval_correct_tests(json_file: str):
 
     # Sort columns by strategy name in ascending order
     df = df[sorted(df.columns)]
+
+    # Update column labels to include total tokens used
+    updated_columns = [f"{strategy}\nTokens: {total_tokens[strategy]:,}" for strategy in df.columns]
+    df.columns = updated_columns
 
     # Create a custom colormap
     cmap = LinearSegmentedColormap.from_list("custom_cmap", ["red", "yellow", "green"])

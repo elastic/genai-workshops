@@ -24,11 +24,12 @@ class QueryTransformCache:
         # Register exit handler to persist cache on program exit
         atexit.register(self._persist_to_disk)
 
-    def transform_query(self, question: str, prompt: str, llm_util,  model_name: str = "gpt-4o") -> str:
+    def transform_query(self, question: str, prompt: str, llm_util,  model_name: str = "gpt-4o") -> dict:
         """
         Return a cached transform if available; otherwise call the LLM,
         cache the result, and return it.
         """
+        
         cache_key = self._make_key(prompt, question)
 
         # LRU Cache Check
@@ -36,17 +37,22 @@ class QueryTransformCache:
             # print("\t\tCache Hit")
             # Move to end (most recently used)
             self.cache.move_to_end(cache_key, last=True)
-            return self.cache[cache_key]["answer"]
+            cache_hit = self.cache[cache_key]
+            return {
+                "answer": cache_hit["answer"],
+                "total_tokens": cache_hit["total_tokens"]
+            }
         else:
             # print("\t\tCache Miss")
             # Generate a new answer via LLM
-            answer = llm_util.transform_query_direct(system_prompt=prompt, user_query=question, model_name=model_name)
-
+            direct_response = llm_util.transform_query_direct(system_prompt=prompt, user_query=question, model_name=model_name)
+            
             # Insert into cache
             self.cache[cache_key] = {
                 "prompt": prompt,
                 "question": question,
-                "answer": answer
+                "answer": direct_response["answer"],
+                "total_tokens": direct_response["total_tokens"]
             }
             self.cache.move_to_end(cache_key, last=True)
 
@@ -54,7 +60,8 @@ class QueryTransformCache:
             if len(self.cache) > self.max_size:
                 self.cache.popitem(last=False)  # pop the least recently used item
 
-            return answer
+            
+            return direct_response
 
     def _make_key(self, prompt: str, question: str) -> str:
         """

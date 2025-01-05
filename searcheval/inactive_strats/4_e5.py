@@ -12,7 +12,7 @@ def get_parameters() -> dict:
         - rerank_inner_hits (bool): Indicates whether to rerank inner hits.
     """
     return {
-        "is_disabled": True,
+        "is_disabled": False,
         "index_name": "star_wars_sem_e5",
         "rag_context": "lore_semantic"
     }

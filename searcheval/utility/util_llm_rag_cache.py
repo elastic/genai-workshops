@@ -29,7 +29,7 @@ class LLMRagCache:
         atexit.register(self._persist_to_disk)
 
     def rag(self, system_prompt: str, retrieval_context: list, query_string: str, 
-            model_name: str, llm_util) -> str:
+            model_name: str, llm_util) -> dict:
         """
         Return a cached response if available; otherwise call llm_util.rag(...),
         cache the result, and return it.
@@ -40,10 +40,14 @@ class LLMRagCache:
         if cache_key in self.cache:
             # Move to end (most recently used)
             self.cache.move_to_end(cache_key, last=True)
-            return self.cache[cache_key]["answer"]
+            cache_hit = self.cache[cache_key]
+            return {
+                "answer": cache_hit["answer"], 
+                "total_tokens": cache_hit["total_tokens"] 
+            }
         else:
             # Generate a new answer via the LLM utility
-            answer = llm_util.rag_direct(
+            direct_response = llm_util.rag_direct(
                 system_prompt=system_prompt, 
                 retrieval_context=retrieval_context, 
                 query_string=query_string, 
@@ -56,7 +60,8 @@ class LLMRagCache:
                 # "retrieval_context": retrieval_context,
                 # "query_string": query_string,
                 # "model_name": model_name,
-                "answer": answer
+                "answer": direct_response["answer"],
+                "total_tokens": direct_response["total_tokens"]
             }
             self.cache.move_to_end(cache_key, last=True)
 
@@ -64,7 +69,7 @@ class LLMRagCache:
             if len(self.cache) > self.max_size:
                 self.cache.popitem(last=False)  # pop the least recently used item
 
-            return answer
+            return direct_response
 
     def _make_key(self, system_prompt: str, retrieval_context: list, 
                   query_string: str, model_name: str) -> str:

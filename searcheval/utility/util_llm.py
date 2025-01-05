@@ -21,16 +21,17 @@ class LLMUtil:
                   system_prompt: str, 
                   retrieval_context: list, 
                   query_string: str, 
-                  model_name: str = "gpt-4o") -> str:
+                  model_name: str = "gpt-4o") -> dict:
         
         return self.cache_helper.rag(system_prompt, retrieval_context, query_string, model_name, self)
+        
 
 
     def transform_query_cache(self, 
                               question: str, 
-                              prompt: str) -> str:
+                              prompt: str) -> dict:
 
-        return self.query_transform_cache.transform_query(question, prompt, self)
+        return  self.query_transform_cache.transform_query(question, prompt, self)
 
 
     def flush_cache(self):
@@ -40,7 +41,7 @@ class LLMUtil:
 
     ### Functions to call if you want to avoid the cache
 
-    def transform_query_direct(self, system_prompt: str, user_query: str, model_name: str = "gpt-4o") -> str:
+    def transform_query_direct(self, system_prompt: str, user_query: str, model_name: str = "gpt-4o") -> dict:
 
         messages = [
             {"role": "system", "content": system_prompt},
@@ -56,16 +57,21 @@ class LLMUtil:
 
             # Extract the content of the first (and typically only) completion
             transformed_query = completion.choices[0].message.content.strip()
-            return transformed_query
+
+            # Print the total number of tokens used by the model
+            total_tokens = completion.usage.total_tokens
+            # print(f"Total tokens used: {total_tokens}")
+
+            return {"answer": transformed_query, "total_tokens": total_tokens}
         
         except Exception as e: 
             print(f"General exception encountered: {e}")
             # Decide how you want to handle the error; return original query or raise exception
-            return user_query
+            return {"answer": user_query, "total_tokens": 0}
 
 
 
-    def rag_direct(self, system_prompt: str, retrieval_context: list, query_string: str, model_name: str = "gpt-4o") -> str:
+    def rag_direct(self, system_prompt: str, retrieval_context: list, query_string: str, model_name: str = "gpt-4o") -> dict:
         messages = [
             {"role": "system", "content": system_prompt},
             {"role": "user",   "content": query_string}
@@ -81,15 +87,18 @@ class LLMUtil:
             # Extract the content of the first (and typically only) completion
             rag_answer = completion.choices[0].message.content.strip()
 
+            total_tokens = completion.usage.total_tokens
+            # print(f"Total tokens used: {total_tokens}")
+
             # print(f"RAG question: {query_string}")
             print(f"\tRAG answer: {rag_answer}")
 
-            return rag_answer
+            return {"answer": rag_answer, "total_tokens": total_tokens}
         
         except Exception as e: 
             print(f"General exception encountered: {e}")
             # Decide how you want to handle the error; return original query or raise exception
-            return "Unable to return response due to an LLM error"
+            return {"answer": "Unable to return response due to an LLM error", "total_tokens": 0}
 
 
 singleton_llm_util = LLMUtil()
