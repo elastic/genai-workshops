@@ -25,7 +25,9 @@ correctness_metric = PGEval(
     evaluation_steps=[
         "Check whether the facts in 'actual output' contradicts any facts in 'expected output'",
         "You should also moderately penalize omission of detail",
-        "Vague language, or contradicting OPINIONS, are not OK"
+        "Vague language, or contradicting OPINIONS, are not OK",
+        "the actual output should have citations in the format [1] and will penalize for lack of citations",
+        "do not check, comment, or penalize whether the expected output has citations"
     ],
     evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT, LLMTestCaseParams.EXPECTED_OUTPUT],
 )

@@ -1,3 +1,7 @@
+#################
+## SEARCH EVAL
+#################
+
 import csv
 import json
 import glob
@@ -5,16 +9,11 @@ import os
 import importlib.util
 import traceback
 
-# from dotenv import load_dotenv
-# load_dotenv('.env')
+from utility.util_es import get_es
 
-# from utility.util_es import get_es
-from utility.util_llm import LLMUtil
-from utility.util_query_transform_cache import close_cache
-
-
-openai_api_key = os.getenv("OPENAI_API_KEY")
-llm_util = LLMUtil(openai_api_key)
+## only instantiate one of these as they work with a disk cache
+from utility.util_llm import LLMUtil, get_llm_util
+llm_util = get_llm_util()
 
 
 def load_strategies(folder_path):
@@ -70,24 +69,24 @@ def load_golden_data(csv_path):
             })
     return data
 
-
-def run_evaluation(es, golden_data, strategy_modules):
+def run_search_evaluation(es, golden_data, strategy_modules):
     results = {}
+    
 
     ## Search rank Evaluation
     print("\b### SEARCH RANK EVAL")
     for strategy_name in sorted(strategy_modules.keys()):
-        module = strategy_modules[strategy_name]
+        strategy_module = strategy_modules[strategy_name]
 
-        if hasattr(module, "is_disabled") and module.is_disabled(): ## or strategy_name != "1a_bm25" :
+        if strategy_module.get_parameters().get("is_disabled", False) : 
             print(f"\tSkipping strategy: {strategy_name}")
             continue
 
         print(f"\tStarting strategy: {strategy_name}")
-        rank_eval_body = _build_rank_eval_request(golden_data, module)
+        rank_eval_body = _build_rank_eval_request(golden_data, strategy_module)
         # print(json.dumps(rank_eval_body, indent=4))
 
-        index_name = module.get_parameters()['index_name']
+        index_name = strategy_module.get_parameters()['index_name']
         
         # 4. Call the _rank_eval API
         try:
@@ -144,13 +143,11 @@ def run_evaluation(es, golden_data, strategy_modules):
                     }
                 results[query_text]['scores'][strategy_name] = None
     
-    
+    llm_util.flush_cache()
     return results
 
 
-
-
-def output_eval_results(output_json_path, results, golden_data, strategy_modules):
+def output_search_eval_results(output_json_path, results, golden_data, strategy_modules):
     strategy_names = list(strategy_modules.keys())
     strategy_names.sort()  # Sort the list in ascending order
 
@@ -158,8 +155,18 @@ def output_eval_results(output_json_path, results, golden_data, strategy_modules
     with open(output_json_path, "w", encoding="utf-8") as json_file:
         json.dump(results, json_file, indent=4)
 
+    print(f"### Evaluation complete. \n\tResults written to  {output_json_path}")
 
-    print(f"Evaluation complete. Results written to  {output_json_path}")
+
+def _query_transform(query_string:str, prompt:str) -> str:
+    """
+    Calls OpenAI ChatGPT (e.g., GPT-4) to transform the user_query
+    using the system_prompt as context. Returns the model's text response.
+    """
+    transformed_query = llm_util.transform_query_cache(query_string, prompt )
+    return transformed_query
+
+
 
 def _build_rank_eval_request(golden_data, strategy_module):
     """
@@ -175,7 +182,8 @@ def _build_rank_eval_request(golden_data, strategy_module):
     for i, item in enumerate(golden_data):
         qid = f"query_{i+1}"
 
-        query_string = strategy_module.query_transform(item["query"], llm_util,  strategy_module.get_parameters()["query_transform_prompt"]) if hasattr(strategy_module, "query_transform") else item["query"]
+        query_transform_prompt = strategy_module.get_parameters().get("query_transform_prompt", None)
+        query_string = item["query"] if not query_transform_prompt else _query_transform(item["query"], query_transform_prompt)
 
         query_dsl = strategy_module.build_query(query_string)
         
@@ -202,14 +210,132 @@ def _build_rank_eval_request(golden_data, strategy_module):
             }
             # "recall": {
             #     "k": 10,
-            #     "relevant_rating_threshold": 1
+            #     "relevant_rating_threshold": 3
             # }
         }
     }
     
-    close_cache()
-    
     return rank_eval_body
+
+
+
+#################
+## DEEP EVAL
+#################
+
+
+from rich.console import Console
+# Monkey patch to suppress console.print
+Console.print = lambda *args, **kwargs: None
+
+from utility.util_deep_eval import generateLLMTestCase, evaluateTestCases
+from deepeval.evaluate import TestResult
+from utility.util_llm import LLMUtil
+from utility.util_es import search_to_context
+
+
+def run_deepeval(es, strategy_modules, golden_data : list, rag_system_prompt: str, doc_limit: int, inner_hits_size: int, citation_limit: int) -> dict:
+    """
+    Executes a deep evaluation of various search and RAG strategies using provided golden data .
+    Args:
+        es: Elasticsearch client instance.
+        strategy_modules: Dictionary of strategy modules to be evaluated.
+        golden_data (list): List of dictionaries containing query and natural answer pairs.
+        rag_system_prompt (str): System prompt template for RAG.
+        doc_limit (int): Limit on the number of search result documents to consider during retrieval.
+        inner_hits_size (int): Limit on the number of inner hits (passages) to retrieve per doc hit.
+        citation_limit (int): Limit on the total number of inner hits (passages) to consider for RAG - post retrieval truncation.
+    Returns:
+        dict: A dictionary containing evaluation scores and details for each query and strategy.
+    """
+    
+
+    deepEvalScores = {}
+    
+    ## For each strategy, in ascending alphabetical order
+    for strategy_name in sorted(strategy_modules.keys()):
+        strategy_module = strategy_modules[strategy_name]
+        
+        ## skip disabled strategies
+        if strategy_module.get_parameters().get("is_disabled", False) : 
+            print(f"Skipping strategy: {strategy_name}")
+            continue
+
+        print(f"Starting strategy: {strategy_name}")
+        testCases = []
+        for i, item in enumerate(golden_data):
+                qid = f"query_{i+1}"
+                query = item["query"]
+
+
+                ## correct answer from the golden data
+                correct_answer = item["natural_answer"]
+
+                ## pre-process the query string
+                query_transform_prompt = strategy_module.get_parameters().get("query_transform_prompt", None)
+                query_string = item["query"] if not query_transform_prompt else _query_transform(item["query"], query_transform_prompt)
+
+                ## do the RAG
+                index_name = strategy_module.get_parameters()['index_name']
+                body = strategy_module.build_query(query_string, inner_hits_size)
+                rag_context = strategy_module.get_parameters().get("rag_context", "lore")
+
+                ## determine if this strategy wants inner hits re-ranked
+                rerank_inner_hits = strategy_module.get_parameters().get("rerank_inner_hits", False)
+
+                retrieval_context  = search_to_context(es, index_name, query_string, body, rag_context, rerank_inner_hits, doc_limit)
+
+                ## inner hits passages will be trim_context_to_top_k_docs * the inner hits depth ... we need to truncate
+                top_context_citations = retrieval_context[:citation_limit]
+
+                context = "\n".join([f"[{i+1}] {text}" for i, text in enumerate(top_context_citations)])
+
+                system_prompt = rag_system_prompt.format(context=context)
+
+                ## perform the RAG
+                actual_output = llm_util.rag_cache(system_prompt, top_context_citations, query_string)
+
+
+                ## fill in query and strategy responses in score sheet
+                stratResult = {
+                    "actual_output": actual_output,
+                    "retrieval_context": [f"[{i+1}] {text}" for i, text in enumerate(top_context_citations)]
+                }
+                if qid not in deepEvalScores:
+                    deepEvalScores[qid] = { 
+                        "query" : query, 
+                        "correct_answer": correct_answer,
+                        "strategies": { strategy_name: stratResult} }
+                else:
+                    deepEvalScores[qid]["strategies"][strategy_name] = stratResult
+
+                ## prep deel eval test case for later batch evaluation
+                testCase = generateLLMTestCase(qid, query, actual_output, top_context_citations, correct_answer)
+                testCases.append(testCase)
+
+        ## Run evaluations for this strategy      
+        rag_evaluation = evaluateTestCases(testCases)
+
+        for test_result in  rag_evaluation.test_results:
+            quid = test_result.name
+
+            success = test_result.success
+            scores = {"success": success}
+            # print(f"name: {quid} | success: {success}")
+            for metric in  test_result.metrics_data:
+                # print(f"{metric.name} : score {metric.score} | {metric.reason}")
+                scores[metric.name] = {"score": metric.score, "reason": metric.reason }
+            
+            deepEvalScores[quid]["strategies"][strategy_name]["scores"] = scores
+        
+    ## before close, let's save our LLM cache's to disk
+    llm_util.flush_cache()
+    return deepEvalScores
+
+
+def output_deepeval_results(output_json_path, deepEvalScores):
+    with open(output_json_path, "w") as f:
+        json.dump(deepEvalScores, f, indent=2)
 
 
 

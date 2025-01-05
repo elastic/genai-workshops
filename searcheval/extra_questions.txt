@@ -1,5 +1,6 @@
+What is baby yoda's armor made out of?,behind the scenes,"Mandalorian_armor, Grogu%27s_chainmail_shirt",Grogu's chainmail shirt was beskar chainmail created for Mandalorian foundling Din Grogu by the Armorer
 "What was the name of the clone army's template, and who was responsible for its creation?",multi-part question,"Clone_template, First_Battle_of_Geonosis",The clone army's template was the human bounty hunter Jango Fett. The creation of the clone army was arranged by the deceased Jedi Master Sifo-Dyas
-What is the official title of Padmé Amidala during her time on Naboo?,specific context,"Padm%C3%A9_Amidala, Gungan-Naboo_dispute","During her time on Naboo, Padmé Amidala held the official title of Queen of Naboo"
+What is the official title of Padmé Amidala during her time on Naboo?,specific context,"Padm%C3%A9_Amidala, Battle_of_Naboo","During her time on Naboo, Padmé Amidala held the official title of Queen of Naboo"
 "Who is the Sith apprentice known as Darth Maul, and what weapon is he famous for using?",multi-part question,"Maul, Darth_Maul%27s_double-bladed_lightsaber",The Sith apprentice known as Darth Maul is a Force-sensitive Dathomirian Zabrak male who was trained by Darth Sidious. He is famous for using a double-bladed lightsaber
 "Who constructed C-3PO, and what was his primary task and programming?",multi-part question,"3PO-series_protocol_droid, C-3PO",C-3PO was constructed by a young Anakin Skywalker. He was designed to interact with organics and was programmed primarily for etiquette and protocols
 that's not what I wanted you dumb computer. Dang. Who is Luke Skywalker's sister?,poorly worded question,"Luke_Skywalker, Sola_Naberrie",Luke Skywalker's sister is Leia Organa
@@ -17,3 +18,61 @@ What was Han Solo's response when Greedo offered to take his ship instead of the
 When Greedo threatened Han Solo and demanded that he either pay the money to Jabba or hand over his starship, the Millennium Falcon, Solo replied that he would rather die than give up his ship"
 Who successfully captured Han Solo to collect the bounty placed on him by Jabba the Hutt?,more,"Jabba_Desilijic_Tiure, Fetts",Boba Fett captured Han Solo to collect Jabba the Hutt's bountys
 why did luke die after confronting Kylo Ren?,more,Force_projection,"Luke Skywalker died after confronting Kylo Ren because he used the Force projection technique, which was extremely taxing"
+
+
+
+PUT /_synonyms/star_wars_synonyms
+{
+  "synonyms_set": [
+    { "synonyms": "asoka, ashoka, ahsoka"},
+    { "synonyms": "asoka => ahsoka tano"},
+    { "synonyms": "ashoka => ahsoka tano"},
+    { "synonyms": "ahsoka => ahsoka tano"},
+    { "synonyms": "light saber => lightsaber"},
+    { "synonyms": "C-3PO , C3PO"},
+    { "synonyms": "C_3PO , C3PO"},
+    { "synonyms": "baby yoda => grogu"},
+    { "synonyms": "babyyoda => grogu"},
+    { "synonyms": "a_wing, a wing, a-wing, RZ-1 A-wing"},
+    { "synonyms": "x_wing, x wing, x-wing, T-65B X-wing"}
+  ]
+}
+
+
+#### Starting value to reset to
+
+query,challenge,best_ids,natural_answer
+On what planet did Yoda hide from the empire?,simple,Yoda,Yoda hid from the Empire on Dagobah
+what color was yoda's light saber?,compound word,"Yoda%27s_lightsaber, Yoda",Yoda's lightsaber had a bright green plasma blade
+What was asoka tano's nickname in the Clone Wars and who gave it to her?,misspelling,Ahsoka_Tano,"Ahsoka Tano's nickname was ""Snips,"" which was given to her by her Jedi Master, Anakin Skywalker"
+What type of star ship is the Milenium Facon,misspelling,"Millennium_Falcon, Docking_Bay_328",The Millennium Falcon is a Corellian YT-1300 light freighter
+
+
+
+
+
+
+### COMPLETE
+
+query,challenge,best_ids,natural_answer
+On what planet did Yoda hide from the empire?,simple,Yoda,Yoda hid from the Empire on Dagobah
+what color was yoda's light saber?,compound word,"Yoda%27s_lightsaber, Yoda",Yoda's lightsaber had a bright green plasma blade
+What was asoka tano's nickname in the Clone Wars and who gave it to her?,misspelling,Ahsoka_Tano,"Ahsoka Tano's nickname was ""Snips,"" which was given to her by her Jedi Master, Anakin Skywalker"
+What type of star ship is the Milenium Facon,misspelling,"Millennium_Falcon, Docking_Bay_328",The Millennium Falcon is a Corellian YT-1300 light freighter
+What is baby yoda's armor made out of?,behind the scenes,"Mandalorian_armor, Grogu%27s_chainmail_shirt",Grogu's chainmail shirt was beskar chainmail created for Mandalorian foundling Din Grogu by the Armorer
+"What was the name of the clone army's template, and who was responsible for its creation?",multi-part question,"Clone_template, First_Battle_of_Geonosis",The clone army's template was the human bounty hunter Jango Fett. The creation of the clone army was arranged by the deceased Jedi Master Sifo-Dyas
+What is the official title of Padmé Amidala during her time on Naboo?,specific context,"Padm%C3%A9_Amidala, Battle_of_Naboo","During her time on Naboo, Padmé Amidala held the official title of Queen of Naboo"
+"Who is the Sith apprentice known as Darth Maul, and what weapon is he famous for using?",multi-part question,"Maul, Darth_Maul%27s_double-bladed_lightsaber",The Sith apprentice known as Darth Maul is a Force-sensitive Dathomirian Zabrak male who was trained by Darth Sidious. He is famous for using a double-bladed lightsaber
+"Who constructed C-3PO, and what was his primary task and programming?",multi-part question,"3PO-series_protocol_droid, C-3PO",C-3PO was constructed by a young Anakin Skywalker. He was designed to interact with organics and was programmed primarily for etiquette and protocols
+that's not what I wanted you dumb computer. Dang. Who is Luke Skywalker's sister?,poorly worded question,"Luke_Skywalker, Sola_Naberrie",Luke Skywalker's sister is Leia Organa
+Who trained Luke Skywalker in the ways of the Force after Obi-Wan Kenobi's death?,indirect reference,"Luke_Skywalker, Jedi_training","After Obi-Wan Kenobi's death, Luke Skywalker was trained in the ways of the Force by Grand Master Yoda"
+What are the names of the twin suns of Tatooine?,indirect reference,"Tatooine, Tatoo_II, Tatoo_I",The twin suns of Tatooine are named Tatoo I and Tatoo II 
+"Oye, Han's ride-or-die best amigo? Who was that bro?",mix of languages,Han_Solo,Chewbacca was the close companion of Han Solo.
+What planet serves as the home base for the Rebel Alliance after the battle of Yavin?,indirect reference,Echo_Base,The planet Hoth
+"I'm interested in Luke skywalker. I need to know so I can win an argument. I have lots of questions. Importantly, who is his aunt?",poorly worded question,Luke_Skywalker,Luke Skywalker's aunt is Aunt Beru
+What was Han Solo's response when Greedo offered to take his ship instead of the debt to Jabba the Hutt?,more,Greedo,"
+When Greedo threatened Han Solo and demanded that he either pay the money to Jabba or hand over his starship, the Millennium Falcon, Solo replied that he would rather die than give up his ship"
+Who successfully captured Han Solo to collect the bounty placed on him by Jabba the Hutt?,more,"Jabba_Desilijic_Tiure, Fetts",Boba Fett captured Han Solo to collect Jabba the Hutt's bountys
+why did luke die after confronting Kylo Ren?,more,Force_projection,"Luke Skywalker died after confronting Kylo Ren because he used the Force projection technique, which was extremely taxing"
+
+

@@ -4,7 +4,7 @@ import atexit
 import hashlib
 from collections import OrderedDict
 
-CACHE_FILE_PATH = "query_transform_cache.json"
+CACHE_FILE_PATH = ".query_transform_cache.json"
 MAX_CACHE_SIZE = 1000  # Adjust to your desired capacity
 
 
@@ -24,7 +24,7 @@ class QueryTransformCache:
         # Register exit handler to persist cache on program exit
         atexit.register(self._persist_to_disk)
 
-    def transform_query(self, question: str, prompt: str, llm_util) -> str:
+    def transform_query(self, question: str, prompt: str, llm_util,  model_name: str = "gpt-4o") -> str:
         """
         Return a cached transform if available; otherwise call the LLM,
         cache the result, and return it.
@@ -40,7 +40,7 @@ class QueryTransformCache:
         else:
             # print("\t\tCache Miss")
             # Generate a new answer via LLM
-            answer = llm_util.transform_query(system_prompt=prompt, user_query=question)
+            answer = llm_util.transform_query_direct(system_prompt=prompt, user_query=question, model_name=model_name)
 
             # Insert into cache
             self.cache[cache_key] = {
@@ -94,20 +94,3 @@ class QueryTransformCache:
             print(f"[QueryTransformCache] Error: Could not persist cache to disk: {e}")
 
 
-# Singleton-like pattern, if you prefer a single instance:
-transform_cache = QueryTransformCache()
-
-
-def transform_query(question: str, prompt: str, llm_util):
-    """
-    Convenience function that uses the module-level 'transform_cache' instance.
-    """
-    return transform_cache.transform_query(question, prompt, llm_util)
-
-
-def close_cache():
-    """
-    If you want to manually persist the cache instead of only at exit,
-    you can call this function to persist right away.
-    """
-    transform_cache._persist_to_disk()

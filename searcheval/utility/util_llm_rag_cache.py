@@ -4,7 +4,7 @@ import atexit
 import hashlib
 from collections import OrderedDict
 
-CACHE_FILE_PATH = "rag_cache.json"
+CACHE_FILE_PATH = ".rag_cache.json"
 MAX_CACHE_SIZE = 1000  # Adjust to your desired capacity
 
 
@@ -43,7 +43,7 @@ class LLMRagCache:
             return self.cache[cache_key]["answer"]
         else:
             # Generate a new answer via the LLM utility
-            answer = llm_util.rag(
+            answer = llm_util.rag_direct(
                 system_prompt=system_prompt, 
                 retrieval_context=retrieval_context, 
                 query_string=query_string, 
@@ -107,21 +107,3 @@ class LLMRagCache:
             print(f"[LLMRagCache] Error: Could not persist cache to disk: {e}")
 
 
-# ----- Optional: Provide a module-level instance & convenience function -----
-
-# rag_cache = LLMRagCache()
-
-# def rag(system_prompt: str, retrieval_context: list, query_string: str, 
-#         model_name: str = "gpt-4", llm_util=None) -> str:
-#     """
-#     Convenience function that uses the module-level 'rag_cache' instance.
-#     """
-#     return rag_cache.rag(system_prompt, retrieval_context, query_string, model_name, llm_util)
-
-
-# def close_cache():
-#     """
-#     If you want to manually persist the cache instead of relying on atexit,
-#     you can call this function to persist right away.
-#     """
-#     rag_cache._persist_to_disk()

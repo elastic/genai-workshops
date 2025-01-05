@@ -1,13 +1,10 @@
-
-def is_disabled() -> bool:
-    return False
-
 def get_parameters() -> dict:
     return {
+        "is_disabled": False,
         "index_name": "star_wars_custom"
     }
 
-def build_query(query_string: str) -> dict:
+def build_query(query_string: str, inner_hits_size:int = None) -> dict:
 
     return {
         "query": {
