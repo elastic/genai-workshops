@@ -16,17 +16,25 @@ def get_parameters() -> dict:
     }
 
 def build_query(query_string: str, inner_hits_size:int = None) -> dict:
+    """
+    Constructs a query DSL for use in Elasticsearch
+
+    Args:
+        query_string (str): The search query string. You are not required to use this
+        inner_hits_size (int, optional): The size of inner hits. You are not required to use this
+
+    Returns:
+        dict: A dictionary representing the search query.
+    """
 
     return {
         "query": {
             "multi_match": {
                 "query": query_string,
                 "fields": [
-                    "title^5", 
+                    "title", 
                     "lore"
-                ],
-                "fuzziness": "AUTO"
+                ]
             }
         }
     }
-

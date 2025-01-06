@@ -3,14 +3,13 @@ def get_parameters() -> dict:
     Returns a dictionary of parameters for configuring the search strategy
 
     Returns:
-      dict: A dictionary containing the following keys:
+    dict: A dictionary containing the following keys:
         - is_disabled (bool): Indicates whether this search strategy is disabled.
         - index_name (str): The name of the index to be used.
         - query_transform_prompt (str): [OPTIONAL] Instructions for transforming queries.
         - rag_context (str): [OPTIONAL] The field to be used during RAG. defaults to 'lore' if not provided.
         - rerank_inner_hits (bool): Indicates whether to rerank inner hits.
     """
-
     return {
         "is_disabled": False,
         "index_name": "star_wars_sem_e5",
@@ -22,11 +21,10 @@ def get_parameters() -> dict:
     - Do not use quotes.
         """,
         "rag_context": "lore_semantic",
-        "rerank_inner_hits": True
+        "rerank_inner_hits": True    ### THIS IS THE BIG NEW THING
     }
 
-
-
+    
 def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
     return {
       "retriever": {
@@ -68,7 +66,7 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
                       "title",
                       "lore"
                     ],
-                    #"fuzziness": 1
+                    
                   }
                 }
               }

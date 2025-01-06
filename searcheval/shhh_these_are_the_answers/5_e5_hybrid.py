@@ -1,10 +1,9 @@
-
 def get_parameters() -> dict:
     """
     Returns a dictionary of parameters for configuring the search strategy
 
     Returns:
-      dict: A dictionary containing the following keys:
+    dict: A dictionary containing the following keys:
         - is_disabled (bool): Indicates whether this search strategy is disabled.
         - index_name (str): The name of the index to be used.
         - query_transform_prompt (str): [OPTIONAL] Instructions for transforming queries.
@@ -20,8 +19,10 @@ def get_parameters() -> dict:
 def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
     return {
       "retriever": {
-        "rrf": {
+        "rrf": { ## This stands for Reciprocal Rank Fusion 🔥🔥🔥
           "retrievers": [
+            
+            ## First method
             {
               "standard": {
                 "query": {
@@ -49,19 +50,22 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
                 }
               }
             },
+
+            ## Second method
             {
               "standard": {
                 "query": {
                   "multi_match": {
                     "query": query_string,
                     "fields": [
-                      "title",
+                      "title",  ## we don't need the boost anymore
                       "lore"
                     ]
                   }
                 }
               }
             }
+
           ]
         }
       },

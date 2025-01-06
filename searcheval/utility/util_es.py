@@ -143,7 +143,7 @@ def bulkLoadIndex( es, json_docs, index_name, id_param, batch_size=10):
 
 
 
-def search_to_context(es: Elasticsearch, index_name: str, query_string: str, body: dict, rag_context: str, rerank_inner_hits: bool, trim_context_len: int) -> list:
+def search_to_context(es: Elasticsearch, index_name: str, query_string: str, body: dict, rag_context: str, rerank_inner_hits: bool, doc_limit: int, citation_limit: int) -> list:
     """
     Executes a search query on the specified Elasticsearch index and extracts a specific context field from the results.
 
@@ -152,7 +152,8 @@ def search_to_context(es: Elasticsearch, index_name: str, query_string: str, bod
         index_name (str): The name of the Elasticsearch index to search.
         body (dict): The search query body.
         rag_context (str): The field name to extract from the search results.
-        trim_context_len (int): The maximum number of search results to process.
+        doc_limit (int): The maximum number of search results to process.
+        citation_limit (int): The maximum number of search citations to return.
 
     Returns:
         list: A list of context values extracted from the search results.
@@ -163,24 +164,26 @@ def search_to_context(es: Elasticsearch, index_name: str, query_string: str, bod
     # results['hits']['hits'] is the list of hits returned by Elasticsearch
     
     if rerank_inner_hits:
-        results_to_examine = results['hits']['hits'][:trim_context_len]
+        results_to_examine = results['hits']['hits'][:doc_limit]
         for hit in results_to_examine:
             inner_hits = hit.get('inner_hits', [])
             if len(inner_hits) > 0:
                 for inner_hit  in inner_hits.get(f"{index_name}.{rag_context}", {})["hits"]["hits"]:
                     context_value = inner_hit["_source"].get("text", "")
                     context.append(str(context_value))
+
         reranked_resp = es.inference.inference(
             task_type="rerank",
             inference_id= "my-elastic-rerank",  #"cohere_rerank"
             input=context,
             query=query_string
         )
-        top_results = [item['text'] for item in reranked_resp['rerank'][:trim_context_len]]
+
+        top_results = [item['text'] for item in reranked_resp['rerank'][:citation_limit]]
         return top_results
     else:
 
-        for hit in results['hits']['hits'][:trim_context_len]:
+        for hit in results['hits']['hits'][:doc_limit]:
         
             inner_hits = hit.get('inner_hits', [])
 
@@ -198,6 +201,5 @@ def search_to_context(es: Elasticsearch, index_name: str, query_string: str, bod
                 context_value = hit["_source"].get(rag_context, "")
                 context.append(str(context_value))
 
-        return context
 
-      
+        return context[:citation_limit]

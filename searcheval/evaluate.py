@@ -299,7 +299,7 @@ def run_deepeval(es, strategy_modules, golden_data : list, rag_system_prompt: st
                 ## determine if this strategy wants inner hits re-ranked
                 rerank_inner_hits = strategy_module.get_parameters().get("rerank_inner_hits", False)
 
-                retrieval_context  = search_to_context(es, index_name, query_string, body, rag_context, rerank_inner_hits, doc_limit)
+                retrieval_context  = search_to_context(es, index_name, query_string, body, rag_context, rerank_inner_hits, doc_limit, citation_limit)
 
                 ## inner hits passages will be trim_context_to_top_k_docs * the inner hits depth ... we need to truncate
                 top_context_citations = retrieval_context[:citation_limit]
