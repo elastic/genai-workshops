@@ -159,7 +159,7 @@ def output_search_eval_results(output_json_path, results, golden_data, strategy_
 
 
 
-def _query_transform(query_string:str, prompt:str) -> tuple[str, int]:
+def _query_transform(query_string:str, prompt:str) -> dict:
     """
     Calls OpenAI ChatGPT (e.g., GPT-4) to transform the user_query
     using the system_prompt as context. Returns the model's text response.

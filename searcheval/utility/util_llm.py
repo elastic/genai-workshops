@@ -71,7 +71,7 @@ class LLMUtil:
 
 
 
-    def rag_direct(self, system_prompt: str, retrieval_context: list, query_string: str, model_name: str = "gpt-4o") -> dict:
+    def rag_direct(self, system_prompt: str, retrieval_context: list, query_string: str, model_name: str = "gpt-4o", should_print=True) -> dict:
         messages = [
             {"role": "system", "content": system_prompt},
             {"role": "user",   "content": query_string}
@@ -91,7 +91,8 @@ class LLMUtil:
             # print(f"Total tokens used: {total_tokens}")
 
             # print(f"RAG question: {query_string}")
-            print(f"\tRAG answer: {rag_answer}")
+            if should_print:
+                print(f"\tRAG answer: {rag_answer}")
 
             return {"answer": rag_answer, "total_tokens": total_tokens}
         
