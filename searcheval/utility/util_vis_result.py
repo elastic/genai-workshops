@@ -115,9 +115,9 @@ def vis_deep_eval_correct_tests(json_file: str):
         
         plt.figure(figsize=(12, 8))
         ax = sns.heatmap(df, annot=True, cmap=cmap, cbar=True, vmin=0, vmax=1)
-        plt.xlabel('Strategies')
+        plt.xlabel('Strategies / RAG LLM Tokens')
         plt.ylabel('Queries')
-        plt.title('Deep Eval Correctness Heatmap', fontsize=20)  # Make the title bigger
+        plt.title('DeepEval Correctness Heatmap', fontsize=20)  # Make the title bigger
         plt.xticks(rotation=45, ha='right')  # Angle the x-axis labels
         
         # Add a horizontal line to separate the average row
