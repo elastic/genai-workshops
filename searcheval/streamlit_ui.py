@@ -264,6 +264,17 @@ def _gen_ai_response_obj(response_content: str) -> ModelResponse:
         kind='response'
     )
 
+def _gen_user_prompt_obj(prompt: str) -> ModelRequest:
+    return ModelRequest(
+        parts=[
+            TextPart(
+                content=prompt, 
+                part_kind='user_prompt')
+            ], 
+        timestamp=datetime.now(timezone.utc),  # Current UTC time
+        kind='request'
+    )
+
 
 def _is_system_prompt(message: ModelMessage) -> bool:
     return any(part.part_kind == 'system_prompt' for part in message.parts)
@@ -334,7 +345,10 @@ async def main():
                 message_placeholder.markdown(response_content)
         
         
-        # Add response to chat history
+        # Add question and response to chat history
+        user_prompt = _gen_user_prompt_obj(prompt)
+        st.session_state.messages.append(user_prompt)
+
         ai_response = _gen_ai_response_obj(response_content)
         st.session_state.messages.append(ai_response) 
 
