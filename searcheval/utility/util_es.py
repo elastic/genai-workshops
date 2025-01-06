@@ -11,7 +11,7 @@ es_api_key = os.getenv("ES_API_KEY", None)
 ## The singleton Elasticsearch client instance
 
 if es_host and es_api_key:
-    print("Using ES with configured Host and API key")
+    print("Using ES with configured Host and API key ...")
     es = Elasticsearch(
         hosts=[f"{es_host}"],
         # basic_auth=(es_username, es_password),
@@ -24,7 +24,7 @@ if es_host and es_api_key:
         retry_on_timeout=True,
     )
 else:
-    print("Connecting to ES inside local Kubernetes")
+    print("Connecting to ES inside local Kubernetes ...")
     es_host="http://kubernetes-vm:9200"
     es_username="elastic"
     es_password="changeme"

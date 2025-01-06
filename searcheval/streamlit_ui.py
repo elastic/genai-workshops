@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from httpx import AsyncClient
+
 from datetime import datetime, timezone
 import streamlit as st
 import asyncio
@@ -14,10 +14,21 @@ from pydantic_ai.messages import ModelMessage, ModelResponse, TextPart, ModelReq
 from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.openai import OpenAIModel
 
-from icecream import ic
+import nest_asyncio
+nest_asyncio.apply()
 
 
-load_dotenv()
+
+## For Lab Envioronment
+
+openai_api_key = "YOUR_KEY_HERE"
+openai_api_base = "https://llm-proxy.prod-3.eden.elastic.dev/v1"
+
+os.environ["OPENAI_API_KEY"] = openai_api_key
+os.environ["OPENAI_BASE_URL"] = openai_api_base
+
+# ## For local
+# load_dotenv()
 
 
 ################
@@ -31,11 +42,13 @@ import final_strat as strategy_module
 
 @st.cache_resource
 def get_es_client():
+    print("Getting ES client ...")
     return get_es()
 es = get_es_client()
 
 @st.cache_resource
 def get_cached_llm_util():
+    print("Getting LLM Util ...")
     return get_llm_util()
 llm_util = get_cached_llm_util()
 
@@ -113,18 +126,39 @@ tool_tip_inject = None
 
 @st.cache_resource
 def get_model():
+    print("Getting model ...")
     return OpenAIModel('gpt-4o')
 model = get_model()
 
 
+
 agent_system_prompt = """
-You are an expert researcher that can provide information about Star Wars lore and trivia.
+You are an expert researcher focused on Star Wars lore and trivia. 
+Your primary task is to look up factual information using external research tools rather than relying on your own internal knowledge. 
+You can make up to 4 research calls on different sub-topics if you wish
+Then you will present your findings to the user in concise bullet points using Markdown.
 
 Instructions:
+1. **Always rely on external research.** Before answering any Star Wars–related question, consult the available tools for relevant information. 
+2. **Use Markdown bullet points** to present facts you’ve discovered through your research.
+3. **Only provide facts from your research** — avoid speculation or drawing conclusions beyond what you’ve found.
+4. **Do not elaborate or add additional commentary**— just repeat the researched facts in bullet points, and then provide a short concluding statement.
+5. **If no information is found,** clearly state that no data was located and prompt the user for clarification.
 
-- Run searches for knowledge rather than relying on your own understanding of Star Wars
-- Do not elaborate on the information collected from tools and research
-- You have the ability to roll a die to get a random number
+**Example 1:**
+- **User’s question:** “What is the name of the Wookiee home world?”
+- **Knowledge from tool:** “The home world of Chewbacca the Wookiee is Kashyyyk.”
+- **Example answer:**  
+  > I researched the topic and found the following information:  
+  > - The Wookiee home world is called Kashyyyk  
+  > Therefore, Kashyyyk is the Wookiee homeworld.
+
+**Example 2:**
+- **User’s question:** “Who is the ajncnbjusc?”
+- **Knowledge from tool:** “No information found about ajncnbjusc.”
+- **Example answer:**  
+  > I researched the topic but found no information. Please clarify your question or ask another question.
+
 """
 
 
@@ -137,12 +171,12 @@ def get_agent():
     ################
     print("Configuring tools ...")
 
-    @agent.tool_plain  
-    def roll_die() -> str:
-        """Roll a six-sided die and return the result."""
-        if tool_tip_inject:
-            tool_tip_inject.info("Rolling a die")
-        return ic( str(random.randint(1, 6)) )
+    # @agent.tool_plain  
+    # def roll_die() -> str:
+    #     """Roll a six-sided die and return the result."""
+    #     if tool_tip_inject:
+    #         tool_tip_inject.info("Rolling a die")
+    #     return ic( str(random.randint(1, 6)) )
 
 
     @agent.tool_plain
@@ -185,13 +219,23 @@ def _debug_chat_history(messages: List[ModelMessage], when: Union[str, None]  ):
 
 async def prompt_ai(message):
 
-    async with agent.run_stream(message, model=model, message_history=st.session_state.messages) as result: 
-        async for message in result.stream_text(delta=True):
-            yield message
+    # ## Streaming version
+    # ## Saving this code for a later day. We can use a streaming response from OpenAI, but thrugh a proxy we are getting an error related to 
+    # ## https://github.com/pydantic/pydantic-ai/issues/149
+    # async with agent.run_stream(message, model=model, message_history=st.session_state.messages) as result: 
+    #     async for message in result.stream_text(delta=True):
+    #         yield message
+    # ## Add user message to chat history
+    # st.session_state.messages.extend(result.new_messages())
+    # _debug_chat_history(result.new_messages(), None)
 
-    # Add user message to chat history
-    st.session_state.messages.extend(result.new_messages())
+    ## non streaming version
+    result = agent.run_sync(message, model=model, message_history=st.session_state.messages) 
     _debug_chat_history(result.new_messages(), None)
+    yield result.data
+
+
+
         
 
 ###############
@@ -234,7 +278,17 @@ def _is_system_prompt(message: ModelMessage) -> bool:
 
 async def main():
 
-    st.title("Star Wars Trivia")
+
+    col1, col2 = st.columns([0.8, 0.2])
+    with col1:
+        st.title("Star Wars Trivia")
+    with col2:
+        if st.button("Reset Chat"):
+            st.session_state.messages = [
+                _gen_system_prompt(agent_system_prompt),
+                _gen_ai_response_obj("Welcome to the Star Wars trivia chat! Ask me a question.")
+            ]
+            st.rerun()
 
     
     
@@ -251,18 +305,6 @@ async def main():
         ## don't print the system prompts
         if _is_system_prompt(message):
             continue
-
-        role = message.kind
-        # content = ""
-        # for part in message.parts:
-        #     type_name = type(part).__name__
-        #     if part.part_kind == 'tool-call':
-        #         content += f"{type_name}- call made to tool: \033[91m{part.tool_name}\033[0m"
-        #     elif type_name == 'UserPromptPart':
-        #         content += f"{type_name}: \033[92m{part.content}\033[0m"
-        #     else:
-        #         content += f"{type_name}: \033[94m{part.content}\033[0m"
-
 
         role = message.kind
         content = "".join(part.content for part in message.parts if 'tool' not in part.part_kind)
@@ -296,8 +338,6 @@ async def main():
         ai_response = _gen_ai_response_obj(response_content)
         st.session_state.messages.append(ai_response) 
 
-        ## let's undestand the call stack by lookin at the final message history
-        # _debug_chat_history(st.session_state.messages, "End of StreamLit Render")
 
 
 if __name__ == "__main__":
