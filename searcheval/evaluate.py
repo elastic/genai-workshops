@@ -309,7 +309,7 @@ def run_deepeval(es, strategy_modules, golden_data : list, rag_system_prompt: st
                 system_prompt = rag_system_prompt.format(context=context)
 
                 ## perform the RAG
-                rag_reponse = llm_util.rag_cache(system_prompt, top_context_citations, query_string)
+                rag_reponse = llm_util.rag_cache(system_prompt, top_context_citations, item["query"])
                 actual_output = rag_reponse["answer"]
                 rag_tokens = rag_reponse["total_tokens"]
                 tokens_used += rag_tokens
