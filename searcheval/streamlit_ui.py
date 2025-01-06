@@ -271,7 +271,6 @@ def _gen_user_prompt_obj(prompt: str) -> ModelRequest:
                 content=prompt, 
                 part_kind='user_prompt')
             ], 
-        timestamp=datetime.now(timezone.utc),  # Current UTC time
         kind='request'
     )
 
