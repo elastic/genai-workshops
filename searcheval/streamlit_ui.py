@@ -9,7 +9,7 @@ import os
 import random
 from typing import List, Union
 
-from pydantic_ai.messages import ModelMessage, ModelResponse, TextPart, ModelRequest,SystemPromptPart
+from pydantic_ai.messages import ModelMessage, ModelResponse, TextPart, ModelRequest,SystemPromptPart, UserPromptPart
 
 from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.openai import OpenAIModel
@@ -267,7 +267,7 @@ def _gen_ai_response_obj(response_content: str) -> ModelResponse:
 def _gen_user_prompt_obj(prompt: str) -> ModelRequest:
     return ModelRequest(
         parts=[
-            TextPart(
+            UserPromptPart(
                 content=prompt, 
                 part_kind='user_prompt')
             ], 
