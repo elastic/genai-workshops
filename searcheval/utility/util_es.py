@@ -142,6 +142,13 @@ def bulkLoadIndex( es, json_docs, index_name, id_param, batch_size=10):
                 print(error)
 
 
+def search_results_only(es: Elasticsearch, index_name: str, body: dict,  doc_limit: int) -> list:
+    body["size"] = doc_limit
+    results = es.search(index=index_name, body=body)
+    for hit in results['hits']['hits']:
+        print("Search result title: ", hit["_id"])
+    return results
+
 
 def search_to_context(es: Elasticsearch, index_name: str, query_string: str, body: dict, rag_context: str, rerank_inner_hits: bool, doc_limit: int, citation_limit: int) -> list:
     """
@@ -158,7 +165,12 @@ def search_to_context(es: Elasticsearch, index_name: str, query_string: str, bod
     Returns:
         list: A list of context values extracted from the search results.
     """
-    results = es.search(index=index_name, body=body)
+
+    body["size"] = doc_limit
+    # results = es.search(index=index_name, body=body)
+
+    results = search_results_only(es=es, index_name=index_name, body=body, doc_limit=doc_limit)
+
 
     context = []
     # results['hits']['hits'] is the list of hits returned by Elasticsearch
