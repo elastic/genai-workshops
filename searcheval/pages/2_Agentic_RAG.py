@@ -20,7 +20,7 @@ nest_asyncio.apply()
 
 
 
-## For Lab Envioronment
+## For Lab Environment
 
 openai_api_key = "YOUR_KEY_HERE"
 openai_api_base = "https://llm-proxy.prod-3.eden.elastic.dev/v1"
