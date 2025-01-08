@@ -145,8 +145,8 @@ def bulkLoadIndex( es, json_docs, index_name, id_param, batch_size=10):
 def search_results_only(es: Elasticsearch, index_name: str, body: dict,  doc_limit: int) -> list:
     body["size"] = doc_limit
     results = es.search(index=index_name, body=body)
-    for hit in results['hits']['hits']:
-        print("Search result title: ", hit["_id"])
+    # for hit in results['hits']['hits']:
+    #     print("Search result title: ", hit["_id"])
     return results
 
 

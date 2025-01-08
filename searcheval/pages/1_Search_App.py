@@ -6,8 +6,9 @@ st.set_page_config(
 )
 
 
-from dotenv import load_dotenv
-load_dotenv()
+# ## For Local Dev
+# from dotenv import load_dotenv
+# load_dotenv()
 
 from datetime import datetime, timezone
 import asyncio

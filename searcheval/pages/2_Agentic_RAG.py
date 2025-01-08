@@ -22,14 +22,14 @@ nest_asyncio.apply()
 
 ## For Lab Envioronment
 
-# openai_api_key = "YOUR_KEY_HERE"
-# openai_api_base = "https://llm-proxy.prod-3.eden.elastic.dev/v1"
+openai_api_key = "YOUR_KEY_HERE"
+openai_api_base = "https://llm-proxy.prod-3.eden.elastic.dev/v1"
 
-# os.environ["OPENAI_API_KEY"] = openai_api_key
-# os.environ["OPENAI_BASE_URL"] = openai_api_base
+os.environ["OPENAI_API_KEY"] = openai_api_key
+os.environ["OPENAI_BASE_URL"] = openai_api_base
 
 # ## For local
-load_dotenv()
+# load_dotenv()
 
 
 st.set_page_config(
