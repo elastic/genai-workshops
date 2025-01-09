@@ -23,7 +23,8 @@ nest_asyncio.apply()
 ## For Lab Environment
 
 openai_api_key = "YOUR_KEY_HERE"
-openai_api_base = "https://litellm-proxy-service-1059491012611.us-central1.run.app"
+# openai_api_base = "https://litellm-proxy-service-1059491012611.us-central1.run.app"
+openai_api_base = "https://llm-proxy.prod-3.eden.elastic.dev"
 
 os.environ["OPENAI_API_KEY"] = openai_api_key
 os.environ["OPENAI_BASE_URL"] = openai_api_base
