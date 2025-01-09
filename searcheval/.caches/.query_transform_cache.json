@@ -1,0 +1,110 @@
+{
+  "b52c196871350f05f0894a4e3b3976a849775d03f1d08d5b6ba6d343a02212d9": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "On what planet did Yoda hide from the empire?",
+    "answer": "On what planet did Yoda hide?",
+    "total_tokens": 99
+  },
+  "f706c99b4a524eb62a7b2e97f75f336eef06970f7f83cb40797cbd9ec234a3a2": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "what color was yoda's light saber?",
+    "answer": "What color was Yoda's lightsaber?",
+    "total_tokens": 98
+  },
+  "1a3b153989d7070e57caa7597533a19a8d65d5d7e760a0ae900f546c476825fd": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "What was asoka tano's nickname in the Clone Wars and who gave it to her?",
+    "answer": "What was Ahsoka Tano's nickname in the Clone Wars and who gave it to her?",
+    "total_tokens": 118
+  },
+  "89c69556138272750d40acef1763aee960089831ff15ad65d374d555cbc21b7f": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "What type of star ship is the Milenium Facon",
+    "answer": "What type of starship is the Millennium Falcon?",
+    "total_tokens": 102
+  },
+  "39546d5c81f97deeaab54b399574057e50ed8d3d163b2985d9cc4859e32b0977": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "What is baby yoda's armor made out of?",
+    "answer": "What is Baby Yoda's armor made of?",
+    "total_tokens": 101
+  },
+  "b6209a843859e28e8c7e71ed8b3e7c3cd40eb9a8cf0836b4b09822350e65e3c3": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "What was the name of the clone army's template, and who was responsible for its creation?",
+    "answer": "What was the name of the clone army's template and who created it?",
+    "total_tokens": 114
+  },
+  "de3deb6eda2c8dbda755eb672cf53c9ae69ad60e131e5a0f6f8b86df183a4025": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "What is the official title of Padmé Amidala during her time on Naboo?",
+    "answer": "What is Padmé Amidala's official title on Naboo?",
+    "total_tokens": 110
+  },
+  "7f75ab54a14d0ec5d362e59668795d8f51ca78f025d38b637a3c182123508699": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "Who is the Sith apprentice known as Darth Maul, and what weapon is he famous for using?",
+    "answer": "Who is Darth Maul and what weapon is he famous for using?",
+    "total_tokens": 114
+  },
+  "511133e3287c314be0a67af081e66bf838d2f0e250dedbd2e33d08662e363fea": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "Who constructed C-3PO, and what was his primary task and programming?",
+    "answer": "Who constructed C-3PO, and what was his primary task?",
+    "total_tokens": 110
+  },
+  "c77e4ea9e96d49f43697a513e63f0654b7c4fd545d1ea3949c90e579db3776a6": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "that's not what I wanted you dumb computer. Dang. Who is Luke Skywalker's sister?",
+    "answer": "Who is Luke Skywalker's sister?",
+    "total_tokens": 107
+  },
+  "d8da4c5037b3bf29cca7dd429c0cce2979019c20e19d3246569ed2205984b4cc": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "Who trained Luke Skywalker in the ways of the Force after Obi-Wan Kenobi's death?",
+    "answer": "Who trained Luke Skywalker in the Force after Obi-Wan Kenobi's death?",
+    "total_tokens": 117
+  },
+  "61969dc078c88f075beac7c0021cfdf8bc2a66d57a70add006273189167253eb": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "What are the names of the twin suns of Tatooine?",
+    "answer": "What are the names of the twin suns of Tatooine?",
+    "total_tokens": 106
+  },
+  "dd4a35d5613802e6570761b8739f60409b3125da53e99b807454a0324cc7c4d6": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "Oye, Han's ride-or-die best amigo? Who was that bro?",
+    "answer": "Who was Han's best friend?",
+    "total_tokens": 104
+  },
+  "9f06269c33ba00c863dd068a07b983275ea5244dfa5f540d007f5be81174777f": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "What planet serves as the home base for the Rebel Alliance after the battle of Yavin?",
+    "answer": "What planet is the home base for the Rebel Alliance after the Battle of Yavin?",
+    "total_tokens": 115
+  },
+  "bf0b530027783f5aae773c757ba2c4ec864cc9a48e7b1b8692660b9cc214ef08": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "I'm interested in Luke skywalker. I need to know so I can win an argument. I have lots of questions. Importantly, who is his aunt?",
+    "answer": "Who is Luke Skywalker's aunt?",
+    "total_tokens": 120
+  },
+  "b6e1bdebfcba7462caad90c38c29a8d485ea8b797f46cecb21284ca4591d3435": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "What was Han Solo's response when Greedo offered to take his ship instead of the debt to Jabba the Hutt?",
+    "answer": "What was Han Solo's response when Greedo suggested taking his ship instead of the debt to Jabba the Hutt?",
+    "total_tokens": 129
+  },
+  "8bc6e6f843eb25e22d8ed22fbe9cd41877a7394cb31683a11146f0899aed4a24": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "Who successfully captured Han Solo to collect the bounty placed on him by Jabba the Hutt?",
+    "answer": "Who captured Han Solo to collect Jabba the Hutt's bounty?",
+    "total_tokens": 113
+  },
+  "eca52e0914a899126603521a50eeb21c5d50b0405d88da36f62b281a37ace93d": {
+    "prompt": "Instructions:\n\n    - you are an assistant that interprets questions for use in an information retrieval system\n    - most questions should be left unmodified\n    - however if the question has major sections that are unimportant to the question or if the question needs simplifying rephrase the question to a single sentence\n    - Do not use quotes.\n        ",
+    "question": "why did luke die after confronting Kylo Ren?",
+    "answer": "Why did Luke die after confronting Kylo Ren?",
+    "total_tokens": 100
+  }
+}
