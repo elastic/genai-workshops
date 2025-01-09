@@ -1,1 +1,3 @@
 # genai-workshops
+
+Bedrock
