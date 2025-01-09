@@ -4,7 +4,7 @@ import atexit
 import hashlib
 from collections import OrderedDict
 
-CACHE_FILE_PATH = ".query_transform_cache.json"
+CACHE_FILE_PATH = "./.caches/.rag_cache.json"
 MAX_CACHE_SIZE = 1000  # Adjust to your desired capacity
 
 
