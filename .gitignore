@@ -188,8 +188,8 @@ results_*.csv
 .*_cache.json
 
 ## temp files for deepeval
-.deepeval_*
-.deepeval-*
+# .deepeval-cache.json
+.deepeval-telemetry.json
 .deepeval
 .temp-deepeval*
 temp_test_run*
