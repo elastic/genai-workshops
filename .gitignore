@@ -181,15 +181,16 @@ package-lock.json
 
 ## the various evaluation results files
 results_*.json
-results_*.json_2
+fewer_citations_results_*.json
 results_*.csv
 
 ## the various cache files
-.*_cache.json
+./.*_cache.json
 
 ## temp files for deepeval
 # .deepeval-cache.json
-.deepeval-telemetry.json
+.deepeval_telemetry.json
+.deepeval_telemtry.txt
 .deepeval
 .temp-deepeval*
 temp_test_run*
