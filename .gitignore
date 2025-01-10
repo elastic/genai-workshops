@@ -184,8 +184,9 @@ results_*.json
 fewer_citations_results_*.json
 results_*.csv
 
-## the various cache files
-./.*_cache.json
+## the various cache files .. currently allowign RAG and DeepEval cache files to be checked in
+## to save student tokens
+# ./.*_cache.json
 
 ## temp files for deepeval
 # .deepeval-cache.json
