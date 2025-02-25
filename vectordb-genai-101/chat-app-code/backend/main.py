@@ -1,27 +1,34 @@
 import logging
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from backend.routers import search_router
 import os
-from elasticapm.contrib.starlette import make_apm_client, ElasticAPM
+import requests
+from io import StringIO
+from dotenv import load_dotenv
 
+# Configure logging first
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(module)s:%(lineno)d - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
+# Now load environment variables
+def load_env():
+    try:
+        response = requests.get('http://kubernetes-vm:9000/env')
+        response.raise_for_status()
+        load_dotenv(stream=StringIO(response.text))
+        logging.debug("Environment variables loaded successfully.")
+    except Exception as e:
+        logging.error(f"Failed to load environment variables: {e}")
 
-# apm = make_apm_client({
-#     'SERVICE_NAME': os.getenv('APM_SERVICE_NAME'),
-#     'API_KEY': os.getenv('APM_API_KEY'),
-#     'SERVER_URL': os.getenv('APM_SERVER_URL')
-# })
+load_env()
 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from backend.routers import search_router
+from elasticapm.contrib.starlette import make_apm_client, ElasticAPM
 
 app = FastAPI()
-# app.add_middleware(ElasticAPM, client=apm)
-
 
 # CORS settings
 app.add_middleware(
@@ -40,3 +47,4 @@ app.include_router(search_router.router)
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+

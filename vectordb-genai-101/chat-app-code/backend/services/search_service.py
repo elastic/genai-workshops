@@ -9,13 +9,20 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
+
 # Initialize the Elasticsearch client
+es_url = os.getenv('ELASTICSEARCH_URL')
+es_user = os.getenv('ELASTICSEARCH_USER')
+es_pass = os.getenv('ELASTICSEARCH_PASSWORD')
+
+logging.debug(f'es_url: {es_url}')
+logging.debug(f'es_user: {es_user}')
+
 es_client = Elasticsearch(
-    hosts=os.getenv('ES_URL', 'http://kubernetes-vm:9200'),
-    # api_key=os.getenv('ES_API_KEY')
+    hosts=[es_url],
     basic_auth=(
-        os.getenv('ES_USER', 'elastic'),
-        os.getenv('ES_PASSWORD', 'changeme')
+        es_user,
+        es_pass
     )
 )
 
@@ -29,7 +36,6 @@ def perform_es_search(query, index):
 
     }
 
-
     try:
         result = es_client.search(index="restaurant_reviews", body=es_query)
 
@@ -42,5 +48,4 @@ def perform_es_search(query, index):
     hits = result["hits"]["hits"]
     logging.info(f"number of hits: {len(hits)}")
     return hits
-
 

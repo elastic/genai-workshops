@@ -10,7 +10,7 @@ logging.basicConfig(
 # TODO - this should not be hardcoded
 index_source_fields = {
     "restaurant_reviews": [
-        "semantic_body"
+        "Review_semantic"
     ]
 }
 
@@ -105,7 +105,7 @@ Encourage exploration by being enthusiastic and supportive of all user queries a
 
 Conversation History:
 {conversation_history}
- 
+
 Context:
 {context}
 
