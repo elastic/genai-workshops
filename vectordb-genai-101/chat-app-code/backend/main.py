@@ -73,9 +73,12 @@ if __name__ == "__main__":
     logging.debug(f"Using INFERENCE_ID: {os.environ['INFERENCE_ID']}")
 
     # Run the app with uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
 
 
 ## to run
 # /vectordb-genai-101/chat-app-code
+# OpenAI version
+# python -m backend.main
+# Bedrock Version
 # python -m backend.main -i bedrock_claude_3_sonnet
