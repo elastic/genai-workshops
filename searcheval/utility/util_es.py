@@ -25,9 +25,9 @@ if es_host and es_api_key:
     )
 else:
     print("Connecting to ES inside local Kubernetes ...")
-    es_host="http://kubernetes-vm:9200"
-    es_username="elastic"
-    es_password="changeme"
+    es_host=os.getenv("ELASTICSEARCH_URL", "http://kubernetes-vm:9200")
+    es_username=os.getenv("ELASTICSEARCH_USER", "elastic")
+    es_password=os.getenv("ELASTICSEARCH_PASSWORD", "changeme")
     es = Elasticsearch(
         hosts=[f"{es_host}"],
         basic_auth=(es_username, es_password),
