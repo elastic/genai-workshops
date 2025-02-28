@@ -74,7 +74,7 @@ def vis_search_eval_json(json_file: str):
 
 
 
-def vis_deep_eval_correct_tests(json_file: str):
+def vis_deep_eval_correct_tests(json_file: str, title: str = "DeepEval Correctness Heatmap"):
     with open(json_file, "r") as f:
         data = json.load(f)
 
@@ -85,7 +85,8 @@ def vis_deep_eval_correct_tests(json_file: str):
     for query, details in data.items():
         row = {"query": details['query']}
         for strategy, strategy_details in details["strategies"].items():
-            row[strategy] = strategy_details["scores"]["Correctness (GEval)"]["score"]
+            # row[strategy] = strategy_details["scores"]["Correctness (GEval)"]["score"]
+            row[strategy] = strategy_details["scores"]["Citation Correctness (DAG)"]["score"]
             total_tokens[strategy] += strategy_details["tokens_used"]
         rows.append(row)
 
@@ -117,7 +118,7 @@ def vis_deep_eval_correct_tests(json_file: str):
         ax = sns.heatmap(df, annot=True, cmap=cmap, cbar=True, vmin=0, vmax=1)
         plt.xlabel('Strategies / RAG LLM Tokens')
         plt.ylabel('Queries')
-        plt.title('DeepEval Correctness Heatmap', fontsize=20)  # Make the title bigger
+        plt.title(title, fontsize=20)  # Make the title bigger
         plt.xticks(rotation=45, ha='right')  # Angle the x-axis labels
         
         # Add a horizontal line to separate the average row
