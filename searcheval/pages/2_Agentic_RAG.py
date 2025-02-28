@@ -18,13 +18,14 @@ from pydantic_ai.models.openai import OpenAIModel
 import nest_asyncio
 nest_asyncio.apply()
 
-
+import requests
+from io import StringIO
+load_dotenv(stream=StringIO(requests.get('http://kubernetes-vm:9000/env').text))
 
 ## For Lab Environment
-
-openai_api_key = "YOUR_KEY_HERE"
-# openai_api_base = "https://litellm-proxy-service-1059491012611.us-central1.run.app"
-openai_api_base = "https://llm-proxy.prod-3.eden.elastic.dev"
+openai_api_key =  os.environ.get("LLM_APIKEY") 
+url = os.environ.get("LLM_PROXY_URL") 
+openai_api_base = f"https://{url}"
 
 os.environ["OPENAI_API_KEY"] = openai_api_key
 os.environ["OPENAI_BASE_URL"] = openai_api_base
