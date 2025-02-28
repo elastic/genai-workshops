@@ -20,7 +20,11 @@ nest_asyncio.apply()
 
 import requests
 from io import StringIO
-load_dotenv(stream=StringIO(requests.get('http://kubernetes-vm:9000/env').text))
+if not os.path.exists('.env.instruqt'):
+    env_text = requests.get('http://kubernetes-vm:9000/env').text
+    with open('.env.instruqt', 'w') as f:
+        f.write(env_text)
+load_dotenv('.env.instruqt')
 
 ## For Lab Environment
 openai_api_key =  os.environ.get("LLM_APIKEY") 
