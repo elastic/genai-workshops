@@ -86,7 +86,7 @@ citation_correctness = DAGMetric(
     name="Citation Correctness", 
     dag=my_dag, 
     verbose_mode=False,
-    model= GPTModel(model="gpt-4o", temperature= 0.0)
+    # model= GPTModel(model="gpt-4o", temperature= 0.0)
 )
 
 
