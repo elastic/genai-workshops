@@ -12,7 +12,8 @@ def get_parameters() -> dict:
     """
     return {
         "is_disabled": False,
-        "index_name": "star_wars_raw"
+        "rag_context": "source_text",
+        "index_name": "wiki-voyage_2025-03-07_e5-embeddings"
     }
 
 def build_query(query_string: str, inner_hits_size:int = None) -> dict:
@@ -32,8 +33,8 @@ def build_query(query_string: str, inner_hits_size:int = None) -> dict:
             "multi_match": {
                 "query": query_string,
                 "fields": [
-                    "title", 
-                    "lore"
+                    "text", 
+                    "title"
                 ]
             }
         }

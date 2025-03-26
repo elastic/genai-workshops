@@ -33,7 +33,7 @@ correctness_metric = GEval(
     # NOTE: you can only provide either criteria or evaluation_steps, and not both
     evaluation_steps=[
         "Check whether the facts in 'actual output' contradicts any facts in 'expected output'",
-        "You should heavily penalize when 'actual output' is missin a citation of the format [#]",
+        "You should heavily penalize when 'actual output' is missing a citation of the format [#]",
         "You should also moderately penalize omission of detail",
         "Vague language, or contradicting OPINIONS, are not OK",
         "do not check, comment, or penalize whether 'expected output' has citations"
@@ -45,7 +45,7 @@ correctness_metric = GEval(
 
 
 mention_of_no_context_node = BinaryJudgementNode(
-    criteria="test whether `citation annotation` is present in the format [#] or [#. #] and not null",
+    criteria="test whether `citation annotation` is present in the format [#] and not null",
     children=[
         VerdictNode(verdict=False, score=0),
         VerdictNode(verdict=True, child=correctness_metric),
@@ -53,7 +53,7 @@ mention_of_no_context_node = BinaryJudgementNode(
 )
 
 extract_citation_used_node = TaskNode(
-    instructions="Extract the citation annotation of format [#] or [#, #] used in the answer `actual_output`, if not ciation is present return null",
+    instructions="Extract the citation annotation of format [#] used in the answer `actual_output`, if no ciation is present return null",
     evaluation_params=[LLMTestCaseParams.ACTUAL_OUTPUT],
     output_label="citation annotation",
     children=[mention_of_no_context_node],
@@ -83,7 +83,7 @@ def evaluateTestCases(testCases):
     dataset = EvaluationDataset(test_cases=testCases)
     return evaluate(
         test_cases=dataset, 
-        metrics=[ citation_correctness],
+        metrics=[  citation_correctness],
         print_results=False,
         use_cache=True
     )
