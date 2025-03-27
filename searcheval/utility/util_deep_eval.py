@@ -33,7 +33,7 @@ correctness_metric = GEval(
     # NOTE: you can only provide either criteria or evaluation_steps, and not both
     evaluation_steps=[
         "Check whether the facts in 'actual output' contradicts any facts in 'expected output'",
-        "You should heavily penalize when 'actual output' is missing a citation of the format [#]",
+        # "You should heavily penalize when 'actual output' is missing a citation of the format [#]",
         "You should also moderately penalize omission of detail",
         "Vague language, or contradicting OPINIONS, are not OK",
         "do not check, comment, or penalize whether 'expected output' has citations"
@@ -61,7 +61,7 @@ extract_citation_used_node = TaskNode(
 
 my_dag = DeepAcyclicGraph(root_nodes=[extract_citation_used_node])
 
-citation_correctness = DAGMetric(
+citation_correctness_dag = DAGMetric(
     name="Citation Correctness", 
     dag=my_dag, 
     verbose_mode=False,
@@ -83,7 +83,7 @@ def evaluateTestCases(testCases):
     dataset = EvaluationDataset(test_cases=testCases)
     return evaluate(
         test_cases=dataset, 
-        metrics=[  citation_correctness],
+        metrics=[  citation_correctness_dag],
         print_results=False,
         use_cache=True
     )

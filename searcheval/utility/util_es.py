@@ -50,6 +50,21 @@ def get_es() -> Elasticsearch:
     """
     return es
 
+def identify_titles(es:Elasticsearch , found_ids , index_name):
+    """
+    Given a list of document IDs, return a list of titles.
+    """
+    titles = []
+    for doc_id in found_ids:
+        try:
+            response = es.get(index=index_name, id=doc_id)
+            title = response["_source"]["title"]
+            titles.append(f"{doc_id} -> {title}")
+        except Exception as e:
+            print(f"Error fetching title for doc_id: {doc_id}")
+            titles.append(f"{doc_id} -> Unknown")
+    return titles
+
 
 def check_and_create_index(es:Elasticsearch, index_name:str, settings:dict, mappings:dict):
     """

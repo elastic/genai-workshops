@@ -28,14 +28,27 @@ def build_query(query_string: str, inner_hits_size:int = None) -> dict:
         dict: A dictionary representing the search query.
     """
 
+    disambugiuation = {
+                    "term": {
+                        "category": "Disambiguation"
+                    }
+                }
+
+
     lexical_query = {
         "query": {
-            "multi_match": {
-                "query": query_string,
-                "fields": [
-                    "text", 
-                    "title"
-                ]
+            "bool": {
+                "must": {
+                    "multi_match": {
+                        "query": query_string,
+                        "fields": [
+                            "text", 
+                            "title"
+                        ],
+                        "fuzziness": "AUTO"
+                    }
+                },
+                "must_not": disambugiuation
             }
         }
     }

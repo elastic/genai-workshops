@@ -13,6 +13,7 @@ from utility.util_es import get_es
 
 ## only instantiate one of these as they work with a disk cache
 from utility.util_llm import LLMUtil, get_llm_util
+from utility.util_es import get_es, identify_titles
 llm_util = get_llm_util()
 
 
@@ -114,13 +115,18 @@ def run_search_evaluation(es, golden_data, strategy_modules):
                 # print(f"Response details quid: {response["details"][qid]}")
 
                 found_ids = [hit["hit"]["_id"] for hit in response["details"][qid]["hits"]]
+                found_titles = identify_titles( get_es(), found_ids, index_name) 
+
 
                 # Create the tooltip text
                 # tool_tip_text = f"Best Ids: {', '.join(golden_item['best_ids'])}\nStrat found ids: {', '.join(found_ids)}"
                 eval_result = {
                     "ndgc": ndcg_for_this_query,
-                    "search_results_ids": found_ids
+                    "search_results_ids": found_ids,
+                    "search_results_titles": found_titles
                 }
+
+        
                 # print(f"Eval result: {eval_result}")
                 results[query_text]['scores'][strategy_name] = eval_result
 
@@ -156,6 +162,8 @@ def output_search_eval_results(output_json_path, results, golden_data, strategy_
         json.dump(results, json_file, indent=4)
 
     print(f"### Evaluation complete. \n\tResults written to  {output_json_path}")
+
+
 
 
 
@@ -239,6 +247,8 @@ from utility.util_deep_eval import generateLLMTestCase, evaluateTestCases
 from deepeval.evaluate import TestResult
 from utility.util_llm import LLMUtil
 from utility.util_es import search_to_context, get_es
+
+
 
 
 def run_deepeval(es, strategy_modules, golden_data : list, rag_system_prompt: str, doc_limit: int, inner_hits_size: int, citation_limit: int) -> dict:
