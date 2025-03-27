@@ -4,7 +4,7 @@ import atexit
 import hashlib
 from collections import OrderedDict
 
-CACHE_FILE_PATH = "./.caches/.rag_cache.json"
+CACHE_FILE_PATH = "./rag_cache.json"
 MAX_CACHE_SIZE = 1000  # Adjust to your desired capacity
 
 
@@ -39,6 +39,7 @@ class LLMRagCache:
         # LRU Cache Check
         if cache_key in self.cache:
             # Move to end (most recently used)
+            # print("rag cache hit")
             self.cache.move_to_end(cache_key, last=True)
             cache_hit = self.cache[cache_key]
             return {
@@ -47,6 +48,7 @@ class LLMRagCache:
             }
         else:
             # Generate a new answer via the LLM utility
+            # print("rag cache miss")
             direct_response = llm_util.rag_direct(
                 system_prompt=system_prompt, 
                 retrieval_context=retrieval_context, 
