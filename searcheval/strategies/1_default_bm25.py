@@ -33,8 +33,8 @@ def build_query(query_string: str, inner_hits_size:int = None) -> dict:
             "multi_match": {
                 "query": query_string,
                 "fields": [
-                    "text", 
-                    "title"
+                    "source_text", 
+                    # "title"
                 ]
             }
         }

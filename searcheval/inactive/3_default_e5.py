@@ -12,29 +12,23 @@ def get_parameters() -> dict:
     """
     return {
         "is_disabled": False,
-        "index_name": "star_wars_raw"
+        "index_name": "wiki-voyage_2025-03-07_e5-embeddings",
+        "rag_context": "source_text",
     }
 
-def build_query(query_string: str, inner_hits_size:int = None) -> dict:
-    """
-    Constructs a query DSL for use in Elasticsearch
+def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
 
-    Args:
-        query_string (str): The search query string. You are not required to use this
-        inner_hits_size (int, optional): The size of inner hits. You are not required to use this
 
-    Returns:
-        dict: A dictionary representing the search query.
-    """
+    query_body ={
+          "semantic": {
+            "field": "source_text_semantic",
+            "query": query_string
+          }
+      }
+    
+
 
     return {
-        "query": {
-            "multi_match": {
-                "query": query_string,
-                "fields": [
-                    "title", 
-                    "lore"
-                ]
-            }
-        }
+      "query": query_body,
+      "size": 5
     }

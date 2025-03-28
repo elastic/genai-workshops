@@ -36,4 +36,18 @@ PUT /_inference/rerank/my-elastic-rerank
         }
       }
 }
+
+PUT /_inference/sparse_embedding/my-elser-endpoint
+{
+      "service": "elser",
+      "service_settings": {
+        "num_threads": 1,
+        "model_id": ".elser_model_2_linux-x86_64",
+        "adaptive_allocations": {
+          "enabled": true,
+          "min_number_of_allocations": 1,
+          "max_number_of_allocations": 10
+        }
+      }
+}
 ```

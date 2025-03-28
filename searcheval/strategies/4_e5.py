@@ -20,9 +20,10 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
 
 
     disambugiuation = {
-        "term": {
-            "category": "Disambiguation"
-        }
+      "terms": {
+        # "category": ["Disambiguation","Outline articles"]
+        "category": ["Disambiguation"]
+      }
     }
 
     nested_semantic_query ={

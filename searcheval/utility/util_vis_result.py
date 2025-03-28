@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 from IPython.display import display, clear_output
 
+plt.rcParams['font.family'] = ['Arial Unicode MS',  'sans-serif']
 
 def vis_search_eval_json(json_file: str):
 

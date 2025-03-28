@@ -1,5 +1,3 @@
-### YOUR FINAL SEARCH STRATEGY IMPLEMENTATION GOES HERE ###
-
 def get_parameters() -> dict:
     """
     Returns a dictionary of parameters for configuring the search strategy
@@ -14,7 +12,8 @@ def get_parameters() -> dict:
     """
     return {
         "is_disabled": False,
-        "index_name": "star_wars_raw"
+        "rag_context": "source_text",
+        "index_name": "wiki-voyage_2025-03-07_e5-embeddings"
     }
 
 def build_query(query_string: str, inner_hits_size:int = None) -> dict:
@@ -29,14 +28,32 @@ def build_query(query_string: str, inner_hits_size:int = None) -> dict:
         dict: A dictionary representing the search query.
     """
 
-    return {
+    disambugiuation = {
+                    "terms": {
+                        # "category": ["Disambiguation","Outline articles"]
+                        "category": ["Disambiguation"]
+                    }
+                }
+
+
+    lexical_query = {
         "query": {
-            "multi_match": {
-                "query": query_string,
-                "fields": [
-                    "title", 
-                    "lore"
-                ]
+            "bool": {
+                "must": {
+                    "multi_match": {
+                        "query": query_string,
+                        "fields": [
+                            "source_text", 
+                            # "title"
+                        ],
+                        "fuzziness": "AUTO"
+                    }
+                },
+                "must_not": disambugiuation
             }
         }
     }
+
+
+
+    return lexical_query
