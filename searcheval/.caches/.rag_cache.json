@@ -7,10 +7,6 @@
     "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by her master, Anakin Skywalker [2].",
     "total_tokens": 79130
   },
-  "b942e4b19abf1c6350bd8b090221220db381a2e627b124ba5c5f0c709a2d7d20": {
-    "answer": "The context provided does not contain information about what Baby Yoda's (Grogu's) armor is made out of. Therefore, I don't know.",
-    "total_tokens": 27657
-  },
   "2d30d967a58bc0f0de207618960ccf473454b1abf9f45668acf8f71469fcc538": {
     "answer": "Baby Yoda, also known as Grogu, was offered a choice between a lightsaber and beskar armor. He chose the beskar armor over the lightsaber [1][2].",
     "total_tokens": 2725
@@ -23,57 +19,9 @@
     "answer": "Baby Yoda, also known as Grogu, has armor made out of beskar. This armor was made for him at the request of his Mandalorian mentor, Din Djarin [1].",
     "total_tokens": 2927
   },
-  "58180ac1a4f17d8edd716300e0a26fe59c6261427455757fffacca432ecba022": {
-    "answer": "The Millennium Falcon is a YT-1300 light freighter [1][2][6].",
-    "total_tokens": 1190
-  },
   "1acbf7a4773699c572cd9396fb3aa22a841bba8299a573bdd88550b85feee517": {
     "answer": "The twin suns of Tatooine are named Tatoo I and Tatoo II [2].",
     "total_tokens": 1013
-  },
-  "f0681293a3b17a52a0158017926f10a2bec4079d3fc48b4848729ea6547cd6ea": {
-    "answer": "Yoda hid from the Empire on the remote world of Dagobah [6].",
-    "total_tokens": 30346
-  },
-  "9110fc1187c2ee0e1a6b5014c3ef8e2da04cd2d69f644190ce0d775966069d3a": {
-    "answer": "Yoda's lightsaber had a bright green plasma blade [4].",
-    "total_tokens": 1616
-  },
-  "3177d60a95b9f65e8204789aea618b8f9d7c451ca6a64f1f273d3763c8598e55": {
-    "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by her Jedi Master, Anakin Skywalker. However, this information is not present in the provided context.",
-    "total_tokens": 2904
-  },
-  "17326fa9a6a61f61f46a42cffb31d9d98eb236970aa9b5d66bd344c6c0633a3e": {
-    "answer": "The provided context does not contain information about the Millennium Falcon. Therefore, I don't know what type of starship the Millennium Falcon is based on the given documents.",
-    "total_tokens": 1588
-  },
-  "7cf3b0012097777e01f751ffd9ee6f9a8e7a7003305e5a455d70f19805fcf966": {
-    "answer": "Baby Yoda, also known as Grogu, was offered a choice between a lightsaber and beskar armor. He chose the beskar armor over the lightsaber [1].",
-    "total_tokens": 1675
-  },
-  "15a35438e9af7ee383a963b6294864c7d549bbeaf42b55365385cc8d244df0ec": {
-    "answer": "The clone army's template was the human bounty hunter Jango Fett. The creation of the clone army was commissioned by Jedi Master Sifo-Dyas [1][2][5].",
-    "total_tokens": 8536
-  },
-  "c0afcd61b2bd172f2b82a2c1400a3c9bae709ffe9d59ea98f0e430fc71964ae1": {
-    "answer": "Padmé Amidala held the title of Queen of Naboo during her time on the planet [1].",
-    "total_tokens": 2593
-  },
-  "4aa14d6c9cf61dac884f805e9db18254b2b0f1cef5f18ec676ace889de4485ef": {
-    "answer": "Darth Maul, also known simply as Maul, was a Sith apprentice who served under Darth Sidious. He is famous for wielding a double-bladed lightsaber, which he used in various battles, including his notable duel on Naboo where he killed Jedi Master Qui-Gon Jinn before being defeated by Jinn's Padawan, Obi-Wan Kenobi [4].",
-    "total_tokens": 8064
-  },
-  "96a187c86f2f433e3f058ab48c14412f7d5457143d905efd6594dfd7f8294a73": {
-    "answer": "C-3PO was constructed by Anakin Skywalker, a human slave who lived in Mos Espa, a city on the Outer Rim world of Tatooine. C-3PO was designed to interact with organics and was programmed primarily for etiquette and protocol [3].",
-    "total_tokens": 24369
-  },
-  "90efd98f92876996fcfecff9f509f1b8cc1e603880a1a1abcd0f2d06e6aa22ce": {
-    "answer": "Luke Skywalker's sister is Leia Organa [1].",
-    "total_tokens": 6095
-  },
-  "0ce264fbb3f0ce5e6bf9afb753a71741879d2cf3ab8c8fa21c83d156384c3422": {
-    "answer": "After Obi-Wan Kenobi's death, Luke Skywalker was trained in the ways of the Force by Grand Master Yoda on the planet Dagobah [3].",
-    "total_tokens": 4693
   },
   "6902bfdbf39d50bddbc2243c01536981401464adc625c40bf487be505142b87a": {
     "answer": "The twin suns of Tatooine are named Tatoo I and Tatoo II [4][6].",
@@ -103,50 +51,6 @@
     "answer": "Luke Skywalker died after confronting Kylo Ren because the Force projection technique he used was extremely taxing. Luke projected his appearance from Ahch-To to Crait, and maintaining this projection for several minutes required him to give all of himself to the Force, which ultimately led to his death [3].",
     "total_tokens": 4128
   },
-  "38d44d20f98e3870d509d3f71805c29a62594e3825c871d869087aa70d7e853b": {
-    "answer": "Yoda hid from the Empire on the remote world of Dagobah [1].",
-    "total_tokens": 27421
-  },
-  "14f09f89b52954a4970026bcb119aa792387fa84de9afd168de37d538c41103d": {
-    "answer": "The context provided does not specify the color of Yoda's lightsaber. Therefore, I don't know the answer based on the given information.",
-    "total_tokens": 1910
-  },
-  "84f6d180d3cf69d4f43292ecc25df2317e0365f04dbf9322265800912c54a4ae": {
-    "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by Anakin Skywalker [3, 4].",
-    "total_tokens": 44292
-  },
-  "cbafca2ea3ee37aedf7ed5fae0c7bff9ec2856a019ceca479b3f543972295920": {
-    "answer": "I don't know. The context provided does not mention the Millennium Falcon or its type of starship.",
-    "total_tokens": 1720
-  },
-  "74f94bb8390e0a9d379ba7fb3ef7dfbef49199a47bc697be9aafaf8fe7cf7c0a": {
-    "answer": "I don't have information on what Baby Yoda's armor is made out of.",
-    "total_tokens": 1310
-  },
-  "2ccbcd030745eede6c45d1d766e7edce43d0413256268d66e11770f107d7a0b0": {
-    "answer": "The clone army's template was Jango Fett, a human bounty hunter. The creation of the clone army was orchestrated by the Sith Lord Darth Tyranus [2].",
-    "total_tokens": 3833
-  },
-  "bc9bc300406270e745fda30b6a6666b746564a7e9a2e983c0cd79c98a7487436": {
-    "answer": "During her time on Naboo, Padmé Amidala held the official title of \"Queen Amidala\" when she was the elected ruler of the Royal House of Naboo [1].",
-    "total_tokens": 27531
-  },
-  "c4ac7c3e8f9c381633170ba7fad0c022544808ed23731e8874b0ea10540bbebc": {
-    "answer": "Darth Maul was a Force-sensitive Dathomirian Zabrak male who became a Sith apprentice under Darth Sidious. He was known for his formidable skills in lightsaber combat and his strong connection to the dark side of the Force. Maul is particularly famous for using a double-bladed lightsaber, which he wielded during the Invasion of Naboo and the Clone Wars [6].",
-    "total_tokens": 27565
-  },
-  "2f535480ac0311e5bbbd5131182b1192539820ba1f44a024d9da76b771666209": {
-    "answer": "C-3PO was rebuilt from spare parts by Anakin Skywalker, a human slave who lived in Mos Espa, a city on the Outer Rim world of Tatooine. C-3PO was designed to interact with organics and was programmed primarily for etiquette and protocol [2].",
-    "total_tokens": 21696
-  },
-  "650604a7ab8ae82931a3c44552da894e2fd390b06d367be6611f0301f8d529ed": {
-    "answer": "The context provided does not contain information about Luke Skywalker's sister. Therefore, I don't know the answer based on the given documents.",
-    "total_tokens": 4993
-  },
-  "e9bf79c5841c4c55706eaa7e6268785bb35670b1367eeee3f78d3fd4caad3352": {
-    "answer": "After Obi-Wan Kenobi's death, Luke Skywalker was trained in the ways of the Force by Jedi Master Yoda [4, position 13].",
-    "total_tokens": 79467
-  },
   "87891516fe569387408867f0581b64de3d4dca9d5261561c8d9cdd9499777516": {
     "answer": "The context provided does not contain information about the names of the twin suns of Tatooine. Therefore, I don't know the names of the twin suns of Tatooine.",
     "total_tokens": 1984
@@ -170,50 +74,6 @@
   "29ab0952360abde2150be9d39ea3df1742a800394959fd3cb4267b1e3c695bc0": {
     "answer": "Luke Skywalker died after confronting Kylo Ren because he used a powerful and taxing Force ability known as Force projection. This ability allowed him to project a lifelike image of himself across the galaxy to distract Kylo Ren and the First Order, buying the Resistance time to escape. The strain of maintaining such a realistic and prolonged projection ultimately proved to be fatal for Luke. After the confrontation, he collapsed from the mental stress necessary to sustain the illusion and passed away on Ahch-To, becoming one with the Force [6].",
     "total_tokens": 85288
-  },
-  "f07f9ec481be78724666ce42a57708856b781e9ad9e32d7f14e10dbca150dfae": {
-    "answer": "Yoda hid from the Empire on the remote world of Dagobah [3].",
-    "total_tokens": 27214
-  },
-  "2841a37cd421feef0d5d9bcdd17a13cf5efa4b0e0d0a17c66cc851425686a8bc": {
-    "answer": "Yoda's lightsaber had a bright green plasma blade [1][2].",
-    "total_tokens": 29257
-  },
-  "55ec3e7d047e97037b827f4f4a8c452a8f5ed1dc4312e64de7a37592b83b8f70": {
-    "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by her master, Jedi Knight Anakin Skywalker [1].",
-    "total_tokens": 78137
-  },
-  "02ad26e36420edc75cbd53104feb4dfa1095538dc13c507372bd84aa31ce1c6c": {
-    "answer": "The Millennium Falcon is a Corellian YT-1300 light freighter of the YT-1300f variety [1].",
-    "total_tokens": 10210
-  },
-  "4be354721b935cdd16ae488e274dfb5be419f6f1e14b78ecf4522826563b942f": {
-    "answer": "Baby Yoda, also known as Grogu, wears chain mail armor made out of beskar, a highly durable and valuable metal in Mandalorian culture [4].",
-    "total_tokens": 16526
-  },
-  "62a05b80a8fd568199b432e40736999040d8bc5ad1f7c74e7a96a0c1491db5ab": {
-    "answer": "The clone army's template was the human bounty hunter Jango Fett. The creation of the clone army was orchestrated by the Sith Lord Darth Tyranus [2].",
-    "total_tokens": 4270
-  },
-  "72455eea1e07ef33b1298413a3f58517ca60f74a445643900c1c7b91ca6e15c7": {
-    "answer": "Padmé Amidala held the title of Queen of Naboo during her time as the elected ruler of the Royal House of Naboo [1].",
-    "total_tokens": 28932
-  },
-  "d329afd57c8de095d51cbce4fe26afef2551b894ecad722c0b1e9ad7aa05e6dd": {
-    "answer": "Darth Maul, a Force-sensitive Dathomirian Zabrak male, was the apprentice of Darth Sidious. He was known for his formidable skills in lightsaber combat and his strong connection to the dark side of the Force. Maul was trained to be a living weapon of the Sith, intended to help Sidious bring about the destruction of the Jedi and take over the galaxy. He is particularly famous for using a double-bladed lightsaber, which he built based on a design found in Darth Sidious' Sith holocron [4][6].",
-    "total_tokens": 28603
-  },
-  "5f28c1800a2c0882d56ffed63f5a16897aface5cbdb39064f237938b257c59e1": {
-    "answer": "C-3PO was rebuilt from spare parts by Anakin Skywalker, a human slave who lived in Mos Espa, a city on the Outer Rim world of Tatooine. C-3PO was designed to interact with organics and was programmed primarily for etiquette and protocol [1].",
-    "total_tokens": 21802
-  },
-  "a12d63a7e770ece3582cbcfa379d2e2e6916413fdeb43740d2938af8245fa98c": {
-    "answer": "Luke Skywalker's sister is Leia Organa [3].",
-    "total_tokens": 84850
-  },
-  "9d14c119662be5adc70135ecf436baf6b3c8210ee769bb70d39fab490ef6a8b0": {
-    "answer": "After Obi-Wan Kenobi's death, Luke Skywalker was trained in the ways of the Force by Jedi Master Yoda on the planet Dagobah [1].",
-    "total_tokens": 59926
   },
   "7199259f96c3fa4aa79be98250fea467fc691c3e8cf78e6087dcd50fe1f2cb28": {
     "answer": "The twin suns of Tatooine are named Tatoo I and Tatoo II [5].",
@@ -243,161 +103,9 @@
     "answer": "The provided context does not contain information about why Luke Skywalker died after confronting Kylo Ren. Therefore, I don't know.",
     "total_tokens": 2272
   },
-  "e448ee59e14aadd38999f9a84d8068f5602d3d02ffd97e044acc95a33bed00b0": {
-    "answer": "The context provided does not mention the planet where Yoda hid from the Empire. Therefore, I don't know the answer based on the given information.",
-    "total_tokens": 2892
-  },
-  "5254da1706055207ce6a1bd4b5a3a7cb5624b4f407306364882f24857ad2d7c9": {
-    "answer": "Yoda's lightsaber had a bright green plasma blade [1].",
-    "total_tokens": 915
-  },
-  "b0757b8da40991f93217088a2da2f9493625c23aa9a423b55c5c867abe837c78": {
-    "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by her master, Anakin Skywalker [1][2].",
-    "total_tokens": 3036
-  },
-  "9e96e3f12f3244b93f6e91bb9e3dd4085776c46453d94594a92eda9e668d4ed7": {
-    "answer": "The Millennium Falcon is a YT-1300 light freighter [1].",
-    "total_tokens": 1241
-  },
-  "232703034996f106e8c808d7f333269a909f950517e2620ba24366b19d7d92f9": {
-    "answer": "I don't know. The provided context does not contain information about what Baby Yoda's armor is made out of.",
-    "total_tokens": 2942
-  },
-  "353ff049717ceb21a87c9abccb19417648e1dee7eb5f5fd6faada23ca55fbb1f": {
-    "answer": "The clone army's template was the human bounty hunter Jango Fett. The creation of the clone army was ordered by Jedi Master Sifo-Dyas, but the Sith, specifically Count Dooku (under the name Tyranus), took over the project after Sifo-Dyas' death [3][4][7].",
-    "total_tokens": 2879
-  },
-  "613f9d0a64b688b4e6e9199dca97e71823b3b27109019a9706b4c5ae1b07fe92": {
-    "answer": "During her time on Naboo, Padmé Amidala held the official title of \"Queen\" as the elected ruler of the Royal House of Naboo [2][6].",
-    "total_tokens": 2301
-  },
-  "a7edb32dd01ce2898ff5d0a044a887f6ce0f5cb8ad8bb69a49520b47bba40cf9": {
-    "answer": "Darth Maul, originally known as Maul, is a Force-sensitive Dathomirian Zabrak male who became a Sith apprentice under Darth Sidious. He was trained as a Sith warrior and assassin, and he is famous for using a dual-bladed lightsaber, which he crafted himself using plans hidden by Sidious in the ancient Sith archives [2][3].",
-    "total_tokens": 2997
-  },
-  "1fb63fcc3d98de0d98a133f031c2f3947510c1d67b8c477cafa39d26194bedf8": {
-    "answer": "C-3PO was constructed by Anakin Skywalker from spare parts in the city of Mos Espa on the planet Tatooine [2][5]. His primary task and programming were focused on interacting with organics, specifically for etiquette and protocol. He was fluent in over six million forms of communication [2].",
-    "total_tokens": 3012
-  },
-  "e7378edc90a16914010745fc7d520287207e86f9c15ceaeeecd3dfc63f28bcdf": {
-    "answer": "Luke Skywalker's sister is Leia Organa [2].",
-    "total_tokens": 2761
-  },
-  "4a0a2e890e0d69aa98a1d9127aa6443822f367ddf903a9307ab17f6da986507f": {
-    "answer": "After Obi-Wan Kenobi's death, Luke Skywalker continued his Jedi training with Grand Master Yoda on the planet Dagobah [1].",
-    "total_tokens": 2905
-  },
-  "ad23c35e5392b8196276be46e10659231e6a0ce281fdffa17bb17f4d19c861b7": {
-    "answer": "The twin suns of Tatooine are named Tatoo I and Tatoo II [2].",
-    "total_tokens": 2971
-  },
-  "f30b60dad74e8ffe9d8e583573611b14bbd681dd87f3807f4deaabe948341448": {
-    "answer": "Han Solo's ride-or-die best friend was Chewbacca, a Wookiee male warrior, smuggler, mechanic, pilot, and resistance fighter. Chewbacca became Han's lifelong friend after Han rescued him from Imperial enslavement, and they shared many adventures together [6].",
-    "total_tokens": 2853
-  },
-  "fe0d6cccf3977e656f2f5b1a34bf385800c1fa28d9cd69253372cdc0d7c09505": {
-    "answer": "After the Battle of Yavin, the Rebel Alliance established their new base of operations on the ice planet Hoth [1][2].",
-    "total_tokens": 2867
-  },
-  "1acc98102393d74d0c401effc6a2e7777f8331aa4153e1cb94531c8343ae0bed": {
-    "answer": "Luke Skywalker's aunt is not explicitly mentioned in the provided context. The documents do not provide information about Luke Skywalker's aunt.",
-    "total_tokens": 2412
-  },
-  "a5a8fada1150b4cd4c711f5508ab50d55d4dc457345d865ead0f6d9b0e784317": {
-    "answer": "The context provided does not mention Han Solo's response to Greedo offering to take his ship instead of the debt to Jabba the Hutt. Therefore, I don't know the answer to that question.",
-    "total_tokens": 2782
-  },
-  "7132728c59c63af065f52d82eb1bfbd28108e86c8db840929fc98ad494b7eff3": {
-    "answer": "Boba Fett successfully captured Han Solo to collect the bounty placed on him by Jabba the Hutt [1][2].",
-    "total_tokens": 2822
-  },
-  "2bde4b2b6611b4a4cbfa6cb95f71f8aa7fb324b9ff806a4611557a6edae191a3": {
-    "answer": "Luke Skywalker died after confronting Kylo Ren because the effort of maintaining the Force projection that distracted Ren proved fatal. Having fulfilled his last goal in life, Luke died peacefully on Ahch-To, becoming one with the Force [8].",
-    "total_tokens": 2806
-  },
-  "9867c5e1642239ea863e69351bf6512d7afea315bd8b8487d06c7754cc66d4ef": {
-    "answer": "Yoda hid from the Empire on the planet Dagobah [2][3][8].",
-    "total_tokens": 2846
-  },
-  "70e5a7ac4dd79c4184376f767b089ad08f80e615233f2e00737b576e2b6f0b5c": {
-    "answer": "Yoda's lightsaber had a bright green plasma blade [1].",
-    "total_tokens": 2728
-  },
-  "6f52bc0296c748b1332a8bc6e370af1ed011e2c8bdeb5e0989068378440457f4": {
-    "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by her master, Jedi Knight Anakin Skywalker [1][2].",
-    "total_tokens": 2801
-  },
-  "ab5fef2e6fabadfad01fc1bf5c91a9f0836799f67e55057a6b15b26eb0da6a46": {
-    "answer": "The Millennium Falcon is a YT-1300 light freighter [1].",
-    "total_tokens": 1084
-  },
-  "bf81ca8e16b30597f70be6258405fe6ec70f1dd1bd293c8d0d147d30eb6f0586": {
-    "answer": "Baby Yoda's (Grogu's) armor is made out of beskar, which was forged from Din Djarin's beskar spear [1].",
-    "total_tokens": 2711
-  },
-  "edbe2c036a6626c7e6cef08f51b5cf962fed85f828db893a1ee2359a80f9e9de": {
-    "answer": "The clone army's template was the human bounty hunter Jango Fett. The creation of the clone army was initially ordered by Jedi Master Sifo-Dyas, but the Sith took over the project. Count Dooku, under the name Tyranus, selected Jango Fett as the genetic template for the clones and worked with the Kaminoans to create the army [4][7][8].",
-    "total_tokens": 2982
-  },
-  "45452d6c13e592885cb96692f440043117bedf330da497aae16e2babfc838b67": {
-    "answer": "During her time on Naboo, Padmé Amidala held the official title of Queen of the Royal House of Naboo [5].",
-    "total_tokens": 2279
-  },
-  "63596df883b51d75e94a4f86f47390cbc6ac45664a999940f59f04b1ed08b566": {
-    "answer": "Darth Maul, originally named Maul, was a Sith apprentice trained by Darth Sidious. He is famous for using a double-bladed lightsaber [4][5].",
-    "total_tokens": 2935
-  },
-  "b059265750255dc5f83bd72efa2542994f492ea7eb293f4433c418984b2ad39d": {
-    "answer": "C-3PO was rebuilt from spare parts by Anakin Skywalker, a human slave who lived in Mos Espa, a city on the Outer Rim world of Tatooine [2]. His primary task and programming were focused on interacting with organics, specifically for etiquette and protocol [2].",
-    "total_tokens": 3097
-  },
-  "1b20835249615c92eddfbc13ede73a3e6ebb59b973096c6c7fcfe093337f150c": {
-    "answer": "Luke Skywalker's sister is Leia Skywalker [2][3].",
-    "total_tokens": 2801
-  },
-  "28b95cc304ca72f403f3b28f32edf71e3cb6eee7a95ed1aa48919f9c050b0881": {
-    "answer": "After Obi-Wan Kenobi's death, Luke Skywalker continued his Jedi training with Yoda, the ancient Grand Master of the Jedi Order, on the planet Dagobah [1].",
-    "total_tokens": 2711
-  },
-  "0b07b92218fcdb2451ed858bba6d5ceb6273440e40e334a471a48c554165f117": {
-    "answer": "Han Solo's ride-or-die best friend was the Wookiee Chewbacca. This is evident from the context where Adame greeted Chewbacca as an old acquaintance and friend when they approached Han Solo to borrow the Millennium Falcon [5].",
-    "total_tokens": 2388
-  },
-  "5583a111ebeeb3ba88f4538fcb4225f76c83421ea92b2cfd0b423fdcd9632302": {
-    "answer": "After the Battle of Yavin, the Rebel Alliance established their new base of operations on the ice planet Hoth in 1 ABY [8].",
-    "total_tokens": 2254
-  },
-  "0373296d3c9253168b0079078ddf0c0651d79e7bb8532202fe255672d4d1092b": {
-    "answer": "Luke Skywalker's aunt is not directly mentioned in the provided context. However, it is known that Luke Skywalker is the son of Padmé Amidala and Anakin Skywalker [8]. If you are referring to his adoptive family on Tatooine, his aunt would be Beru Whitesun Lars, the wife of Owen Lars, who is Anakin Skywalker's stepbrother. However, this specific information is not present in the provided context.",
-    "total_tokens": 2503
-  },
-  "156efe17c4637c2b655b0bbac3debe4b33928469c4132e0062083b3d2418fff8": {
-    "answer": "Han Solo responded that he would rather die than give up his ship [4][5].",
-    "total_tokens": 2861
-  },
-  "ff814b8b8ba77b914cc70bd4392a53a2bf56f61d9fe554a43845e3328d05b14f": {
-    "answer": "Boba Fett successfully captured Han Solo to collect the bounty placed on him by Jabba the Hutt [3][4][5].",
-    "total_tokens": 2925
-  },
-  "30195cef17491745601bdb2a13b2ef32f7068efb53fa2eff2ded412ed039490a": {
-    "answer": "Luke Skywalker died after confronting Kylo Ren because the feat of projecting his appearance from Ahch-To to Crait was so strenuous that it led to his death. After this effort, he became one with the Force [9].",
-    "total_tokens": 2629
-  },
   "08902c01a6061d1b75df06fc925e14044c21349009d0b525de4ce51c995afc42": {
     "answer": "Yoda hid from the Empire on the planet Dagobah [3][7].",
     "total_tokens": 2792
-  },
-  "03cda0b1950f2fde015548278a7be02c2a1e7c670479da753c60325b63cf8802": {
-    "answer": "Yoda's lightsaber had a bright green plasma blade [1].",
-    "total_tokens": 2566
-  },
-  "f9bb565da5ba03bdb78dd56d0a33f2bd312f73c514a69f44e4ccbadcdb878578": {
-    "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by her master, Jedi Knight Anakin Skywalker [1][2].",
-    "total_tokens": 2763
-  },
-  "fdd1eba1f28bd1dc31897db38ba6bd2ddc84004505811bc5419aa0f802c8eefb": {
-    "answer": "The Millennium Falcon is a Corellian YT-1300 light freighter of the YT-1300f variety [1][3].",
-    "total_tokens": 2088
   },
   "c5c4e44ce0fef5417666a8c1ab7a719ed182c2bc9a5c9fc9988950b0022aae6b": {
     "answer": "Baby Yoda, also known as Grogu, has armor made out of beskar. Specifically, he has a beskar chainmail shirt that was crafted by the Armorer at the request of the Mandalorian bounty hunter Din Djarin [6].",
@@ -419,37 +127,13 @@
     "answer": "C-3PO was rebuilt from spare parts by Anakin Skywalker, a human slave who lived in Mos Espa, a city on the Outer Rim world of Tatooine [1]. His primary task and programming were to interact with organics, focusing primarily on etiquette and protocol [1].",
     "total_tokens": 3164
   },
-  "764b4ce7cec279fc49b8da067b97966e1f03a90e328a014806c8f940c915fb83": {
-    "answer": "Luke Skywalker's sister is Leia Organa [2][3].",
-    "total_tokens": 2800
-  },
-  "c179813fdb7067abf5faee59c307abb0c6e97dd8eea791b08e7f919ad3d438dd": {
-    "answer": "After Obi-Wan Kenobi's death, Luke Skywalker was trained in the ways of the Force by Yoda, the ancient Grand Master of the Jedi Order [1].",
-    "total_tokens": 2852
-  },
-  "e543650c8c36637b24c32159c8ba1dfae3759add6fc48f051ea846255063007b": {
-    "answer": "The twin suns of Tatooine are named Tatoo I and Tatoo II [1][4].",
-    "total_tokens": 2500
-  },
-  "df93bd91b6b0ec3ae56c097d0179588c584c18c1e8fcc43198a936d94a92d43e": {
-    "answer": "Han Solo's ride-or-die best friend was the Wookiee Chewbacca. Chewbacca became Han's trusted copilot and swore a life debt to him [3].",
-    "total_tokens": 2517
-  },
   "6d1404943c0670cf2c0259750ddfe88c68ad45062f387489213247ad0bb462be": {
     "answer": "After the Battle of Yavin, the Rebel Alliance established their new base of operations on the ice planet Hoth [1].",
     "total_tokens": 2587
   },
-  "1c60436790a4ea7a69e93ebe9ef5118389e110dabeb4789c803f28c2ff9c5554": {
-    "answer": "Luke Skywalker's aunt is Beru Whitesun Lars [1][3][5][9].",
-    "total_tokens": 2391
-  },
   "3099d960de43177e78c88f8e2641b9d2d43c464156e033ded8cc6eb03b1c7064": {
     "answer": "Han Solo responded that he would rather die than give up his ship [4].",
     "total_tokens": 2865
-  },
-  "4a6558101f6b1988b772e6f98105e982eb2d574ee6beb5bf1c65af604de54f9f": {
-    "answer": "Boba Fett successfully captured Han Solo to collect the bounty placed on him by Jabba the Hutt [4][7].",
-    "total_tokens": 2791
   },
   "938a7fc47d86f31040929c4351d961215fa0aa14d577b959d4550126da12dd42": {
     "answer": "The context provided does not specify the exact reason why Luke Skywalker died after confronting Kylo Ren. It mentions that after their confrontation, Ren and his stormtroopers found that the Resistance survivors had eluded the First Order, and by the end of the battle, Luke Skywalker was dead [6]. However, the specific cause of Luke's death is not detailed in the provided information.",
@@ -1086,5 +770,365 @@
     "question": "why did luke die after confronting Kylo Ren?",
     "answer": "Why did Luke die after confronting Kylo Ren?",
     "total_tokens": 100
+  },
+  "b942e4b19abf1c6350bd8b090221220db381a2e627b124ba5c5f0c709a2d7d20": {
+    "answer": "The context provided does not contain information about what Baby Yoda's (Grogu's) armor is made out of. Therefore, I don't know.",
+    "total_tokens": 27657
+  },
+  "f0681293a3b17a52a0158017926f10a2bec4079d3fc48b4848729ea6547cd6ea": {
+    "answer": "Yoda hid from the Empire on the remote world of Dagobah [6].",
+    "total_tokens": 30346
+  },
+  "9110fc1187c2ee0e1a6b5014c3ef8e2da04cd2d69f644190ce0d775966069d3a": {
+    "answer": "Yoda's lightsaber had a bright green plasma blade [4].",
+    "total_tokens": 1616
+  },
+  "3177d60a95b9f65e8204789aea618b8f9d7c451ca6a64f1f273d3763c8598e55": {
+    "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by her Jedi Master, Anakin Skywalker. However, this information is not present in the provided context.",
+    "total_tokens": 2904
+  },
+  "17326fa9a6a61f61f46a42cffb31d9d98eb236970aa9b5d66bd344c6c0633a3e": {
+    "answer": "The provided context does not contain information about the Millennium Falcon. Therefore, I don't know what type of starship the Millennium Falcon is based on the given documents.",
+    "total_tokens": 1588
+  },
+  "7cf3b0012097777e01f751ffd9ee6f9a8e7a7003305e5a455d70f19805fcf966": {
+    "answer": "Baby Yoda, also known as Grogu, was offered a choice between a lightsaber and beskar armor. He chose the beskar armor over the lightsaber [1].",
+    "total_tokens": 1675
+  },
+  "15a35438e9af7ee383a963b6294864c7d549bbeaf42b55365385cc8d244df0ec": {
+    "answer": "The clone army's template was the human bounty hunter Jango Fett. The creation of the clone army was commissioned by Jedi Master Sifo-Dyas [1][2][5].",
+    "total_tokens": 8536
+  },
+  "c0afcd61b2bd172f2b82a2c1400a3c9bae709ffe9d59ea98f0e430fc71964ae1": {
+    "answer": "Padmé Amidala held the title of Queen of Naboo during her time on the planet [1].",
+    "total_tokens": 2593
+  },
+  "4aa14d6c9cf61dac884f805e9db18254b2b0f1cef5f18ec676ace889de4485ef": {
+    "answer": "Darth Maul, also known simply as Maul, was a Sith apprentice who served under Darth Sidious. He is famous for wielding a double-bladed lightsaber, which he used in various battles, including his notable duel on Naboo where he killed Jedi Master Qui-Gon Jinn before being defeated by Jinn's Padawan, Obi-Wan Kenobi [4].",
+    "total_tokens": 8064
+  },
+  "96a187c86f2f433e3f058ab48c14412f7d5457143d905efd6594dfd7f8294a73": {
+    "answer": "C-3PO was constructed by Anakin Skywalker, a human slave who lived in Mos Espa, a city on the Outer Rim world of Tatooine. C-3PO was designed to interact with organics and was programmed primarily for etiquette and protocol [3].",
+    "total_tokens": 24369
+  },
+  "90efd98f92876996fcfecff9f509f1b8cc1e603880a1a1abcd0f2d06e6aa22ce": {
+    "answer": "Luke Skywalker's sister is Leia Organa [1].",
+    "total_tokens": 6095
+  },
+  "0ce264fbb3f0ce5e6bf9afb753a71741879d2cf3ab8c8fa21c83d156384c3422": {
+    "answer": "After Obi-Wan Kenobi's death, Luke Skywalker was trained in the ways of the Force by Grand Master Yoda on the planet Dagobah [3].",
+    "total_tokens": 4693
+  },
+  "38d44d20f98e3870d509d3f71805c29a62594e3825c871d869087aa70d7e853b": {
+    "answer": "Yoda hid from the Empire on the remote world of Dagobah [1].",
+    "total_tokens": 27421
+  },
+  "14f09f89b52954a4970026bcb119aa792387fa84de9afd168de37d538c41103d": {
+    "answer": "The context provided does not specify the color of Yoda's lightsaber. Therefore, I don't know the answer based on the given information.",
+    "total_tokens": 1910
+  },
+  "84f6d180d3cf69d4f43292ecc25df2317e0365f04dbf9322265800912c54a4ae": {
+    "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by Anakin Skywalker [3, 4].",
+    "total_tokens": 44292
+  },
+  "cbafca2ea3ee37aedf7ed5fae0c7bff9ec2856a019ceca479b3f543972295920": {
+    "answer": "I don't know. The context provided does not mention the Millennium Falcon or its type of starship.",
+    "total_tokens": 1720
+  },
+  "74f94bb8390e0a9d379ba7fb3ef7dfbef49199a47bc697be9aafaf8fe7cf7c0a": {
+    "answer": "I don't have information on what Baby Yoda's armor is made out of.",
+    "total_tokens": 1310
+  },
+  "2ccbcd030745eede6c45d1d766e7edce43d0413256268d66e11770f107d7a0b0": {
+    "answer": "The clone army's template was Jango Fett, a human bounty hunter. The creation of the clone army was orchestrated by the Sith Lord Darth Tyranus [2].",
+    "total_tokens": 3833
+  },
+  "bc9bc300406270e745fda30b6a6666b746564a7e9a2e983c0cd79c98a7487436": {
+    "answer": "During her time on Naboo, Padmé Amidala held the official title of \"Queen Amidala\" when she was the elected ruler of the Royal House of Naboo [1].",
+    "total_tokens": 27531
+  },
+  "c4ac7c3e8f9c381633170ba7fad0c022544808ed23731e8874b0ea10540bbebc": {
+    "answer": "Darth Maul was a Force-sensitive Dathomirian Zabrak male who became a Sith apprentice under Darth Sidious. He was known for his formidable skills in lightsaber combat and his strong connection to the dark side of the Force. Maul is particularly famous for using a double-bladed lightsaber, which he wielded during the Invasion of Naboo and the Clone Wars [6].",
+    "total_tokens": 27565
+  },
+  "2f535480ac0311e5bbbd5131182b1192539820ba1f44a024d9da76b771666209": {
+    "answer": "C-3PO was rebuilt from spare parts by Anakin Skywalker, a human slave who lived in Mos Espa, a city on the Outer Rim world of Tatooine. C-3PO was designed to interact with organics and was programmed primarily for etiquette and protocol [2].",
+    "total_tokens": 21696
+  },
+  "650604a7ab8ae82931a3c44552da894e2fd390b06d367be6611f0301f8d529ed": {
+    "answer": "The context provided does not contain information about Luke Skywalker's sister. Therefore, I don't know the answer based on the given documents.",
+    "total_tokens": 4993
+  },
+  "e9bf79c5841c4c55706eaa7e6268785bb35670b1367eeee3f78d3fd4caad3352": {
+    "answer": "After Obi-Wan Kenobi's death, Luke Skywalker was trained in the ways of the Force by Jedi Master Yoda [4, position 13].",
+    "total_tokens": 79467
+  },
+  "f07f9ec481be78724666ce42a57708856b781e9ad9e32d7f14e10dbca150dfae": {
+    "answer": "Yoda hid from the Empire on the remote world of Dagobah [3].",
+    "total_tokens": 27214
+  },
+  "2841a37cd421feef0d5d9bcdd17a13cf5efa4b0e0d0a17c66cc851425686a8bc": {
+    "answer": "Yoda's lightsaber had a bright green plasma blade [1][2].",
+    "total_tokens": 29257
+  },
+  "55ec3e7d047e97037b827f4f4a8c452a8f5ed1dc4312e64de7a37592b83b8f70": {
+    "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by her master, Jedi Knight Anakin Skywalker [1].",
+    "total_tokens": 78137
+  },
+  "02ad26e36420edc75cbd53104feb4dfa1095538dc13c507372bd84aa31ce1c6c": {
+    "answer": "The Millennium Falcon is a Corellian YT-1300 light freighter of the YT-1300f variety [1].",
+    "total_tokens": 10210
+  },
+  "4be354721b935cdd16ae488e274dfb5be419f6f1e14b78ecf4522826563b942f": {
+    "answer": "Baby Yoda, also known as Grogu, wears chain mail armor made out of beskar, a highly durable and valuable metal in Mandalorian culture [4].",
+    "total_tokens": 16526
+  },
+  "62a05b80a8fd568199b432e40736999040d8bc5ad1f7c74e7a96a0c1491db5ab": {
+    "answer": "The clone army's template was the human bounty hunter Jango Fett. The creation of the clone army was orchestrated by the Sith Lord Darth Tyranus [2].",
+    "total_tokens": 4270
+  },
+  "72455eea1e07ef33b1298413a3f58517ca60f74a445643900c1c7b91ca6e15c7": {
+    "answer": "Padmé Amidala held the title of Queen of Naboo during her time as the elected ruler of the Royal House of Naboo [1].",
+    "total_tokens": 28932
+  },
+  "d329afd57c8de095d51cbce4fe26afef2551b894ecad722c0b1e9ad7aa05e6dd": {
+    "answer": "Darth Maul, a Force-sensitive Dathomirian Zabrak male, was the apprentice of Darth Sidious. He was known for his formidable skills in lightsaber combat and his strong connection to the dark side of the Force. Maul was trained to be a living weapon of the Sith, intended to help Sidious bring about the destruction of the Jedi and take over the galaxy. He is particularly famous for using a double-bladed lightsaber, which he built based on a design found in Darth Sidious' Sith holocron [4][6].",
+    "total_tokens": 28603
+  },
+  "5f28c1800a2c0882d56ffed63f5a16897aface5cbdb39064f237938b257c59e1": {
+    "answer": "C-3PO was rebuilt from spare parts by Anakin Skywalker, a human slave who lived in Mos Espa, a city on the Outer Rim world of Tatooine. C-3PO was designed to interact with organics and was programmed primarily for etiquette and protocol [1].",
+    "total_tokens": 21802
+  },
+  "a12d63a7e770ece3582cbcfa379d2e2e6916413fdeb43740d2938af8245fa98c": {
+    "answer": "Luke Skywalker's sister is Leia Organa [3].",
+    "total_tokens": 84850
+  },
+  "9d14c119662be5adc70135ecf436baf6b3c8210ee769bb70d39fab490ef6a8b0": {
+    "answer": "After Obi-Wan Kenobi's death, Luke Skywalker was trained in the ways of the Force by Jedi Master Yoda on the planet Dagobah [1].",
+    "total_tokens": 59926
+  },
+  "9e96e3f12f3244b93f6e91bb9e3dd4085776c46453d94594a92eda9e668d4ed7": {
+    "answer": "The Millennium Falcon is a YT-1300 light freighter [1].",
+    "total_tokens": 1241
+  },
+  "ad23c35e5392b8196276be46e10659231e6a0ce281fdffa17bb17f4d19c861b7": {
+    "answer": "The twin suns of Tatooine are named Tatoo I and Tatoo II [2].",
+    "total_tokens": 2971
+  },
+  "e448ee59e14aadd38999f9a84d8068f5602d3d02ffd97e044acc95a33bed00b0": {
+    "answer": "The context provided does not mention the planet where Yoda hid from the Empire. Therefore, I don't know the answer based on the given information.",
+    "total_tokens": 2892
+  },
+  "5254da1706055207ce6a1bd4b5a3a7cb5624b4f407306364882f24857ad2d7c9": {
+    "answer": "Yoda's lightsaber had a bright green plasma blade [1].",
+    "total_tokens": 915
+  },
+  "b0757b8da40991f93217088a2da2f9493625c23aa9a423b55c5c867abe837c78": {
+    "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by her master, Anakin Skywalker [1][2].",
+    "total_tokens": 3036
+  },
+  "58180ac1a4f17d8edd716300e0a26fe59c6261427455757fffacca432ecba022": {
+    "answer": "The Millennium Falcon is a YT-1300 light freighter [1][2][6].",
+    "total_tokens": 1190
+  },
+  "232703034996f106e8c808d7f333269a909f950517e2620ba24366b19d7d92f9": {
+    "answer": "I don't know. The provided context does not contain information about what Baby Yoda's armor is made out of.",
+    "total_tokens": 2942
+  },
+  "353ff049717ceb21a87c9abccb19417648e1dee7eb5f5fd6faada23ca55fbb1f": {
+    "answer": "The clone army's template was the human bounty hunter Jango Fett. The creation of the clone army was ordered by Jedi Master Sifo-Dyas, but the Sith, specifically Count Dooku (under the name Tyranus), took over the project after Sifo-Dyas' death [3][4][7].",
+    "total_tokens": 2879
+  },
+  "613f9d0a64b688b4e6e9199dca97e71823b3b27109019a9706b4c5ae1b07fe92": {
+    "answer": "During her time on Naboo, Padmé Amidala held the official title of \"Queen\" as the elected ruler of the Royal House of Naboo [2][6].",
+    "total_tokens": 2301
+  },
+  "a7edb32dd01ce2898ff5d0a044a887f6ce0f5cb8ad8bb69a49520b47bba40cf9": {
+    "answer": "Darth Maul, originally known as Maul, is a Force-sensitive Dathomirian Zabrak male who became a Sith apprentice under Darth Sidious. He was trained as a Sith warrior and assassin, and he is famous for using a dual-bladed lightsaber, which he crafted himself using plans hidden by Sidious in the ancient Sith archives [2][3].",
+    "total_tokens": 2997
+  },
+  "1fb63fcc3d98de0d98a133f031c2f3947510c1d67b8c477cafa39d26194bedf8": {
+    "answer": "C-3PO was constructed by Anakin Skywalker from spare parts in the city of Mos Espa on the planet Tatooine [2][5]. His primary task and programming were focused on interacting with organics, specifically for etiquette and protocol. He was fluent in over six million forms of communication [2].",
+    "total_tokens": 3012
+  },
+  "e7378edc90a16914010745fc7d520287207e86f9c15ceaeeecd3dfc63f28bcdf": {
+    "answer": "Luke Skywalker's sister is Leia Organa [2].",
+    "total_tokens": 2761
+  },
+  "4a0a2e890e0d69aa98a1d9127aa6443822f367ddf903a9307ab17f6da986507f": {
+    "answer": "After Obi-Wan Kenobi's death, Luke Skywalker continued his Jedi training with Grand Master Yoda on the planet Dagobah [1].",
+    "total_tokens": 2905
+  },
+  "1247c9d6f9d747b38487a9e3f7d6de47a46f6b17cf79f48c924b059b6281a424": {
+    "answer": "The context provided does not mention the names of the twin suns of Tatooine.",
+    "total_tokens": 3096
+  },
+  "f30b60dad74e8ffe9d8e583573611b14bbd681dd87f3807f4deaabe948341448": {
+    "answer": "Han Solo's ride-or-die best friend was Chewbacca, a Wookiee male warrior, smuggler, mechanic, pilot, and resistance fighter. Chewbacca became Han's lifelong friend after Han rescued him from Imperial enslavement, and they shared many adventures together [6].",
+    "total_tokens": 2853
+  },
+  "fe0d6cccf3977e656f2f5b1a34bf385800c1fa28d9cd69253372cdc0d7c09505": {
+    "answer": "After the Battle of Yavin, the Rebel Alliance established their new base of operations on the ice planet Hoth [1][2].",
+    "total_tokens": 2867
+  },
+  "1acc98102393d74d0c401effc6a2e7777f8331aa4153e1cb94531c8343ae0bed": {
+    "answer": "Luke Skywalker's aunt is not explicitly mentioned in the provided context. The documents do not provide information about Luke Skywalker's aunt.",
+    "total_tokens": 2412
+  },
+  "a5a8fada1150b4cd4c711f5508ab50d55d4dc457345d865ead0f6d9b0e784317": {
+    "answer": "The context provided does not mention Han Solo's response to Greedo offering to take his ship instead of the debt to Jabba the Hutt. Therefore, I don't know the answer to that question.",
+    "total_tokens": 2782
+  },
+  "7132728c59c63af065f52d82eb1bfbd28108e86c8db840929fc98ad494b7eff3": {
+    "answer": "Boba Fett successfully captured Han Solo to collect the bounty placed on him by Jabba the Hutt [1][2].",
+    "total_tokens": 2822
+  },
+  "2bde4b2b6611b4a4cbfa6cb95f71f8aa7fb324b9ff806a4611557a6edae191a3": {
+    "answer": "Luke Skywalker died after confronting Kylo Ren because the effort of maintaining the Force projection that distracted Ren proved fatal. Having fulfilled his last goal in life, Luke died peacefully on Ahch-To, becoming one with the Force [8].",
+    "total_tokens": 2806
+  },
+  "9867c5e1642239ea863e69351bf6512d7afea315bd8b8487d06c7754cc66d4ef": {
+    "answer": "Yoda hid from the Empire on the planet Dagobah [2][3][8].",
+    "total_tokens": 2846
+  },
+  "70e5a7ac4dd79c4184376f767b089ad08f80e615233f2e00737b576e2b6f0b5c": {
+    "answer": "Yoda's lightsaber had a bright green plasma blade [1].",
+    "total_tokens": 2728
+  },
+  "6f52bc0296c748b1332a8bc6e370af1ed011e2c8bdeb5e0989068378440457f4": {
+    "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by her master, Jedi Knight Anakin Skywalker [1][2].",
+    "total_tokens": 2801
+  },
+  "ab5fef2e6fabadfad01fc1bf5c91a9f0836799f67e55057a6b15b26eb0da6a46": {
+    "answer": "The Millennium Falcon is a YT-1300 light freighter [1].",
+    "total_tokens": 1084
+  },
+  "bf81ca8e16b30597f70be6258405fe6ec70f1dd1bd293c8d0d147d30eb6f0586": {
+    "answer": "Baby Yoda's (Grogu's) armor is made out of beskar, which was forged from Din Djarin's beskar spear [1].",
+    "total_tokens": 2711
+  },
+  "edbe2c036a6626c7e6cef08f51b5cf962fed85f828db893a1ee2359a80f9e9de": {
+    "answer": "The clone army's template was the human bounty hunter Jango Fett. The creation of the clone army was initially ordered by Jedi Master Sifo-Dyas, but the Sith took over the project. Count Dooku, under the name Tyranus, selected Jango Fett as the genetic template for the clones and worked with the Kaminoans to create the army [4][7][8].",
+    "total_tokens": 2982
+  },
+  "45452d6c13e592885cb96692f440043117bedf330da497aae16e2babfc838b67": {
+    "answer": "During her time on Naboo, Padmé Amidala held the official title of Queen of the Royal House of Naboo [5].",
+    "total_tokens": 2279
+  },
+  "63596df883b51d75e94a4f86f47390cbc6ac45664a999940f59f04b1ed08b566": {
+    "answer": "Darth Maul, originally named Maul, was a Sith apprentice trained by Darth Sidious. He is famous for using a double-bladed lightsaber [4][5].",
+    "total_tokens": 2935
+  },
+  "b059265750255dc5f83bd72efa2542994f492ea7eb293f4433c418984b2ad39d": {
+    "answer": "C-3PO was rebuilt from spare parts by Anakin Skywalker, a human slave who lived in Mos Espa, a city on the Outer Rim world of Tatooine [2]. His primary task and programming were focused on interacting with organics, specifically for etiquette and protocol [2].",
+    "total_tokens": 3097
+  },
+  "1b20835249615c92eddfbc13ede73a3e6ebb59b973096c6c7fcfe093337f150c": {
+    "answer": "Luke Skywalker's sister is Leia Skywalker [2][3].",
+    "total_tokens": 2801
+  },
+  "28b95cc304ca72f403f3b28f32edf71e3cb6eee7a95ed1aa48919f9c050b0881": {
+    "answer": "After Obi-Wan Kenobi's death, Luke Skywalker continued his Jedi training with Yoda, the ancient Grand Master of the Jedi Order, on the planet Dagobah [1].",
+    "total_tokens": 2711
+  },
+  "e543650c8c36637b24c32159c8ba1dfae3759add6fc48f051ea846255063007b": {
+    "answer": "The twin suns of Tatooine are named Tatoo I and Tatoo II [1][4].",
+    "total_tokens": 2500
+  },
+  "0b07b92218fcdb2451ed858bba6d5ceb6273440e40e334a471a48c554165f117": {
+    "answer": "Han Solo's ride-or-die best friend was the Wookiee Chewbacca. This is evident from the context where Adame greeted Chewbacca as an old acquaintance and friend when they approached Han Solo to borrow the Millennium Falcon [5].",
+    "total_tokens": 2388
+  },
+  "5583a111ebeeb3ba88f4538fcb4225f76c83421ea92b2cfd0b423fdcd9632302": {
+    "answer": "After the Battle of Yavin, the Rebel Alliance established their new base of operations on the ice planet Hoth in 1 ABY [8].",
+    "total_tokens": 2254
+  },
+  "0373296d3c9253168b0079078ddf0c0651d79e7bb8532202fe255672d4d1092b": {
+    "answer": "Luke Skywalker's aunt is not directly mentioned in the provided context. However, it is known that Luke Skywalker is the son of Padmé Amidala and Anakin Skywalker [8]. If you are referring to his adoptive family on Tatooine, his aunt would be Beru Whitesun Lars, the wife of Owen Lars, who is Anakin Skywalker's stepbrother. However, this specific information is not present in the provided context.",
+    "total_tokens": 2503
+  },
+  "156efe17c4637c2b655b0bbac3debe4b33928469c4132e0062083b3d2418fff8": {
+    "answer": "Han Solo responded that he would rather die than give up his ship [4][5].",
+    "total_tokens": 2861
+  },
+  "ff814b8b8ba77b914cc70bd4392a53a2bf56f61d9fe554a43845e3328d05b14f": {
+    "answer": "Boba Fett successfully captured Han Solo to collect the bounty placed on him by Jabba the Hutt [3][4][5].",
+    "total_tokens": 2925
+  },
+  "30195cef17491745601bdb2a13b2ef32f7068efb53fa2eff2ded412ed039490a": {
+    "answer": "Luke Skywalker died after confronting Kylo Ren because the feat of projecting his appearance from Ahch-To to Crait was so strenuous that it led to his death. After this effort, he became one with the Force [9].",
+    "total_tokens": 2629
+  },
+  "4be7386aca08c8263f790a429d42a5da671f0b834e2b34d6daffeda1ef738c40": {
+    "answer": "Yoda hid from the Empire on the planet **Dagobah** [1][4][5].",
+    "total_tokens": 2505
+  },
+  "03cda0b1950f2fde015548278a7be02c2a1e7c670479da753c60325b63cf8802": {
+    "answer": "Yoda's lightsaber had a bright green plasma blade [1].",
+    "total_tokens": 2566
+  },
+  "f9bb565da5ba03bdb78dd56d0a33f2bd312f73c514a69f44e4ccbadcdb878578": {
+    "answer": "Ahsoka Tano's nickname in the Clone Wars was \"Snips,\" and it was given to her by her master, Jedi Knight Anakin Skywalker [1][2].",
+    "total_tokens": 2763
+  },
+  "fdd1eba1f28bd1dc31897db38ba6bd2ddc84004505811bc5419aa0f802c8eefb": {
+    "answer": "The Millennium Falcon is a Corellian YT-1300 light freighter of the YT-1300f variety [1][3].",
+    "total_tokens": 2088
+  },
+  "c4ea787e4da8da41426fe9bc7f94c561fb30179026d60854ecd2b6ffb7063fa1": {
+    "answer": "Baby Yoda, also known as Grogu, has armor made out of beskar. Specifically, it is a beskar chainmail shirt crafted by the Armorer at the request of Din Djarin. The armor was forged from Djarin's beskar spear and presented to Grogu as a gift [4][5].",
+    "total_tokens": 2694
+  },
+  "795c3f8480befdee319d8e42ab3de0569351a045ec9440d87d4c3fa356d21ecb": {
+    "answer": "The clone army's template was Jango Fett, a human Mandalorian bounty hunter. Jedi Master Sifo-Dyas initially ordered the clone army for the Republic, but the Sith took control of the project. Count Dooku, under the alias \"Tyranus,\" selected Jango Fett as the genetic template and worked with the Kaminoans to create the army after Sifo-Dyas' death [1][6][7][8].",
+    "total_tokens": 2994
+  },
+  "598da5582da296b6306e5701e372cce7744b32b91ee465f856ff68544a544787": {
+    "answer": "Padmé Amidala held the official title of Queen of Naboo during her time on the planet, specifically during the Trade Federation's invasion and the Battle of Naboo [5][6].",
+    "total_tokens": 2320
+  },
+  "2fb9c7f91589bf54f89adf653768eec4df7742014f9f51ad9f0c15e1cf7b1a13": {
+    "answer": "Darth Maul is a Force-sensitive Dathomirian Zabrak male who was trained as a Sith apprentice, warrior, and assassin under Darth Sidious. Born in 54 BBY, Maul was the son of Mother Talzin, leader of the Nightsisters of Dathomir, and was taken by Sidious as an apprentice due to his potential. He was raised to hate the Jedi and trained extensively in the ways of the dark side of the Force, becoming a formidable and acrobatic warrior. Maul is known for his relentless combat skills and his desire to see the Jedi Order fall [7][8].\n\nMaul is famous for wielding a red double-bladed lightsaber, which he crafted himself using plans provided by Sidious from ancient Sith archives. The weapon consisted of two lightsabers fused together, allowing each blade to be ignited separately depending on the situation. This iconic weapon was used by Maul in numerous battles, including his duels with Jedi such as Qui-Gon Jinn and Obi-Wan Kenobi during the Battle of Naboo [1][4][8].",
+    "total_tokens": 3359
+  },
+  "145c88f69cbd709e10f5eddf0972687d59913522cbb7d500543c80bc50663b17": {
+    "answer": "C-3PO was constructed by Anakin Skywalker, a human slave living in Mos Espa on the Outer Rim world of Tatooine. He was designed as a 3PO-series protocol droid primarily programmed for etiquette and protocol, with the task of interacting with organics. C-3PO was fluent in over six million forms of communication [2].",
+    "total_tokens": 3100
+  },
+  "764b4ce7cec279fc49b8da067b97966e1f03a90e328a014806c8f940c915fb83": {
+    "answer": "Luke Skywalker's sister is Leia Organa [2][3].",
+    "total_tokens": 2800
+  },
+  "c179813fdb7067abf5faee59c307abb0c6e97dd8eea791b08e7f919ad3d438dd": {
+    "answer": "After Obi-Wan Kenobi's death, Luke Skywalker was trained in the ways of the Force by Yoda, the ancient Grand Master of the Jedi Order [1].",
+    "total_tokens": 2852
+  },
+  "2537443f6b8316bcd32e30a02a2f08b5255e9c35b28c25032404eda33895b86f": {
+    "answer": "The twin suns of Tatooine are named Tatoo I and Tatoo II [4][5].",
+    "total_tokens": 2464
+  },
+  "df93bd91b6b0ec3ae56c097d0179588c584c18c1e8fcc43198a936d94a92d43e": {
+    "answer": "Han Solo's ride-or-die best friend was the Wookiee Chewbacca. Chewbacca became Han's trusted copilot and swore a life debt to him [3].",
+    "total_tokens": 2517
+  },
+  "32f1a8e9db9f8c94ab8163752cf769d39457a142a0ffeb4d1d984a3b1e8f70cb": {
+    "answer": "After the Battle of Yavin, the Rebel Alliance established their new base of operations on the ice planet Hoth [1][2][8].",
+    "total_tokens": 2344
+  },
+  "1c60436790a4ea7a69e93ebe9ef5118389e110dabeb4789c803f28c2ff9c5554": {
+    "answer": "Luke Skywalker's aunt is Beru Whitesun Lars [1][3][5][9].",
+    "total_tokens": 2391
+  },
+  "2c299070f809ed0e79b6ea7f63f00721e6f0993ea0dba67aa763e90001e4f8f7": {
+    "answer": "Han Solo responded to Greedo by saying he would rather die than give up his ship [4].",
+    "total_tokens": 2793
+  },
+  "4a6558101f6b1988b772e6f98105e982eb2d574ee6beb5bf1c65af604de54f9f": {
+    "answer": "Boba Fett successfully captured Han Solo to collect the bounty placed on him by Jabba the Hutt [4][7].",
+    "total_tokens": 2791
+  },
+  "f0820e4604c936d5effda189c8104e34ca704235f24e80bacea08b801d4d8ba5": {
+    "answer": "Luke Skywalker died after confronting Kylo Ren because he used the extremely taxing Force technique known as **Force projection**. This ability allowed him to create an illusory doppelgänger of himself and transmit it across vast distances, in this case from Ahch-To to Crait. The technique required immense concentration and focus, as the Jedi poured their Living Force presence into the Cosmic Force to sustain the projection. \n\nAlthough Luke maintained the projection for several minutes and even interacted physically with his surroundings, the strain of the feat was so great that it cost him his life. After the confrontation, Luke became one with the Force [7][8].",
+    "total_tokens": 2904
   }
 }
