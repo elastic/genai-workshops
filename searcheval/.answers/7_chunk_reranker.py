@@ -14,16 +14,19 @@ def get_parameters() -> dict:
         "is_disabled": False,
         "index_name": "wiki-voyage_2025-03-07_e5-embeddings",
         "rag_context": "source_text_semantic",
+        "rerank_inner_hits": True    ### THIS IS THE BIG NEW THING
     }
 
+    
 def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
 
 
-    disambugiuation = {
-      "terms": {
-        # "category": ["Disambiguation","Outline articles"]
-        "category": ["Disambiguation"]
-      }
+
+    disambiguation = {
+        "terms": {
+          # "category": ["Disambiguation","Outline articles"]
+          "category": ["Disambiguation"]
+        }
     }
 
 
@@ -37,10 +40,10 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
                             "source_text", 
                             # "title"
                         ],
-                        "fuzziness": "AUTO"
+                        "fuzziness": "AUTO",
                     }
                 },
-                "must_not": disambugiuation
+                "must_not": disambiguation
             }
         }
     }
@@ -67,19 +70,17 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
                 "size": inner_hits_size,
                 "name": "wiki-voyage_2025-03-07_e5-embeddings.source_text_semantic",
                 "_source": [
-                  "source_text_semantic.inference.chunks.text"
+                "source_text_semantic.inference.chunks.text"
                 ]
               }
             }
           },
-          "must_not": disambugiuation
+          "must_not": disambiguation
         }
       }
     }
 
-
-    return {
-      "retriever": {
+    rrf_retriever = {
         "rrf": { ## This stands for Reciprocal Rank Fusion 🔥🔥🔥
           "retrievers": [
             
@@ -96,4 +97,38 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
           ]
         }
       }
+
+
+    return {
+      "retriever": rrf_retriever,
+      "_source": False
     }
+
+    # return {
+    #   "retriever": {
+    #     "text_similarity_reranker": {
+    #       "retriever": rrf_retriever,
+    #       "field": "source_text",
+    #       "inference_id": "my-elastic-rerank",
+    #       "inference_text": query_string,
+    #       "rank_window_size": 10,
+    #       "min_score": 0.05
+    #     }
+    #   },
+    #   "_source": False
+    # } 
+
+
+    # return {
+    #   "retriever": {
+    #     "text_similarity_reranker": {
+    #       "retriever": { "standard": nested_semantic_query },
+    #       "field": "source_text",
+    #       "inference_id": "my-elastic-rerank",
+    #       "inference_text": query_string,
+    #       "rank_window_size": 10,
+    #       "min_score": 0.05
+    #     }
+    #   },
+    #   "_source": False
+    # } 

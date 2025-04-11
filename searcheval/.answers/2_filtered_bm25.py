@@ -28,7 +28,7 @@ def build_query(query_string: str, inner_hits_size:int = None) -> dict:
         dict: A dictionary representing the search query.
     """
 
-    disambugiuation = {
+    disambiguation = {
                     "terms": {
                         # "category": ["Disambiguation","Outline articles"]
                         "category": ["Disambiguation"]
@@ -49,11 +49,9 @@ def build_query(query_string: str, inner_hits_size:int = None) -> dict:
                         "fuzziness": "AUTO"
                     }
                 },
-                "must_not": disambugiuation
+                "must_not": disambiguation
             }
         }
     }
-
-
 
     return lexical_query

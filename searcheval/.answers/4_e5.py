@@ -19,12 +19,13 @@ def get_parameters() -> dict:
 def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
 
 
-    disambugiuation = {
+    disambiguation = {
       "terms": {
         # "category": ["Disambiguation","Outline articles"]
         "category": ["Disambiguation"]
       }
     }
+    
 
     nested_semantic_query ={
       "query": {
@@ -52,7 +53,7 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
               }
             }
           },
-          "must_not": disambugiuation
+          "must_not": disambiguation
         }
       }
     }

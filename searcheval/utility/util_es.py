@@ -223,8 +223,8 @@ def search_to_context(es: Elasticsearch, index_name: str, query_string: str, bod
             
             else:
                 # print("normal hits")
-                
-                # Safely get the value in case `rag_context` is missing
+                # ## Safely get the value in case `rag_context` is missing
+
                 context_value = hit["_source"].get(rag_context, "")
                 context.append(str(context_value))
 

@@ -191,7 +191,7 @@ results_*.csv
 ## temp files for deepeval
 # .deepeval-cache.json
 .deepeval_telemetry.json
-.deepeval_telemtry.txt
+.deepeval_telemetry.txt
 .deepeval
 .temp-deepeval*
 temp_test_run*

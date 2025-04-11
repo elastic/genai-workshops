@@ -114,7 +114,7 @@ def run_search_evaluation(es, golden_data, strategy_modules):
 
                 # print(f"Response details quid: {response["details"][qid]}")
 
-                found_ids = [hit["hit"]["_id"] for hit in response["details"][qid]["hits"]]
+                found_ids = [hit["hit"]["_id"] for hit in response["details"][qid]["hits"]] if (qid in response["details"]) else []
                 found_titles = identify_titles( get_es(), found_ids, index_name) 
 
 

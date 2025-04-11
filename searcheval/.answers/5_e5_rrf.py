@@ -12,17 +12,18 @@ def get_parameters() -> dict:
     """
     return {
         "is_disabled": False,
-        "index_name": "wiki-voyage_2025-03-07_elser-embeddings",
+        "index_name": "wiki-voyage_2025-03-07_e5-embeddings",
         "rag_context": "source_text_semantic",
     }
 
 def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
 
 
-    disambugiuation = {
-        "term": {
-            "category": "Disambiguation"
-        }
+    disambiguation = {
+      "terms": {
+        # "category": ["Disambiguation","Outline articles"]
+        "category": ["Disambiguation"]
+      }
     }
 
 
@@ -36,43 +37,45 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
                             "source_text", 
                             # "title"
                         ],
-                        "fuzziness": "AUTO",
+                        "fuzziness": "AUTO"
                     }
                 },
-                "must_not": disambugiuation
+                "must_not": disambiguation
             }
         }
     }
 
 
-    nested_semantic_query = {
+    nested_semantic_query ={
       "query": {
         "bool": {
           "must": {
-            
-                "nested": {
-                  "path": "source_text_semantic.inference.chunks",
-                  "query": {
-                    "sparse_vector": {
-                      "inference_id": "my-elser-endpoint",
-                      "field": "source_text_semantic.inference.chunks.embeddings",
-                      "query": "{query}"
+            "nested": {
+              "path": "source_text_semantic.inference.chunks",
+              "query": {
+                "knn": {
+                  "field": "source_text_semantic.inference.chunks.embeddings",
+                  "query_vector_builder": {
+                    "text_embedding": {
+                    "model_id": "my-e5-endpoint",
+                    "model_text": query_string
                     }
-                  },
-                  "inner_hits": {
-                    "size": 2,
-                    "name": "wiki-voyage_2025-03-07_elser-embeddings.source_text_semantic",
-                    "_source": [
-                      "source_text_semantic.inference.chunks.text"
-                    ]
                   }
                 }
+              },
+              "inner_hits": {
+                "size": inner_hits_size,
+                "name": "wiki-voyage_2025-03-07_e5-embeddings.source_text_semantic",
+                "_source": [
+                  "source_text_semantic.inference.chunks.text"
+                ]
+              }
+            }
           },
-          "must_not": disambugiuation
+          "must_not": disambiguation
         }
       }
     }
-    
 
 
     return {

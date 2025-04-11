@@ -18,17 +18,34 @@ def get_parameters() -> dict:
 
 def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
 
-
-    query_body ={
-          "semantic": {
-            "field": "source_text_semantic",
-            "query": query_string
-          }
+    disambiguation = {
+      "terms": {
+        # "category": ["Disambiguation","Outline articles"]
+        "category": ["Disambiguation"]
       }
+    }
+
+
+    semantic_query ={
+      "semantic": {
+          "field": "source_text_semantic",
+          "query": query_string
+        }
+    }
+
+
+
+    query_body = {
+      "bool": {
+        "must": semantic_query,
+        "must_not": disambiguation
+      }
+    }
     
 
 
     return {
       "query": query_body,
-      "size": 5
+      "size": 5,
+      "_source": ["source_text"],
     }

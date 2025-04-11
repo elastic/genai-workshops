@@ -13,8 +13,8 @@ def get_parameters() -> dict:
     return {
         "is_disabled": False,
         "index_name": "wiki-voyage_2025-03-07_e5-embeddings",
-        "rag_context": "source_text_semantic",
-        "rerank_inner_hits": True    ### THIS IS THE BIG NEW THING
+        "rag_context": "source_text",
+        # "rerank_inner_hits": True    ### THIS IS THE BIG NEW THING
     }
 
     
@@ -22,13 +22,12 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
 
 
 
-    disambugiuation = {
+    disambiguation = {
         "terms": {
           # "category": ["Disambiguation","Outline articles"]
           "category": ["Disambiguation"]
         }
     }
-
 
     lexical_query = {
         "query": {
@@ -38,47 +37,33 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
                         "query": query_string,
                         "fields": [
                             "source_text", 
-                            # "title"
+                            "title"
                         ],
-                        "fuzziness": "AUTO",
+                        # "fuzziness": "AUTO"
                     }
                 },
-                "must_not": disambugiuation
+                "must_not": disambiguation
             }
         }
     }
 
 
-    nested_semantic_query ={
+
+
+    semantic_query = {
       "query": {
         "bool": {
           "must": {
-            "nested": {
-              "path": "source_text_semantic.inference.chunks",
-              "query": {
-                "knn": {
-                  "field": "source_text_semantic.inference.chunks.embeddings",
-                  "query_vector_builder": {
-                    "text_embedding": {
-                    "model_id": "my-e5-endpoint",
-                    "model_text": query_string
-                    }
-                  }
-                }
-              },
-              "inner_hits": {
-                "size": inner_hits_size,
-                "name": "wiki-voyage_2025-03-07_e5-embeddings.source_text_semantic",
-                "_source": [
-                "source_text_semantic.inference.chunks.text"
-                ]
-              }
+            "semantic": {
+                "field": "source_text_semantic",
+                "query": query_string
             }
-          },
-          "must_not": disambugiuation
+          },  
+          "must_not": disambiguation
         }
       }
     }
+
 
     rrf_retriever = {
         "rrf": { ## This stands for Reciprocal Rank Fusion 🔥🔥🔥
@@ -86,7 +71,7 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
             
             ## First method
             {
-              "standard": nested_semantic_query
+              "standard": semantic_query
             },
 
             ## Second method
@@ -99,10 +84,10 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
       }
 
 
-    return {
-      "retriever": rrf_retriever,
-      "_source": False
-    }
+    # return {
+    #   "retriever": rrf_retriever,
+    #   "_source": ["source_text"],
+    # }
 
     # return {
     #   "retriever": {
@@ -119,16 +104,16 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
     # } 
 
 
-    # return {
-    #   "retriever": {
-    #     "text_similarity_reranker": {
-    #       "retriever": { "standard": nested_semantic_query },
-    #       "field": "source_text",
-    #       "inference_id": "my-elastic-rerank",
-    #       "inference_text": query_string,
-    #       "rank_window_size": 10,
-    #       "min_score": 0.05
-    #     }
-    #   },
-    #   "_source": False
-    # } 
+    return {
+      "retriever": {
+        "text_similarity_reranker": {
+          "retriever": rrf_retriever,
+          "field": "source_text",
+          "inference_id": "my-elastic-rerank",
+          "inference_text": query_string,
+          "rank_window_size": 10,
+          "min_score": 0.05
+        }
+      },
+      "_source": ["source_text"],
+    } 
