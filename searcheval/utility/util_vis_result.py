@@ -86,8 +86,17 @@ def vis_deep_eval_correct_tests(json_file: str, title: str = "DeepEval Correctne
     for query, details in data.items():
         row = {"query": details['query']}
         for strategy, strategy_details in details["strategies"].items():
+            print (strategy_details["scores"])
+            # Extract the score key that is not 'success'
+            score_keys = [key for key in strategy_details["scores"].keys() if key != "success"]
+            if score_keys:  # Check if there are any non-success keys
+                score_key = score_keys[0]  # Take the first (and likely only) non-success key
+                row[strategy] = strategy_details["scores"][score_key]["score"]
+            else:
+                # Handle the case where there might not be any non-success keys
+                row[strategy] = 0.0  # or another default value
             # row[strategy] = strategy_details["scores"]["Correctness (GEval)"]["score"]
-            row[strategy] = strategy_details["scores"]["Citation Correctness (DAG)"]["score"]
+            # row[strategy] = strategy_details["scores"]["Citation Correctness (DAG)"]["score"]
             total_tokens[strategy] += strategy_details["tokens_used"]
         rows.append(row)
 
