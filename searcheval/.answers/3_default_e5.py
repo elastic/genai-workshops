@@ -33,19 +33,12 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
         }
     }
 
-
-
-    query_body = {
-      "bool": {
-        "must": semantic_query,
-        "must_not": disambiguation
-      }
-    }
-    
-
-
     return {
-      "query": query_body,
-      "size": 5,
+      "query": {
+        "bool": {
+          "must": semantic_query,
+          "must_not": disambiguation
+        }
+      },
       "_source": ["source_text"],
     }
