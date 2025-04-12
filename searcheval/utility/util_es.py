@@ -201,7 +201,7 @@ def search_to_context(es: Elasticsearch, index_name: str, query_string: str, bod
 
         reranked_resp = es.inference.inference(
             task_type="rerank",
-            inference_id= "my-elastic-rerank",  #"cohere_rerank"
+            inference_id= "my-elastic-rerank",  
             input=context,
             query=query_string
         )

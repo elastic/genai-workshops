@@ -80,7 +80,8 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
       }
     }
 
-    rrf_retriever = {
+    return {
+      "retriever": {
         "rrf": { ## This stands for Reciprocal Rank Fusion 🔥🔥🔥
           "retrievers": [
             
@@ -97,11 +98,6 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
           ]
         }
       }
-
-
-    return {
-      "retriever": rrf_retriever,
-      "_source": False
     }
 
     # return {
