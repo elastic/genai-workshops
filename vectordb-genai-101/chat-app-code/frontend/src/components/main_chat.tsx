@@ -127,7 +127,7 @@ export default function MainChat() {
         <div className="flex-1 justify-center items-center h-screen chat-app-container">
             <div className="flex flex-col w-full max-w-[100%] min-w-[400px] min-h-[500px] bg-background rounded-lg shadow-lg">
                 <div className="bg-primary text-primary-foreground px-4 py-3 rounded-t-lg">
-                    <h2 className="text-lg font-medium">Elastic Restaurant Reviews 🤖</h2>
+                    <h2 className="text-lg font-medium">Elastic | NYC AI Assistant 🤖</h2>
                     {/* Display the connection status to the user */}
                     <p className="text-sm">{`Connection Status: ${connectionStatus}`}</p>
                 </div>

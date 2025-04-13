@@ -31,7 +31,7 @@ def perform_es_search(query, index):
 
 
     try:
-        result = es_client.search(index="restaurant_reviews", body=es_query)
+        result = es_client.search(index="nyc_regulations", body=es_query)
 
     except Exception as e:
         # If generated query fails fallback to backup query
