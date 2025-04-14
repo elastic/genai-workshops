@@ -35,7 +35,7 @@ def perform_es_search(query, index):
     """Performs the Elasticsearch query based on the context type."""
     logging.info(f"Starting Elasticsearch search for query: {query}")
 
-## TODO USERS ENTER QUERY CODE HERE
+    ## TODO USERS ENTER QUERY CODE HERE
     es_query = {
 
     }

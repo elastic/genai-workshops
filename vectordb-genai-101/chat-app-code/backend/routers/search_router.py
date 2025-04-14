@@ -1,5 +1,6 @@
 import os
 import logging
+import asyncio
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from backend.services import search_service, inference_service, llm_service
@@ -16,7 +17,7 @@ logging.basicConfig(
 
 # Set this to True to stream LLM responses back to the client
 # Streaming not implemented in this version
-streaming_llm = False
+# streaming_llm = False
 
 class SearchQuery(BaseModel):
     query: str
@@ -39,92 +40,74 @@ class ChatMessage(BaseModel):
     message: str
 
 
+MAX_CHUNK_SIZE = 4000
+async def send_large_text(websocket, text, msg_type="verbose_info"):
+    for i in range(0, len(text), MAX_CHUNK_SIZE):
+        await websocket.send_json({
+            "type": msg_type,
+            "chunk_index": i // MAX_CHUNK_SIZE,
+            "is_final_chunk": (i + MAX_CHUNK_SIZE) >= len(text),
+            "text": text[i:i + MAX_CHUNK_SIZE],
+        })
+
+
+def build_readable_context(hits):
+    output = ""
+    for hit in hits:
+        output += f"{str(hit)}\n\n"
+    return output
+
+
 @router.websocket_route("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-
-    # Initialize the conversation history
     convo_history = llm_service.init_conversation_history()
 
     try:
         while True:
-            # Receive the message from the client (user's question)
             data = await websocket.receive_text()
-            logging.debug(f"Raw data received: {data}")
-
-            # Parse the user's question
             chat_message = ChatMessage.parse_raw(data)
             logging.info(f"Received message: {chat_message.message}")
-
-            # create Prompt to generate retriever
-            context_unparsed = search_service.perform_es_search(
-                chat_message.message,
-                "elastic-labs"
+            
+            # Step 1: Search Elasticsearch (run in a thread since it's blocking)
+            query = chat_message.message
+            context_hits = await asyncio.to_thread(
+                search_service.perform_es_search,
+                query,
+                "nyc_regulations"
             )
-            logging.info(f"Context received from perform_es_search")
 
-            # Create a prompt for the LLM
+            # Step 2: Build prompt
             prompt = llm_service.create_llm_prompt(
-                chat_message.message,
-                context_unparsed,
+                query,
+                context_hits,
                 convo_history
-             )
-            logging.info(f"Created Prompt for LLM: {prompt}")
-            logging.info(f"Prompt length: {len(prompt)}")
+            )
+            
+            # Optional: Send back ES context (chunk it if large)
+            context_str = build_readable_context(context_hits)
+            await send_large_text(websocket, context_str, msg_type="verbose_info")
 
+            # Step 3: LLM Inference
+            llm_response = await asyncio.to_thread(
+                inference_service.es_chat_completion,
+                prompt,
+                os.getenv("INFERENCE_ID")
+            )
 
-#TODO this is a mess
-            # Send the contextual data back to the UI before making LLM calls
-            logging.debug(f"Sending context back to UI: {context_unparsed}")
-            logging.info("building tmp_context")
-            # logging.info(context_unparsed)
-            # tmp_context = ('\n---------------------------------------------------------\n\n'
-            #                '---------------------------------------------------------\n\n\n').join(context_unparsed)
-            tmp_context = ""
-            for hit in context_unparsed:
-                tmp_context += f"str{hit}\n\n"
-
+            # Send full response to UI
             await websocket.send_json({
-                "type": "verbose_info",
-                "text": f"Context gathered from Elasticsearch\n\n{tmp_context}"
-                        # f"Elasticsearch\n\n---------------------------------------------------------\n\n"
-                        # f"---------------------------------------------------------\n\n{tmp_context}"
+                "type": "full_response",
+                "text": llm_response
             })
 
+            # Step 4: Update conversation history
+            convo_history = llm_service.build_conversation_history(
+                history=convo_history,
+                user_message=query,
+                ai_response=llm_response
+            )
 
-            # Call the LLM to generate a response
-            if not streaming_llm:
-                logging.info(f"sending prompt {prompt}")
-                # use Elastic to call chat completion - response is full response
-                response = inference_service.es_chat_completion(prompt,
-                                                                # "openai_chat_completions"
-                                                                os.getenv('INFERENCE_ID')
-                                                                )
-
-                logging.info(f"Response from LLM: {response}")
-
-
-                logging.info(f"Sending response to client")
-                await websocket.send_json({
-                    "type": "full_response",
-                    "text": response
-                })
-
-
-            # Add the user's question and the LLM response to the conversation history
-            logging.info("Building conversation history")
-            convo_history = llm_service.build_conversation_history(history=convo_history,
-                                                                       user_message=chat_message.message,
-                                                                       ai_response=response
-                                                                       )
-            logging.debug(f"Conversation history: {convo_history}")
-            tmp_convo_hist = '\n---------------------------------------------------------\n\n'.join(
-                [str(h) for h in convo_history])
-            await websocket.send_json({
-                "type": "verbose_info",
-                "text": f"Conversation history updated:\n\n{tmp_convo_hist}"
-            })
-
-    except Exception as e:
-        logging.error("WebSocket encountered an error:", exc_info=True)
+    except Exception:
+        logging.exception("WebSocket encountered an error")
         await websocket.close(code=1001)
