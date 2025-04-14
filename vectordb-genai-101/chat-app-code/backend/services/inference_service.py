@@ -8,19 +8,21 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-
-# TODO move this to central location so this and search_service don't create separate connections
 # Initialize the Elasticsearch client
+es_url = os.getenv('ELASTICSEARCH_URL')
+es_user = os.getenv('ELASTICSEARCH_USER')
+es_pass = os.getenv('ELASTICSEARCH_PASSWORD')
+
+logging.debug(f'es_url: {es_url}')
+logging.debug(f'es_user: {es_user}')
+
 es_client = Elasticsearch(
-    hosts=os.getenv('ES_URL', 'http://kubernetes-vm:9200'),
-    # api_key=os.getenv('ES_API_KEY'),
+    hosts=[es_url],
     basic_auth=(
-        os.getenv('ES_USER', 'elastic'),
-        os.getenv('ES_PASSWORD', 'changeme')
-    ),
-    timeout=90
+        es_user,
+        es_pass
+    )
 )
-logging.info(f"Elasticsearch client Info: {es_client.info()}")
 
 
 def es_chat_completion(prompt, inference_id):
@@ -36,6 +38,3 @@ def es_chat_completion(prompt, inference_id):
     logging.info(f"Response from Elasticsearch chat completion: {response}")
 
     return response['completion'][0]['result']
-
-
-
