@@ -1,3 +1,4 @@
+import os
 import logging
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
@@ -96,7 +97,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 logging.info(f"sending prompt {prompt}")
                 # use Elastic to call chat completion - response is full response
                 response = inference_service.es_chat_completion(prompt,
-                                                                "openai_chat_completions"
+                                                                # "openai_chat_completions"
+                                                                os.getenv('INFERENCE_ID')
                                                                 )
 
                 logging.info(f"Response from LLM: {response}")
