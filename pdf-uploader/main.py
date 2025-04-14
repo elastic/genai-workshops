@@ -2,6 +2,10 @@ import os
 import base64
 import logging
 from elasticsearch import Elasticsearch, helpers
+import requests
+from io import StringIO
+from dotenv import load_dotenv
+load_dotenv(stream=StringIO(requests.get('http://kubernetes-vm:9000/env').text))
 
 logging.basicConfig(
     level=logging.INFO,
