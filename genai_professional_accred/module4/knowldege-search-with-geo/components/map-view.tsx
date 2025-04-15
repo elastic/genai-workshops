@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { Maximize2, Minimize2 } from "lucide-react"
+import { Maximize2, Minimize2, Filter } from "lucide-react"
 import { useTheme } from "next-themes"
 
 // Add a debounce function after the imports
@@ -43,6 +43,13 @@ export function MapView({
   const [autoFilter, setAutoFilter] = useState(false)
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
   const isAutoFilteringRef = useRef(false)
+  const [isFilteringActive, setIsFilteringActive] = useState(false)
+  const currentViewRef = useRef<{ center: [number, number]; zoom: number } | null>(null)
+
+  // Selection state variables
+  const startPointRef = useRef<any>(null)
+  const rectRef = useRef<any>(null)
+  const isDraggingRef = useRef(false)
 
   // Load Leaflet
   useEffect(() => {
@@ -97,72 +104,114 @@ export function MapView({
     leafletMap.current = map
     setIsMapInitialized(true)
 
-    // Add draw control for selection
-    let startPoint: any = null
-    let rect: any = null
-    let isDragging = false
-
-    map.on("mousedown", (e: any) => {
-      if (!selectionMode) return
-
-      // Prevent the default map dragging behavior
-      map.dragging.disable()
-
-      startPoint = e.latlng
-      isDragging = true
-
-      // Create a rectangle from the starting point
-      rect = L.rectangle(
-        [
-          [startPoint.lat, startPoint.lng],
-          [startPoint.lat, startPoint.lng],
-        ],
-        {
-          color: "#3b82f6",
-          weight: 2,
-          fillOpacity: 0.2,
-        },
-      ).addTo(map)
-
-      setSelectionRect(rect)
-    })
-
-    map.on("mousemove", (e: any) => {
-      if (!selectionMode || !startPoint || !rect || !isDragging) return
-
-      // Update rectangle bounds
-      const bounds = L.latLngBounds(startPoint, e.latlng)
-      rect.setBounds(bounds)
-    })
-
-    map.on("mouseup", (e: any) => {
-      if (!selectionMode || !startPoint || !rect || !isDragging) return
-
-      isDragging = false
-
-      // Get the bounds of the rectangle
-      const bounds = rect.getBounds()
-      const sw = bounds.getSouthWest()
-      const ne = bounds.getNorthEast()
-
-      // Create bounding box and submit search
-      onBoundingBoxSelect([sw.lng, sw.lat, ne.lng, ne.lat])
-
-      // Reset selection
-      map.removeLayer(rect)
-      startPoint = null
-      rect = null
-      setSelectionRect(null)
-
-      // Re-enable map dragging
-      map.dragging.enable()
+    // Track map view changes
+    map.on("moveend", () => {
+      if (map) {
+        const center = map.getCenter()
+        currentViewRef.current = {
+          center: [center.lat, center.lng],
+          zoom: map.getZoom(),
+        }
+      }
     })
 
     // Force a resize event to ensure the map renders correctly
     setTimeout(() => {
       map.invalidateSize()
     }, 100)
-  }, [L, selectionMode, onBoundingBoxSelect, resolvedTheme])
+  }, [L, resolvedTheme])
+
+  // Set up selection mode event handlers
+  useEffect(() => {
+    if (!leafletMap.current || !L) return
+
+    const map = leafletMap.current
+
+    // Clean up any existing handlers
+    map.off("mousedown")
+    map.off("mousemove")
+    map.off("mouseup")
+
+    if (selectionMode) {
+      console.log("Selection mode activated")
+
+      // Disable map dragging in selection mode
+      map.dragging.disable()
+
+      // Change cursor to crosshair
+      if (mapRef.current) {
+        mapRef.current.style.cursor = "crosshair"
+      }
+
+      // Set up event handlers for selection
+      map.on("mousedown", (e) => {
+        console.log("Mouse down in selection mode")
+        startPointRef.current = e.latlng
+        isDraggingRef.current = true
+
+        // Create rectangle
+        rectRef.current = L.rectangle(
+          [
+            [startPointRef.current.lat, startPointRef.current.lng],
+            [startPointRef.current.lat, startPointRef.current.lng],
+          ],
+          {
+            color: "#3b82f6",
+            weight: 2,
+            fillOpacity: 0.2,
+          },
+        ).addTo(map)
+
+        setSelectionRect(rectRef.current)
+      })
+
+      map.on("mousemove", (e) => {
+        if (!isDraggingRef.current || !startPointRef.current || !rectRef.current) return
+
+        // Update rectangle bounds
+        const bounds = L.latLngBounds(startPointRef.current, e.latlng)
+        rectRef.current.setBounds(bounds)
+      })
+
+      map.on("mouseup", (e) => {
+        if (!isDraggingRef.current || !startPointRef.current || !rectRef.current) return
+
+        console.log("Mouse up in selection mode")
+        isDraggingRef.current = false
+
+        // Get bounds
+        const bounds = rectRef.current.getBounds()
+        const sw = bounds.getSouthWest()
+        const ne = bounds.getNorthEast()
+
+        // Submit search
+        onBoundingBoxSelect([sw.lng, sw.lat, ne.lng, ne.lat])
+
+        // Clean up
+        map.removeLayer(rectRef.current)
+        startPointRef.current = null
+        rectRef.current = null
+        setSelectionRect(null)
+      })
+    } else {
+      // Re-enable map dragging when not in selection mode
+      map.dragging.enable()
+
+      // Reset cursor
+      if (mapRef.current) {
+        mapRef.current.style.cursor = ""
+      }
+    }
+
+    return () => {
+      // Clean up event handlers
+      if (map) {
+        map.off("mousedown")
+        map.off("mousemove")
+        map.off("mouseup")
+      }
+    }
+  }, [selectionMode, L, onBoundingBoxSelect])
 
   // Update autoFilter state when isAutoFilterActive prop changes
   useEffect(() => {
@@ -179,6 +228,8 @@ export function MapView({
         clearTimeout(debounceTimerRef.current)
       }
 
+      setIsFilteringActive(true)
+
       debounceTimerRef.current = setTimeout(() => {
         const bounds = leafletMap.current.getBounds()
         const sw = bounds.getSouthWest()
@@ -189,6 +240,11 @@ export function MapView({
 
         // Pass the current viewport bounds to the parent
         onViewportChange([sw.lng, sw.lat, ne.lng, ne.lat])
+
+        // Reset filtering indicator after a short delay
+        setTimeout(() => {
+          setIsFilteringActive(false)
+        }, 500)
       }, 500) // 500ms debounce
     }
 
@@ -205,19 +261,6 @@ export function MapView({
       }
     }
   }, [L, onViewportChange, autoFilter])
-
-  // Toggle selection mode
-  useEffect(() => {
-    if (!leafletMap.current) return
-
-    if (selectionMode) {
-      // Disable map dragging when in selection mode
-      leafletMap.current.dragging.disable()
-    } else {
-      // Re-enable map dragging when not in selection mode
-      leafletMap.current.dragging.enable()
-    }
-  }, [selectionMode])
 
   // Update markers when results change
   useEffect(() => {
@@ -305,11 +348,26 @@ export function MapView({
   }, [isExpanded])
 
   const toggleSelectionMode = () => {
-    setSelectionMode(!selectionMode)
-    if (selectionMode && selectionRect && leafletMap.current) {
-      leafletMap.current.removeLayer(selectionRect)
+    // Store current view before toggling selection mode
+    if (leafletMap.current && !selectionMode) {
+      const center = leafletMap.current.getCenter()
+      currentViewRef.current = {
+        center: [center.lat, center.lng],
+        zoom: leafletMap.current.getZoom(),
+      }
+    }
+
+    // Clean up any existing selection
+    if (selectionMode && rectRef.current && leafletMap.current) {
+      leafletMap.current.removeLayer(rectRef.current)
+      rectRef.current = null
+      startPointRef.current = null
+      isDraggingRef.current = false
       setSelectionRect(null)
     }
+
+    // Toggle selection mode
+    setSelectionMode(!selectionMode)
   }
 
   const toggleAutoFilter = () => {
@@ -325,9 +383,15 @@ export function MapView({
 
       // Set flag to indicate we're auto-filtering
       isAutoFilteringRef.current = true
+      setIsFilteringActive(true)
 
       // Pass the current viewport bounds to the parent
       onViewportChange([sw.lng, sw.lat, ne.lng, ne.lat])
+
+      // Reset filtering indicator after a short delay
+      setTimeout(() => {
+        setIsFilteringActive(false)
+      }, 500)
     }
   }
 
@@ -359,7 +423,12 @@ export function MapView({
           {isExpanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
         </Button>
 
-        <Button variant={selectionMode ? "default" : "secondary"} size="sm" onClick={toggleSelectionMode}>
+        <Button
+          variant={selectionMode ? "default" : "secondary"}
+          size="sm"
+          onClick={toggleSelectionMode}
+          className={selectionMode ? "bg-primary text-primary-foreground" : ""}
+        >
           {selectionMode ? "Cancel Selection" : "Select Area"}
         </Button>
 
@@ -384,7 +453,13 @@ export function MapView({
           {markersCount > 0 ? `${markersCount} locations on map` : "No locations on map"}
         </p>
       </div>
+
+      {isFilteringActive && autoFilter && (
+        <div className="absolute top-2 right-2 z-[1000] bg-primary text-primary-foreground px-3 py-1 rounded-md shadow-md flex items-center">
+          <Filter size={14} className="mr-1 animate-pulse" />
+          <p className="text-sm">Filtering...</p>
+        </div>
+      )}
     </div>
   )
 }
-

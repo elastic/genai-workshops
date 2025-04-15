@@ -5,4 +5,3 @@ export function Logo() {
     </div>
   )
 }
-

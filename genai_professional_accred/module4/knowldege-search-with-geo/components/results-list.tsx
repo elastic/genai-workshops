@@ -220,4 +220,3 @@ export function ResultsList({ results }: ResultsListProps) {
     </div>
   )
 }
-

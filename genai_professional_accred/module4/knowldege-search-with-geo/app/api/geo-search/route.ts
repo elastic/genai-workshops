@@ -13,15 +13,28 @@ export async function POST(request: Request) {
 
     console.log("Geo search with bbox:", bbox)
 
-    // Use a simpler query that just returns documents with coordinates
+    // Use Elasticsearch's geo_bounding_box query directly
     const queryBody = {
       size: 100,
       query: {
         nested: {
           path: "coordinates",
           query: {
-            exists: {
-              field: "coordinates.coord",
+            bool: {
+              filter: {
+                geo_bounding_box: {
+                  "coordinates.coord": {
+                    top_left: {
+                      lat: maxLat,
+                      lon: minLng,
+                    },
+                    bottom_right: {
+                      lat: minLat,
+                      lon: maxLng,
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -49,29 +62,9 @@ export async function POST(request: Request) {
 
     const data = await response.json()
 
-    // Filter results client-side based on the bounding box
-    const filteredResults = data.hits.hits.filter((hit: any) => {
-      try {
-        if (hit.fields?.coordinates?.[0]?.coord?.[0]?.coordinates) {
-          const [lng, lat] = hit.fields.coordinates[0].coord[0].coordinates
+    console.log(`Geo search returned ${data.hits.hits?.length || 0} results using geo_bounding_box filter`)
 
-          // Log the coordinates and bounding box for debugging
-          console.log(`Checking if [${lng}, ${lat}] is in bbox [${minLng}, ${minLat}, ${maxLng}, ${maxLat}]`)
-
-          return lng >= minLng && lng <= maxLng && lat >= minLat && lat <= maxLat
-        }
-        return false
-      } catch (e) {
-        console.error("Error filtering hit:", e)
-        return false
-      }
-    })
-
-    console.log(
-      `Geo search returned ${data.hits.hits?.length || 0} total results, filtered to ${filteredResults.length}`,
-    )
-
-    return NextResponse.json({ success: true, data: filteredResults || [] })
+    return NextResponse.json({ success: true, data: data.hits.hits || [] })
   } catch (error) {
     console.error("Error in geo-search API:", error)
     return NextResponse.json(
@@ -80,4 +73,3 @@ export async function POST(request: Request) {
     )
   }
 }
-

@@ -233,4 +233,3 @@ export function SettingsDialog({ config, onConfigChange }: SettingsDialogProps) 
     </Dialog>
   )
 }
-

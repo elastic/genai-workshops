@@ -17,4 +17,3 @@ export function useLeaflet() {
 
   return { L, isLoaded }
 }
-
