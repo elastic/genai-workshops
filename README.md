@@ -8,7 +8,7 @@ This is the source code for the the Module 6. In this code we are going to work 
 
 Follow the instructions in the right hand side of the instruqt window.
 
-s```----->```
+```----->```
 
 
 
