@@ -2,10 +2,19 @@
 
 This is the source code for the the Module 6. In this code we are going to work with Search and RAG evaluation.
 
-Key Concepts and Documentation
+## Starting the workshop in Instruqt
+
+```----->```
+
+Follow the instructions in the right hand side of the instruqt window.
+
+s```----->```
 
 
-You'll need both of these for things to work
+
+## Running outside of Instruqt
+
+This code depends on the following inference endpoints existing in your Elasticsearch Instance:
 
 
 ```
