@@ -97,7 +97,8 @@ def build_query(query_string: str, inner_hits_size:int = 3) -> dict:
 
           ]
         }
-      }
+      },
+      "_source": ["title"]
     }
 
     # return {

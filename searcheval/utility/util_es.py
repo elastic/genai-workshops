@@ -3,6 +3,9 @@ from elasticsearch import BadRequestError
 import os
 import json
 
+import tiktoken
+enc = tiktoken.get_encoding("cl100k_base")
+
 ## attempt to load environment variables
 ## if they aren't there we'll assume we are in Instruqt and accessing kubernetes-vm
 es_host = os.getenv("ES_SERVER", None)
@@ -199,10 +202,19 @@ def search_to_context(es: Elasticsearch, index_name: str, query_string: str, bod
                     context_value = inner_hit["_source"].get("text", "")
                     context.append(str(context_value))
 
-        reranked_resp = es.inference.inference(
-            task_type="rerank",
+        processsed_things_to_rerank = []
+        def truncate_to_max_tokens(text, max_tokens=250):
+            tokens = enc.encode(text)
+            if len(tokens) <= max_tokens:
+                return text
+            return enc.decode(tokens[:max_tokens]) + "..."
+        for text in context:
+            processsed_things_to_rerank.append( truncate_to_max_tokens( text.replace("| ", " ") ) )
+
+        reranked_resp = es.inference.rerank(
+            # task_type="rerank",
             inference_id= "my-elastic-rerank",  
-            input=context,
+            input=processsed_things_to_rerank,
             query=query_string
         )
 
