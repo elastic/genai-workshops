@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from backend.services import search_service, inference_service, llm_service
 from fastapi import WebSocket, APIRouter
-from elasticsearch import NotFoundError
+from starlette.websockets import WebSocketDisconnect
 
 router = APIRouter()
 
@@ -108,6 +108,11 @@ async def websocket_endpoint(websocket: WebSocket):
                 ai_response=llm_response
             )
 
-    except Exception:
-        logging.exception("WebSocket encountered an error")
-        await websocket.close(code=1001)
+    except WebSocketDisconnect as e:
+        logging.warning(f"WebSocket disconnected: {e.code}")
+    except Exception as e:
+        logging.exception("WebSocket encountered an unexpected error")
+        try:
+            await websocket.close(code=1011)
+        except RuntimeError:
+            logging.debug("WebSocket already closed. Skipping close.")

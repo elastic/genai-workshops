@@ -14,31 +14,39 @@ export default function MainChat() {
     const [connectionStatus, setConnectionStatus] = useState('Connecting...');
 
     // Define the connectWebSocket function to handle WebSocket connections
+    let reconnectAttempts = 0;
     const connectWebSocket = () => {
         const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
         const websocketURL = `/ws`;
         websocket.current = new WebSocket(websocketURL);
 
         websocket.current.onopen = () => {
+            reconnectAttempts = 0;
             setConnectionStatus('Connected');
             console.log('WebSocket connected');
         };
-
+    
         websocket.current.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            handleWebSocketData(data);
+            try {
+                const data = JSON.parse(event.data);
+                handleWebSocketData(data);
+            } catch (e) {
+                console.error("WebSocket message error:", e);
+            }
         };
-
-        websocket.current.onclose = () => {
-            setConnectionStatus('Disconnected');
-            console.log('WebSocket closed. Retrying in 5 seconds...');
-            setTimeout(connectWebSocket, 5000); // Retry after 5 seconds
+    
+        websocket.current.onclose = (e) => {
+            console.log(`WebSocket closed with code: ${e.code}`, e.reason);
+            setConnectionStatus(`Disconnected (code: ${e.code})`);
+            if (reconnectAttempts < 10) {
+                reconnectAttempts++;
+                setTimeout(connectWebSocket, 5000);
+            }
         };
-
+    
         websocket.current.onerror = (error) => {
-            setConnectionStatus('Error');
             console.error('WebSocket error:', error);
-            console.error('Error Details:', error.message);
+            setConnectionStatus('Error');
         };
     };
 
