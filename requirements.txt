@@ -34,7 +34,7 @@ docstring_parser==0.16
 docutils==0.21.2
 docx2txt==0.8
 elastic-transport==8.15.1
-elasticsearch==8.17.0
+elasticsearch==8.18.0
 eval_type_backport==0.2.2
 execnet==2.1.1
 executing==2.1.0
