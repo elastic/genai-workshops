@@ -1,5 +1,7 @@
 import logging
 from elasticsearch import Elasticsearch
+from elastic_transport import ConnectionTimeout
+import time
 import os
 import requests
 from io import StringIO
@@ -32,13 +34,30 @@ es_client = Elasticsearch(
 def es_chat_completion(prompt, inference_id):
     logging.info(f"Starting Elasticsearch chat completion with Inference ID: {inference_id}")
 
-    response = es_client.inference.inference(
-        inference_id = inference_id,
-        task_type = "completion",
-        input = prompt,
-        timeout="90s"
-    )
+    max_retries = 3
+    base_delay = 2
 
-    logging.info(f"Response from Elasticsearch chat completion: {response}")
-
-    return response['completion'][0]['result']
+    for attempt in range(1, max_retries + 1):
+        try:
+            response = es_client.inference.inference(
+                inference_id=inference_id,
+                task_type="completion",
+                input=prompt,
+                timeout="90s"
+            )
+            logging.info(f"Response from Elasticsearch chat completion: {response}")
+            return response['completion'][0]['result']
+        
+        except ConnectionTimeout as e:
+            logging.warning(f"[Attempt {attempt}] Timeout during inference: {str(e)}")
+            if attempt < max_retries:
+                delay = base_delay * (2 ** (attempt - 1))
+                logging.info(f"Retrying in {delay} seconds...")
+                time.sleep(delay)
+            else:
+                logging.error("Exceeded retry attempts. Failing.")
+                raise
+        
+        except Exception as e:
+            logging.exception(f"[Attempt {attempt}] Unexpected error during inference")
+            raise

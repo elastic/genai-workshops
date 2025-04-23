@@ -68,51 +68,71 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             chat_message = ChatMessage.parse_raw(data)
             logging.info(f"Received message: {chat_message.message}")
-            
-            # Step 1: Search Elasticsearch (run in a thread since it's blocking)
+
             query = chat_message.message
-            context_hits = await asyncio.to_thread(
-                search_service.perform_es_search,
-                query,
-                "nyc_regulations"
-            )
 
-            # Step 2: Build prompt
-            prompt = llm_service.create_llm_prompt(
-                query,
-                context_hits,
-                convo_history
-            )
-            
-            # Optional: Send back ES context (chunk it if large)
-            context_str = build_readable_context(context_hits)
-            await send_large_text(websocket, context_str, msg_type="verbose_info")
+            try:
+                # Step 1: Search Elasticsearch (in thread)
+                context_hits = await asyncio.to_thread(
+                    search_service.perform_es_search,
+                    query,
+                    "nyc_regulations"
+                )
 
-            # Step 3: LLM Inference
-            llm_response = await asyncio.to_thread(
-                inference_service.es_chat_completion,
-                prompt,
-                os.getenv("INFERENCE_ID")
-            )
+                # Step 2: Build prompt
+                prompt = llm_service.create_llm_prompt(
+                    query,
+                    context_hits,
+                    convo_history
+                )
 
-            # Send full response to UI
-            await websocket.send_json({
-                "type": "full_response",
-                "text": llm_response
-            })
+                # Step 3: Send back context to frontend (optional)
+                # context_str = build_readable_context(context_hits)
+                # await send_large_text(websocket, context_str, msg_type="verbose_info")
 
-            # Step 4: Update conversation history
-            convo_history = llm_service.build_conversation_history(
-                history=convo_history,
-                user_message=query,
-                ai_response=llm_response
-            )
+                # Step 4: LLM Inference with retry
+                try:
+                    llm_response = await asyncio.to_thread(
+                        inference_service.es_chat_completion,
+                        prompt,
+                        os.getenv("INFERENCE_ID")
+                    )
+                except Exception as e:
+                    logging.warning(f"LLM call failed after retries: {e}")
+                    llm_response = (
+                        "Sorry, I'm having trouble reaching the AI model right now. "
+                        "Please try again shortly."
+                    )
+
+                # Step 5: Send full response to UI
+                await websocket.send_json({
+                    "type": "full_response",
+                    "text": llm_response
+                })
+
+                # Step 6: Update conversation history
+                convo_history = llm_service.build_conversation_history(
+                    history=convo_history,
+                    user_message=query,
+                    ai_response=llm_response
+                )
+
+            except Exception as inner_e:
+                logging.exception(f"Error during chat cycle: {inner_e}")
+                await websocket.send_json({
+                    "type": "error_message",
+                    "text": f"Unexpected error: {str(inner_e)}"
+                })
 
     except WebSocketDisconnect as e:
         logging.warning(f"WebSocket disconnected: {e.code}")
     except Exception as e:
         logging.exception("WebSocket encountered an unexpected error")
         try:
+            await websocket.send_json({
+                "type": "error_message",
+                "text": "An unexpected error occurred. Connection will close."
+            })
             await websocket.close(code=1011)
         except RuntimeError:
             logging.debug("WebSocket already closed. Skipping close.")

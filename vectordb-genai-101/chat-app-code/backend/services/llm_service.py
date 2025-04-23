@@ -1,3 +1,4 @@
+import os
 import logging
 from .inference_service import es_chat_completion
 
@@ -116,8 +117,8 @@ def build_conversation_history(history, user_message, ai_response):
     ]
     """
     logging.info("Starting to build conversation history function")
-    if len(history) < 4:
-        logging.info("History is less than 4 messages. Adding new messages to history")
+    if len(history) < 2:
+        logging.info("History is less than 2 messages. Adding new messages to history")
         history.extend([
             {
                 "role": "user",
@@ -157,7 +158,7 @@ USER CONCERNS: [List any user pain points, frustrations, or recurring themes.]
 UNRESOLVED QUESTIONS: [List of open items or questions that have not been fully answered.]
 """
 
-    summary = es_chat_completion(summary_prompt)
+    summary = es_chat_completion(summary_prompt, os.getenv("INFERENCE_ID"))
     logging.info(f"LLM Summary of history: {summary}")
 
     return [
