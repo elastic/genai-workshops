@@ -111,11 +111,11 @@ async def websocket_endpoint(websocket: WebSocket):
                 })
 
                 # Step 6: Update conversation history
-                convo_history = llm_service.build_conversation_history(
-                    history=convo_history,
-                    user_message=query,
-                    ai_response=llm_response
-                )
+                # convo_history = llm_service.build_conversation_history(
+                #     history=convo_history,
+                #     user_message=query,
+                #     ai_response=llm_response
+                # )
 
             except Exception as inner_e:
                 logging.exception(f"Error during chat cycle: {inner_e}")
