@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "upload": "./workflows/upload_graph.py:upload_workflow"
+  },
+  "env": ".env"
+}

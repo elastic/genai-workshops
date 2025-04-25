@@ -1,0 +1,15 @@
+{
+    "servers": {
+      "elasticsearch-mcp-server": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@elastic/mcp-server-elasticsearch"
+        ],
+        "env": {
+          "ES_URL": "http://kubernetes-vm:30920",
+          "ES_API_KEY": "TGM5cE01WUJ2bTQ0SXVfZUdnNTE6M3FUR1pOcEpwc05zU0xtSEhxTkJjZw=="
+        }
+      }
+    }
+  }
