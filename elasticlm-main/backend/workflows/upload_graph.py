@@ -215,7 +215,6 @@ async def end_cleaner(state: UploadState, config: dict) -> UploadState:
     logger.debug("Ending the upload workflow.")
     if "overall_summary" in state:
         summary_message = (
-            f"**Summary for `{state['file_name']}`**\n\n"
             f"### {state['file_name']} has been successfully uploaded.\n\n"
             f"**Overall summary:**\n\n"
             f"{state['overall_summary']}\n\n"

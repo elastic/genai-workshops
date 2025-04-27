@@ -74,7 +74,7 @@ async def run_qa(question: str) -> str:
         answer = await generate_agent(question, results)
         # Combine tool usage logs and agent-generated answer
         log_section = "\n".join(query_logs)
-        return f"{log_section}\n --- \n ## Answer \n{answer}"
+        return f"{log_section}\n --- \n{answer}"
     except Exception as e:
         # Agent error handling: report exceptions
         return f"Error: {e}"

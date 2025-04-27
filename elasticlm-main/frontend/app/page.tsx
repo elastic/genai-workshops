@@ -129,7 +129,7 @@ export default function DocumentChat() {
         setSources(prev => prev.map(s => s.id === source.id ? { ...s, uploadStatus: 'success', checked: true } : s))
         setMessages(prev => [
           ...prev,
-          { role: 'assistant', content: `Summary for ${source.name}: ${summary}` }
+          { role: 'assistant', content: `${summary}` }
         ])
         toast.success(`File "${source.name}" processed successfully.`)
       } else if (pollError) {
