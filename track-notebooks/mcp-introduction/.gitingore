@@ -1,0 +1,45 @@
+# === Node (frontend) ===
+node_modules/
+dist/
+.vite/
+
+# === Logs ===
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# === dotenv ===
+.env
+.env.*.local
+
+# === Python (backend) ===
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+
+# === Virtual environments ===
+.venv/
+venv/
+ENV/
+env/
+
+# === VSCode ===
+.vscode/
+
+# === Mac ===
+.DS_Store
+
+# === Testing / Coverage ===
+.coverage
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+
+# === Misc ===
+*.bak
+*.swp
+.idea/
+
+
