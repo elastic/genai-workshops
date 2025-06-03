@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+python-dotenv
+langchain
+langchain-openai
+mcp-use
+pandas
+elasticsearch>=8.0.0
+kaggle
+httpx
+mcp-use==1.3.0
