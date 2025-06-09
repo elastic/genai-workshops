@@ -30,14 +30,29 @@ export default function App() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/api/books-chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          query: input,
-          history: messages.map((m) => m.text),
-        }),
-      });
+  // 1. Get the origin of the page the browser is currently on.
+  //    e.g., "https://host-1-3000-6cb76hfzmouw.env.play.instruqt.com"
+  const frontendOrigin = window.location.origin;
+
+  // 2. Replace the frontend port number (3000) with the backend port number (8002)
+  //    to construct the correct backend base URL.
+  const backendBaseUrl = frontendOrigin.replace('-3000-', '-8002-');
+
+  // 3. Construct the full API URL.
+  const apiUrl = `${backendBaseUrl}/api/books-chat`;
+
+  // Add a console log to see the URL you're about to use.
+  console.log("Contacting backend at:", apiUrl);
+
+  // 4. Use the dynamic apiUrl in your fetch call.
+  const res = await fetch(apiUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: input,
+      history: messages.map((m) => m.text),
+    }),
+  });
 
       const data = await res.json();
       setMessages((prev) => [...prev, { role: "assistant", text: data.response }]);
@@ -90,3 +105,4 @@ export default function App() {
 
 
 }
+
