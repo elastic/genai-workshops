@@ -38,8 +38,8 @@ async def run_agent_with_query(query: str, history: list[str] = []) -> str:
         model="gpt-4o",  # Corresponds to azure_deployment
         # Set base_url to the root of your LiteLLM proxy.
         # The OpenAI client will append /v1/chat/completions etc.
-        base_url=os.getenv("LLM_PROXY_URL"),
-        openai_api_key=os.getenv("LLm_API_KEY")
+        base_url=os.getenv("PROXY_URL"),
+        openai_api_key=os.getenv("PROXY_API_KEY")
     )
 
     system_prompt = (
