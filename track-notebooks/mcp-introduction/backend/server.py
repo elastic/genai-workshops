@@ -34,12 +34,24 @@ async def run_agent_with_query(query: str, history: list[str] = []) -> str:
     #     api_key=os.getenv("AZURE_OPENAI_API_KEY")
     # )
 
+# Get the URL and key from the environment
+    raw_proxy_url = os.getenv("PROXY_URL")
+    llm_api_key = os.getenv("PROXY_API_KEY")
+
+    # Define the unneeded path and remove it only if it exists at the end
+    unneeded_path = "/v1/chat/completions"
+    llm_base_url = raw_proxy_url
+
+    if llm_base_url and llm_base_url.endswith(unneeded_path):
+        llm_base_url = llm_base_url.removesuffix(unneeded_path)
+        # Add a print statement to confirm the logic is working
+        print(f"INFO: PROXY_URL was trimmed to: {llm_base_url}")
+
+    # Initialize the client with the corrected URL
     llm = ChatOpenAI(
-        model="gpt-4o",  # Corresponds to azure_deployment
-        # Set base_url to the root of your LiteLLM proxy.
-        # The OpenAI client will append /v1/chat/completions etc.
-        base_url=os.getenv("PROXY_URL"),
-        openai_api_key=os.getenv("PROXY_API_KEY")
+        model="gpt-4o",
+        base_url=llm_base_url,
+        openai_api_key=llm_api_key
     )
 
     system_prompt = (
@@ -73,4 +85,5 @@ async def books_chat_endpoint(req: ChatRequest):
 @app.get("/")
 async def root():
     return { "message": "ES Book server is running." }
+
 
