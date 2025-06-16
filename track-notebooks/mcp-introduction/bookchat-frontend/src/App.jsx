@@ -22,6 +22,21 @@ export default function App() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+    const handleClearChat = () => {
+    // Reset the messages state back to its initial value (the welcome message)
+    setMessages([
+      {
+        text: "Hi friend! Ask me some questions about our fab book database!",
+        isUser: false,
+      },
+    ]);
+    // Clear the input field as well
+    setInput("");
+    // Optional: if you have a loading state, reset it too
+    // setIsSending(false); 
+  };
+
+
   const sendMessage = async () => {
     if (!input.trim()) return;
     const userMessage = { role: "user", text: input };
@@ -72,6 +87,9 @@ export default function App() {
       <h2 className="chat-title">
         <img src="/elastic.svg" alt="Elastic" className="elastic-logo" />
         Elastic Book Chat</h2>
+
+
+
       <div className="messages">
         {messages.map((msg, i) => (
           <div key={i} className={`message ${msg.role}`}>
@@ -100,10 +118,15 @@ export default function App() {
           placeholder="Ask me about books..."
         />
         <button onClick={sendMessage}>Send</button>
+        
       </div>
+            <button onClick={handleClearChat} className="clear-button">
+        Clear Chat
+      </button>
     </div>
   );
 
 
 }
+
 
