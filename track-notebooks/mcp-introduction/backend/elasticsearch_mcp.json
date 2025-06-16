@@ -4,11 +4,12 @@
         "command": "npx",
         "args": [
           "-y",
-          "@elastic/mcp-server-elasticsearch"
+          "@elastic/mcp-server-elasticsearch@0.2.0"
         ],
         "env": {
           "ES_URL": "ES URL",
-          "ES_API_KEY": "ES API KEY"
+          "ES_API_KEY": "ES API KEY",
+          "ES_VERSION": "8"
         }
       }
     }
