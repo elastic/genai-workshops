@@ -1,14 +1,30 @@
+# In backend/server.py
+
+import logging
+import sys
 import os
 import asyncio
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from pydantic import BaseModel
 from dotenv import load_dotenv
-# from langchain_openai import AzureChatOpenAI
 from langchain_openai import ChatOpenAI
 from mcp_use import MCPAgent, MCPClient
 from fastapi.middleware.cors import CORSMiddleware
 
+# --- Logging Configuration ---
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s",
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ],
+    force=True
+)
+logger = logging.getLogger(__name__)
+
+
 load_dotenv()
+logger.info("Dotenv loaded successfully.")
 
 app = FastAPI()
 app.add_middleware(
@@ -18,41 +34,29 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+logger.info("CORS middleware configured.")
 
 class ChatRequest(BaseModel):
     query: str
     history: list[str] = []
 
 async def run_agent_with_query(query: str, history: list[str] = []) -> str:
-    client = MCPClient.from_config_file("backend/elasticsearch_mcp.json")
 
-    # llm = AzureChatOpenAI(
-    #     openai_api_version="2025-01-01-preview",
-    #     azure_deployment="gpt-4o",
-    #     azure_endpoint="https://litellm-proxy-service-1059491012611.us-central1.run.app/v1/chat/completions",
-    #     # azure_endpoint="https://",
-    #     api_key=os.getenv("AZURE_OPENAI_API_KEY")
-    # )
-
-# Get the URL and key from the environment
+    mcp_client = MCPClient.from_config_file("backend/elasticsearch_mcp.json")
     raw_proxy_url = os.getenv("PROXY_URL")
     llm_api_key = os.getenv("PROXY_API_KEY")
-
-    # Define the unneeded path and remove it only if it exists at the end
     unneeded_path = "/v1/chat/completions"
     llm_base_url = raw_proxy_url
-
     if llm_base_url and llm_base_url.endswith(unneeded_path):
         llm_base_url = llm_base_url.removesuffix(unneeded_path)
-        # Add a print statement to confirm the logic is working
-        print(f"INFO: PROXY_URL was trimmed to: {llm_base_url}")
+        logger.info(f"PROXY_URL was trimmed to: {llm_base_url}")
 
-    # Initialize the client with the corrected URL
     llm = ChatOpenAI(
         model="gpt-4o",
         base_url=llm_base_url,
         openai_api_key=llm_api_key
     )
+
 
     system_prompt = (
         "You are using the Elastic MCP server with access to the 'books' index. "
@@ -68,22 +72,29 @@ async def run_agent_with_query(query: str, history: list[str] = []) -> str:
         "If multiple books are found, summarize each one clearly in plain English."
     )
 
-    agent = MCPAgent(llm=llm, client=client, max_steps=30, system_prompt=system_prompt)
+    agent = MCPAgent(llm=llm, client=mcp_client, max_steps=30, system_prompt=system_prompt)
 
     full_prompt = "\n".join(history + [query])
 
     try:
         return await agent.run(full_prompt)
     finally:
-        await client.close_all_sessions()
+        await mcp_client.close_all_sessions()
+
+
 
 @app.post("/api/books-chat")
-async def books_chat_endpoint(req: ChatRequest):
-    response = await run_agent_with_query(req.query, req.history)
-    return { "response": response }
+async def books_chat_endpoint(req: ChatRequest, http_request: Request):
+    logger.info(f"INCOMING HEADERS: {dict(http_request.headers)}")
+    try:
+        response = await run_agent_with_query(req.query, req.history)
+        return {"response": response}
+    except Exception as e:
+        logger.exception(e)
+        raise HTTPException(status_code=500, detail="An internal server error occurred.")
 
 @app.get("/")
 async def root():
-    return { "message": "ES Book server is running." }
-
+    logger.info("Root endpoint '/' accessed.")
+    return {"message": "ES Book server is running."}
 

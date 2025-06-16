@@ -47,6 +47,7 @@ export default function App() {
   // 4. Use the dynamic apiUrl in your fetch call.
   const res = await fetch(apiUrl, {
     method: "POST",
+    credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       query: input,
