@@ -67,6 +67,7 @@ body {
   gap: 8px;
   margin-top: auto;
   flex-wrap: wrap;
+  margin-bottom: 8px;
 }
 
 input[type="text"] {
@@ -174,4 +175,22 @@ button {
   button {
     padding: 12px;
   }
+}
+
+.clear-button {
+  margin-left: auto; /* Pushes the button to the far right */
+  padding: 8px 16px;
+  font-size: 0.9em;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background-color: #555;
+  color: #fff;
+  cursor: pointer;
+  transition: border-color 0.25s, background-color 0.25s;
+}
+
+.clear-button:hover {
+  background-color: #777;
+  border-color: #aaa;
 }
