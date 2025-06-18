@@ -84,15 +84,12 @@ export default function App() {
     }
   };
 
-  return (
+return (
     <div className="chat-container">
+      {/* The h2 now only contains the title and logo */}
       <h2 className="chat-title">
-        {/* FIX #1: The img tag belongs inside the component JSX */}
         <img src={elasticLogo} alt="Elastic" className="elastic-logo" />
         Elastic Book Chat
-        <button onClick={handleClearChat} className="clear-button">
-          Clear Chat
-        </button>
       </h2>
 
       <div className="messages">
@@ -115,7 +112,6 @@ export default function App() {
           )
         ))}
 
-        {/* This checks if 'loading' is true and renders the indicator */}
         {loading && (
           <div className="message assistant">
             <strong>Assistant:</strong>
@@ -130,7 +126,6 @@ export default function App() {
         <div ref={bottomRef} />
       </div>
 
-      {/* The form now uses onSubmit for proper handling */}
       <form className="input-row" onSubmit={sendMessage}>
         <input
           type="text"
@@ -138,17 +133,24 @@ export default function App() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault(); // Prevents newline on Enter
+              e.preventDefault();
               sendMessage();
             }
           }}
           placeholder="Ask me about books..."
-          disabled={loading} // FIX #3: Disable input while loading
+          disabled={loading}
         />
-        <button type="submit" disabled={loading}> {/* FIX #3: Disable button while loading */}
+        <button type="submit" disabled={loading}>
           {loading ? 'Sending...' : 'Send'}
         </button>
       </form>
+      
+      {/* --- The Clear Chat button is now here, in its own container --- */}
+      <div className="clear-button-container">
+        <button onClick={handleClearChat} className="clear-button">
+          Clear Chat
+        </button>
+      </div>
+
     </div>
   );
-}

@@ -195,6 +195,12 @@ button {
   border-color: #aaa;
 }
 
+.clear-button-container {
+  display: flex;
+  justify-content: flex-end; /* This aligns the button to the right */
+  margin-top: 8px; /* This adds a little space above the button */
+}
+
 
 .typing-indicator {
   display: flex;
