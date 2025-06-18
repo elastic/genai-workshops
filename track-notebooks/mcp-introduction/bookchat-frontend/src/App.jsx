@@ -49,9 +49,9 @@ export default function App() {
   //    e.g., "https://host-1-3000-6cb76hfzmouw.env.play.instruqt.com"
   const frontendOrigin = window.location.origin;
 
-  // 2. Replace the frontend port number (3000) with the backend port number (8002)
+  // 2. Replace the frontend port number (3000) with the backend port number (8000)
   //    to construct the correct backend base URL.
-  const backendBaseUrl = frontendOrigin.replace('-3000-', '-8002-');
+  const backendBaseUrl = frontendOrigin.replace('-3000-', '-8000-');
 
   // 3. Construct the full API URL.
   const apiUrl = `${backendBaseUrl}/api/books-chat`;
