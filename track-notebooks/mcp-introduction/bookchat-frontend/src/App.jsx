@@ -1,11 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import "./App.css";
 import ReactMarkdown from "react-markdown";
-import elasticLogo from "/elastic.svg"; // Corrected import path for Vite
+import elasticLogo from "/elastic.svg";
 
 export default function App() {
   const [messages, setMessages] = useState(() => {
-    // Initializes state from local storage or with a default welcome message
     const stored = localStorage.getItem("bookchat-history");
     return stored
       ? JSON.parse(stored)
@@ -16,35 +15,30 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef(null);
 
-  // Effect to save history and scroll down on new messages
   useEffect(() => {
     const trimmed = messages.slice(-20);
     localStorage.setItem("bookchat-history", JSON.stringify(trimmed));
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Resets the chat to its initial state
   const handleClearChat = () => {
     setMessages([
-      // FIX #4: Use the consistent 'role' property
       {
         role: "assistant",
         text: "Hi friend! Ask me some questions about our fab book database!",
       },
     ]);
     setInput("");
-    setLoading(false); // Also ensure loading is reset
+    setLoading(false);
   };
 
   const sendMessage = async (e) => {
-    // The event 'e' is passed from the form's onSubmit
-    if (e) e.preventDefault(); 
-    
-    // FIX #3: Prevent sending while loading
+    if (e) e.preventDefault();
     if (!input.trim() || loading) return;
 
     const userMessage = { role: "user", text: input };
-    setMessages((prev) => [...prev, userMessage]);
+    const newMessages = [...messages, userMessage]; // Store this to use it in catch block
+    setMessages(newMessages);
     setInput("");
     setLoading(true);
 
@@ -57,26 +51,25 @@ export default function App() {
 
       const res = await fetch(apiUrl, {
         method: "POST",
-        credentials: "include", // Include if your platform requires cookie auth
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           query: input,
-          // FIX #2: Filter out any null/empty values from history
           history: messages.map((m) => m.text).filter(Boolean),
         }),
       });
 
       if (!res.ok) {
-        // Throwing an error here will be caught by the catch block
         throw new Error(`Server responded with status: ${res.status}`);
       }
 
       const data = await res.json();
-      setMessages((prev) => [...prev, { role: "assistant", text: data.response }]);
+      // Use newMessages here to avoid including a potential error message in the next history
+      setMessages([...newMessages, { role: "assistant", text: data.response }]);
     } catch (error) {
       console.error("Error getting response:", error);
-      setMessages((prev) => [
-        ...prev,
+      setMessages([
+        ...newMessages,
         { role: "assistant", text: "Sorry, an error occurred while getting the response." },
       ]);
     } finally {
@@ -84,9 +77,8 @@ export default function App() {
     }
   };
 
-return (
+  return (
     <div className="chat-container">
-      {/* The h2 now only contains the title and logo */}
       <h2 className="chat-title">
         <img src={elasticLogo} alt="Elastic" className="elastic-logo" />
         Elastic Book Chat
@@ -94,7 +86,6 @@ return (
 
       <div className="messages">
         {messages.map((msg, i) => (
-          // Filter out the initial system message from rendering
           msg.role !== 'system' && (
             <div key={i} className={`message ${msg.role}`}>
               <strong>{msg.role === "user" ? "You" : "Assistant"}:</strong>
@@ -144,13 +135,12 @@ return (
           {loading ? 'Sending...' : 'Send'}
         </button>
       </form>
-      
-      {/* --- The Clear Chat button is now here, in its own container --- */}
+
       <div className="clear-button-container">
         <button onClick={handleClearChat} className="clear-button">
           Clear Chat
         </button>
       </div>
-
     </div>
   );
+}
