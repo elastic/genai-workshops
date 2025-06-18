@@ -485,6 +485,13 @@ export async function createElasticsearchMcpServer (config: ElasticsearchConfig)
     }
   )
 
+  // ===================================================================
+  // In the final challenge, you will paste the
+  // code for the new 'lookup_book' tool directly below this area.
+  // BEFORE `return server`
+  // ===================================================================
+
+
   return server
 }
 
