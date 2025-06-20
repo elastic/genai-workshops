@@ -6,9 +6,10 @@ import elasticLogo from "/elastic.svg";
 export default function App() {
   const [messages, setMessages] = useState(() => {
     const stored = localStorage.getItem("bookchat-history");
+    // Add the 'tool' property to our message state
     return stored
       ? JSON.parse(stored)
-      : [{ role: "assistant", text: "Hi friend! Ask me some questions about our fab book database!" }];
+      : [{ role: "assistant", text: "Hi friend! Ask me some questions about our fab book database!", tool: null }];
   });
 
   const [input, setInput] = useState("");
@@ -26,18 +27,40 @@ export default function App() {
       {
         role: "assistant",
         text: "Hi friend! Ask me some questions about our fab book database!",
+        tool: null, // Add tool property on clear
       },
     ]);
     setInput("");
     setLoading(false);
   };
 
+  const parseToolFromResponse = (responseText) => {
+  const toolPrefix = "Using the ";
+  const toolSuffix = " tool, ";
+  let toolUsed = null;
+  let cleanText = responseText;
+
+  if (responseText.startsWith(toolPrefix) && responseText.includes(toolSuffix)) {
+    const startIndex = toolPrefix.length;
+    const endIndex = responseText.indexOf(toolSuffix);
+    toolUsed = responseText.substring(startIndex, endIndex);
+
+    // Optional: Remove the prefix from the message displayed to the user
+    cleanText = responseText.substring(endIndex + toolSuffix.length);
+    // Make the first letter uppercase again
+    cleanText = cleanText.charAt(0).toUpperCase() + cleanText.slice(1);
+  }
+
+  return { toolUsed, responseText: cleanText };
+  };
+
   const sendMessage = async (e) => {
     if (e) e.preventDefault();
     if (!input.trim() || loading) return;
 
-    const userMessage = { role: "user", text: input };
-    const newMessages = [...messages, userMessage]; // Store this to use it in catch block
+    // Add 'tool: null' for user messages for consistent data shape
+    const userMessage = { role: "user", text: input, tool: null };
+    const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInput("");
     setLoading(true);
@@ -63,14 +86,23 @@ export default function App() {
         throw new Error(`Server responded with status: ${res.status}`);
       }
 
+      // The backend now sends { response: "...", tool_used: "..." }
       const data = await res.json();
-      // Use newMessages here to avoid including a potential error message in the next history
-      setMessages([...newMessages, { role: "assistant", text: data.response }]);
+      
+      const { toolUsed, responseText } = parseToolFromResponse(data.response);
+
+      // Update the message state with the text AND the tool name
+      setMessages((prev) => [
+        ...prev, 
+        { role: "assistant", text: data.response, tool: toolUsed }
+      ]);
+
     } catch (error) {
       console.error("Error getting response:", error);
-      setMessages([
-        ...newMessages,
-        { role: "assistant", text: "Sorry, an error occurred while getting the response." },
+      setMessages((prev) => [
+        ...prev,
+        // Add tool property on error for consistency
+        { role: "assistant", text: "Sorry, an error occurred while getting the response.", tool: 'Error' },
       ]);
     } finally {
       setLoading(false);
@@ -88,7 +120,14 @@ export default function App() {
         {messages.map((msg, i) => (
           msg.role !== 'system' && (
             <div key={i} className={`message ${msg.role}`}>
-              <strong>{msg.role === "user" ? "You" : "Assistant"}:</strong>
+              {/* --- NEW: Header for message to hold tool indicator --- */}
+              <div className="message-header">
+                <strong>{msg.role === "user" ? "You" : "Assistant"}:</strong>
+                {/* Conditionally render the tool indicator for assistant messages */}
+                {msg.role === 'assistant' && msg.tool && msg.tool !== 'No tool used' && (
+                  <span className="tool-indicator">{msg.tool}</span>
+                )}
+              </div>
               <ReactMarkdown
                 components={{
                   p: ({ node, ...props }) => <p style={{ marginBottom: "1em" }} {...props} />,
@@ -105,7 +144,9 @@ export default function App() {
 
         {loading && (
           <div className="message assistant">
-            <strong>Assistant:</strong>
+            <div className="message-header">
+              <strong>Assistant:</strong>
+            </div>
             <div className="typing-indicator">
               <span></span>
               <span></span>
@@ -144,3 +185,4 @@ export default function App() {
     </div>
   );
 }
+

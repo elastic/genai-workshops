@@ -226,6 +226,25 @@ button {
   animation-delay: -0.16s;
 }
 
+.message-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px; /* Adds a little space between the header and the text */
+  font-weight: 600; /* Makes the "You:" and "Assistant:" text bold */
+}
+
+.tool-indicator {
+  font-size: 0.75em;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background-color: #d1e7dd; /* A light green */
+  color: #0f5132; /* A dark green */
+  border: 1px solid #badbcc;
+  margin-left: 10px;
+}
+
 @keyframes bounce {
   0%,
   80%,
@@ -236,3 +255,5 @@ button {
     transform: scale(1);
   }
 }
+
+

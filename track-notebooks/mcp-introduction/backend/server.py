@@ -23,6 +23,19 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+class ToolCallbackHandler(BaseCallbackHandler):
+    """A custom callback handler to record which tools are used."""
+    def __init__(self):
+        super().__init__()
+        self.used_tools = []
+
+    def on_tool_start(self, serialized: Dict[str, Any], input_str: str, **kwargs: Any) -> None:
+        """Called when the agent is about to start using a tool."""
+        tool_name = serialized.get("name")
+        logger.info(f"Agent is using tool: {tool_name}")
+        self.used_tools.append(tool_name)
+
+
 load_dotenv()
 logger.info("Dotenv loaded successfully.")
 
@@ -70,6 +83,7 @@ async def run_agent_with_query(query: str, history: list[str] = []) -> str:
         "- It's okay to express an opinion or help guide the user\n"
         "- Speak naturally, like you're helping a curious reader\n"
         "If multiple books are found, summarize each one clearly in plain English."
+         "After using a tool, you MUST begin your final answer to the user with the phrase 'Using the [tool_name] tool, ' where [tool_name] is the exact name of the tool you used. For example: 'Using the search tool, I found that...'. If you did not use a tool, just answer directly.\n\n"
     )
 
     agent = MCPAgent(llm=llm, client=mcp_client, max_steps=30, system_prompt=system_prompt)
