@@ -3,8 +3,8 @@
       "elasticsearch-mcp-server": {
         "command": "npx",
         "args": [
-          "-y",
-          "@elastic/mcp-server-elasticsearch@0.2.0"
+          "/workspace/workshop/track-notebooks/mcp-server-elasticsearch/dist/index.js",
+          "stdio"
         ],
         "env": {
           "ES_URL": "ES URL",

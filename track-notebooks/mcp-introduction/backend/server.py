@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from mcp_use import MCPAgent, MCPClient
 from fastapi.middleware.cors import CORSMiddleware
+from langchain_core.callbacks import BaseCallbackHandler
+from typing import AsyncIterable, Optional, List, Any, Dict
 
 # --- Logging Configuration ---
 logging.basicConfig(
@@ -84,7 +86,8 @@ async def run_agent_with_query(query: str, history: list[str] = []) -> str:
         "- Speak naturally, like you're helping a curious reader\n"
         "If multiple books are found, summarize each one clearly in plain English."
          "After using a tool, you MUST begin your final answer to the user with the phrase 'Using the [tool_name] tool, ' where [tool_name] is the exact name of the tool you used. For example: 'Using the search tool, I found that...'. If you did not use a tool, just answer directly.\n\n"
-    )
+
+)
 
     agent = MCPAgent(llm=llm, client=mcp_client, max_steps=30, system_prompt=system_prompt)
 
@@ -99,7 +102,7 @@ async def run_agent_with_query(query: str, history: list[str] = []) -> str:
 
 @app.post("/api/books-chat")
 async def books_chat_endpoint(req: ChatRequest, http_request: Request):
-    logger.info(f"INCOMING HEADERS: {dict(http_request.headers)}")
+    # logger.info(f"INCOMING HEADERS: {dict(http_request.headers)}")
     try:
         response = await run_agent_with_query(req.query, req.history)
         return {"response": response}
@@ -111,4 +114,5 @@ async def books_chat_endpoint(req: ChatRequest, http_request: Request):
 async def root():
     logger.info("Root endpoint '/' accessed.")
     return {"message": "ES Book server is running."}
+
 
