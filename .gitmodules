@@ -1,3 +1,0 @@
-[submodule "track-notebooks/mcp-server-elasticsearch"]
-	path = track-notebooks/mcp-server-elasticsearch
-	url = git@github.com:elastic/mcp-server-elasticsearch.git
