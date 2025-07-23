@@ -48,18 +48,23 @@ body {
   padding: 12px 16px;
   border-radius: 10px;
   margin-bottom: 12px;
-  line-height: 1.6;
   word-break: break-word;
+  line-height: 1.8;
+  font-size: medium;
 }
 
 .message.user {
   background: #e3f2fd;
   align-self: flex-end;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
 }
 
 .message.assistant {
-  background: #f0f0f0;
+  background: #faf8f8;
   align-self: flex-start;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
 }
 
 .input-row {
@@ -90,50 +95,6 @@ button {
   white-space: nowrap;
 }
 
-/* Book formatting */
-.book-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 12px;
-}
-
-.book-card {
-  padding: 16px;
-  background: #f6f6f6;
-  border-radius: 10px;
-  margin-bottom: 16px;
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-.book-card strong {
-  display: inline-block;
-  font-weight: 600;
-}
-
-.book-meta-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 4px;
-  flex-wrap: wrap;
-}
-
-.book-title {
-  font-weight: 600;
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-
-.book-meta div {
-  margin-bottom: 6px;
-}
-
-.book-meta strong {
-  display: inline-block;
-  min-width: 110px;
-  font-weight: 600;
-}
 
 /* Tablet adjustments */
 @media (max-width: 768px) {
@@ -195,13 +156,6 @@ button {
   border-color: #aaa;
 }
 
-.clear-button-container {
-  display: flex;
-  justify-content: flex-end; /* This aligns the button to the right */
-  margin-top: 8px; /* This adds a little space above the button */
-}
-
-
 .typing-indicator {
   display: flex;
   align-items: center;
@@ -231,7 +185,7 @@ button {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 8px; /* Adds a little space between the header and the text */
-  font-weight: 600; /* Makes the "You:" and "Assistant:" text bold */
+  font-weight: 380; /* Makes the "You:" and "Assistant:" text bold */
 }
 
 .tool-indicator {
@@ -256,4 +210,60 @@ button {
   }
 }
 
+/* Lookup/Search card wrapper */
+
+/* Paragraphs inside the card */
+.lookup-paragraph {
+  margin-bottom: 1em;
+  line-height: 1.8;
+  font-size: medium;
+  color: #0d3b4c;
+}
+
+/* Lists inside the card */
+.lookup-list {
+  padding-left: 1.3em;
+  margin-bottom: 1em;
+}
+
+/* Links inside the card */
+.lookup-link {
+  color: #0277bd;
+  text-decoration: none;
+  border-bottom: 1px solid #0277bd;
+}
+.lookup-link:hover {
+  text-decoration: underline;
+}
+
+/* white cards for each book */
+/* pale-blue “bubble” for lookup intro & trailing */
+/* pale-blue bubble for intro & trailing */
+.lookup-card {
+  background: #f0faff;
+  border: 1px solid #b8e3f1;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 12px 0;
+}
+
+/* white cards for each book */
+.book-list {
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.book-card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+
+/* normal weight for any **strong** inside lookup */
+.lookup-card strong {
+  font-weight: normal;
+}
 

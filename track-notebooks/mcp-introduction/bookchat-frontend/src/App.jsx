@@ -1,17 +1,22 @@
 import { useEffect, useState, useRef } from "react";
-import "./App.css";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import "./App.css";
 import elasticLogo from "/elastic.svg";
 
 export default function App() {
   const [messages, setMessages] = useState(() => {
     const stored = localStorage.getItem("bookchat-history");
-    // Add the 'tool' property to our message state
     return stored
       ? JSON.parse(stored)
-      : [{ role: "assistant", text: "Hi friend! Ask me some questions about our fab book database!", tool: null }];
+      : [
+          {
+            role: "assistant",
+            text: "Hi friend! Ask me some questions about our fab book database!",
+            tool: null,
+          },
+        ];
   });
-
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef(null);
@@ -22,12 +27,12 @@ export default function App() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleClearChat = () => {
+  const handleClear = () => {
     setMessages([
       {
         role: "assistant",
         text: "Hi friend! Ask me some questions about our fab book database!",
-        tool: null, // Add tool property on clear
+        tool: null,
       },
     ]);
     setInput("");
@@ -35,41 +40,45 @@ export default function App() {
   };
 
   const parseToolFromResponse = (responseText) => {
-  const toolPrefix = "Using the ";
-  const toolSuffix = " tool, ";
-  let toolUsed = null;
-  let cleanText = responseText;
+    const prefix = "Using the ";
+    const suffix = " tool, ";
+    let toolUsed = null;
+    let cleanText = responseText;
 
-  if (responseText.startsWith(toolPrefix) && responseText.includes(toolSuffix)) {
-    const startIndex = toolPrefix.length;
-    const endIndex = responseText.indexOf(toolSuffix);
-    toolUsed = responseText.substring(startIndex, endIndex);
+    if (
+      responseText.startsWith(prefix) &&
+      responseText.includes(suffix)
+    ) {
+      const start = prefix.length;
+      const end = responseText.indexOf(suffix);
+      toolUsed = responseText.substring(start, end);
+      cleanText = responseText
+        .substring(end + suffix.length)
+        .trim();
+      cleanText = cleanText.charAt(0).toUpperCase() + cleanText.slice(1);
+    }
 
-    // Optional: Remove the prefix from the message displayed to the user
-    cleanText = responseText.substring(endIndex + toolSuffix.length);
-    // Make the first letter uppercase again
-    cleanText = cleanText.charAt(0).toUpperCase() + cleanText.slice(1);
-  }
-
-  return { toolUsed, responseText: cleanText };
+    return { toolUsed, cleanText };
   };
 
   const sendMessage = async (e) => {
-    if (e) e.preventDefault();
+    e?.preventDefault();
     if (!input.trim() || loading) return;
 
-    // Add 'tool: null' for user messages for consistent data shape
-    const userMessage = { role: "user", text: input, tool: null };
-    const newMessages = [...messages, userMessage];
-    setMessages(newMessages);
+    setMessages((m) => [
+      ...m,
+      { role: "user", text: input, tool: null },
+    ]);
     setInput("");
     setLoading(true);
 
     try {
       const frontendOrigin = window.location.origin;
-      const backendBaseUrl = frontendOrigin.replace('-3000-', '-8000-');
+      const backendBaseUrl = frontendOrigin.replace(
+        "-3000-",
+        "-8000-"
+      );
       const apiUrl = `${backendBaseUrl}/api/books-chat`;
-
       console.log("Contacting backend at:", apiUrl);
 
       const res = await fetch(apiUrl, {
@@ -81,28 +90,30 @@ export default function App() {
           history: messages.map((m) => m.text).filter(Boolean),
         }),
       });
-
       if (!res.ok) {
-        throw new Error(`Server responded with status: ${res.status}`);
+        throw new Error(`Status ${res.status}`);
       }
 
-      // The backend now sends { response: "...", tool_used: "..." }
       const data = await res.json();
-      
-      const { toolUsed, responseText } = parseToolFromResponse(data.response);
+      const { toolUsed, cleanText } = parseToolFromResponse(
+        data.response || ""
+      );
+      const finalText = cleanText || data.response;
+      const tool = toolUsed || data.tool_used || null;
 
-      // Update the message state with the text AND the tool name
-      setMessages((prev) => [
-        ...prev, 
-        { role: "assistant", text: data.response, tool: toolUsed }
+      setMessages((m) => [
+        ...m,
+        { role: "assistant", text: finalText, tool },
       ]);
-
-    } catch (error) {
-      console.error("Error getting response:", error);
-      setMessages((prev) => [
-        ...prev,
-        // Add tool property on error for consistency
-        { role: "assistant", text: "Sorry, an error occurred while getting the response.", tool: 'Error' },
+    } catch (err) {
+      console.error(err);
+      setMessages((m) => [
+        ...m,
+        {
+          role: "assistant",
+          text: "Sorry, an error occurred.",
+          tool: "Error",
+        },
       ]);
     } finally {
       setLoading(false);
@@ -112,34 +123,40 @@ export default function App() {
   return (
     <div className="chat-container">
       <h2 className="chat-title">
-        <img src={elasticLogo} alt="Elastic" className="elastic-logo" />
+        <img
+          src={elasticLogo}
+          alt="Elastic"
+          className="elastic-logo"
+        />
         Elastic Book Chat
       </h2>
 
       <div className="messages">
         {messages.map((msg, i) => (
-          msg.role !== 'system' && (
-            <div key={i} className={`message ${msg.role}`}>
-              {/* --- NEW: Header for message to hold tool indicator --- */}
-              <div className="message-header">
-                <strong>{msg.role === "user" ? "You" : "Assistant"}:</strong>
-                {/* Conditionally render the tool indicator for assistant messages */}
-                {msg.role === 'assistant' && msg.tool && msg.tool !== 'No tool used' && (
-                  <span className="tool-indicator">{msg.tool}</span>
-                )}
-              </div>
-              <ReactMarkdown
-                components={{
-                  p: ({ node, ...props }) => <p style={{ marginBottom: "1em" }} {...props} />,
-                  strong: ({ node, ...props }) => <strong style={{ fontWeight: 600 }} {...props} />,
-                  ul: ({ node, ...props }) => <ul style={{ paddingLeft: "1.2em", marginBottom: "1em" }} {...props} />,
-                  li: ({ node, ...props }) => <li style={{ marginBottom: "0.5em" }} {...props} />,
-                }}
-              >
+          <div key={i} className={`message ${msg.role}`}>
+            <div className="message-header">
+              <strong>
+                {msg.role === "user" ? "You:" : "Assistant:"}
+              </strong>
+              {msg.tool && (
+                <span className="tool-indicator">{msg.tool}</span>
+              )}
+            </div>
+
+            {[
+              "search",
+              "search_google_books",
+              "get_shards",
+              "get_mappings",
+              "list_indices",
+            ].includes(msg.tool) ? (
+              <LookupRenderer markdown={msg.text} />
+            ) : (
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {msg.text}
               </ReactMarkdown>
-            </div>
-          )
+            )}
+          </div>
         ))}
 
         {loading && (
@@ -148,13 +165,12 @@ export default function App() {
               <strong>Assistant:</strong>
             </div>
             <div className="typing-indicator">
-              <span></span>
-              <span></span>
-              <span></span>
+              <span />
+              <span />
+              <span />
             </div>
           </div>
         )}
-
         <div ref={bottomRef} />
       </div>
 
@@ -163,26 +179,79 @@ export default function App() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              sendMessage();
-            }
-          }}
           placeholder="Ask me about books..."
           disabled={loading}
         />
         <button type="submit" disabled={loading}>
-          {loading ? 'Sending...' : 'Send'}
+          {loading ? "Sending..." : "Send"}
         </button>
       </form>
 
-      <div className="clear-button-container">
-        <button onClick={handleClearChat} className="clear-button">
-          Clear Chat
-        </button>
-      </div>
+      <button className="clear-button" onClick={handleClear}>
+        Clear Chat
+      </button>
     </div>
   );
 }
 
+function LookupRenderer({ markdown }) {
+  const text = markdown || "";
+  const [before, after = ""] = text.split(/Additional Notes:/);
+  const firstNum = before.search(/\d+\.\s/);
+  const intro =
+    firstNum > 0
+      ? before.slice(0, firstNum).trim()
+      : before.trim();
+
+  const entries = [];
+  const re = /(\d+\.\s[\s\S]*?)(?=\n\d+\.|\s*$)/g;
+  let m,
+    lastEnd = firstNum > 0 ? firstNum : 0;
+  while ((m = re.exec(before))) {
+    const raw = m[1].trim().replace(/^\d+\.\s*/, "");
+    entries.push(raw);
+    lastEnd = m.index + m[1].length;
+  }
+
+  const trailing = before.slice(lastEnd).trim();
+
+  return (
+    <>
+      {(intro || trailing) && (
+        <div className=".message assistant">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {intro + (trailing ? `\n\n${trailing}` : "")}
+          </ReactMarkdown>
+        </div>
+      )}
+
+      <div className="book-list">
+        {entries.map((entryMd, i) => (
+          <div key={i} className="book-card">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                p: (p) => <p {...p} />,
+                a: (a) => <a className="lookup-link" {...a} />,
+                ul: (ul) => (
+                  <ul style={{ listStyle: "none", margin: 0, padding: 0 }} {...ul} />
+                ),
+                li: (li) => <li style={{ marginBottom: "0.5em" }} {...li} />,
+              }}
+            >
+              {entryMd}
+            </ReactMarkdown>
+          </div>
+        ))}
+      </div>
+
+      {after.trim() && (
+        <div className=".message assistant">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {after.trim()}
+          </ReactMarkdown>
+        </div>
+      )}
+    </>
+  );
+}
