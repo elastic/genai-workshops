@@ -58,13 +58,20 @@ class ChatRequest(BaseModel):
 async def run_agent_with_query(query: str, history: list[str] = []) -> str:
 
     mcp_client = MCPClient.from_config_file("backend/elasticsearch_mcp.json")
-    raw_proxy_url = os.getenv("PROXY_URL")
-    llm_api_key = os.getenv("PROXY_API_KEY")
+    raw_proxy_url = os.getenv("PROXY_URL") or os.getenv("LLM_PROXY_URL")
+    llm_api_key = os.getenv("PROXY_API_KEY") or os.getenv("LLM_APIKEY")
     unneeded_path = "/v1/chat/completions"
     llm_base_url = raw_proxy_url
     if llm_base_url and llm_base_url.endswith(unneeded_path):
         llm_base_url = llm_base_url.removesuffix(unneeded_path)
         logger.info(f"PROXY_URL was trimmed to: {llm_base_url}")
+
+    if not llm_base_url.startswith("https://"):
+        llm_base_url = "https://" + llm_base_url
+        logger.info(f"Prepended 'https://' to PROXY_URL: {llm_base_url}")
+
+    logger.info(f"llm_base_url: {llm_base_url}")
+
 
     llm = ChatOpenAI(
         model="gpt-4o",
