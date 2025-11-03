@@ -1,9 +1,12 @@
 fastapi
 uvicorn
 python-dotenv
-langchain<0.2.0
-langchain-openai<0.2.0
-mcp-use[openai]==1.3.0
+# langchain<0.2.0
+# langchain-openai<0.2.0
+langchain
+langchain-openai
+# mcp-use[openai]==1.3.0
+mcp-use==1.4.0
 pandas
 elasticsearch==8.18.1
 kaggle

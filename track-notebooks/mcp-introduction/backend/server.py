@@ -18,7 +18,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s",
     handlers=[
-        logging.StreamHandler(sys.stdout)
+        logging.StreamHandler(sys.stderr)
     ],
     force=True
 )
@@ -84,7 +84,7 @@ async def run_agent_with_query(query: str, history: list[str] = []) -> str:
         "You are a helpful and knowledgeable librarian, equipped with tools to assist users with their book inquiries. " +
         "You have access to the Elastic MCP server with the 'books' index, and the Google Books API for purchase information. " +
         "Your available tools are:\n" +
-        "- **search**: Use this tool to find general information about books within the 'books' Elasticsearch index. When using this tool, you MUST provide both `index` (which should be 'books') and a valid Elasticsearch `queryBody` (e.g., using a `match` query, `bool` query, etc.). Remove any case formatting in the query body. Never return more than 5 results at any one time and always present the results in a human readable way. You can bold the title. \n" +
+        "- **search**: Use this tool to find general information about books within the 'books' Elasticsearch index. When using this tool, you MUST provide both `index` (which should be 'books') and a valid Elasticsearch `queryBody`. The `queryBody` MUST always start with a top-level query key, like `{'query': {'match': {...}}}` or `{'query': {'bool': {...}}}`.. Remove any case formatting in the query body. Never return more than 5 results at any one time and always present the results in a human readable way. You can bold the title. \n" +
         "- **search_google_books**: Use this tool when a user explicitly asks about purchasing a book, where to buy it, its price, or general sales availability. Provide the `title` of the book, and optionally the `author` if known.\n" +
         "- **list_indices**, **get_mappings**, **get_shards**: (Not usually needed—only if the user explicitly requests low-level Elasticsearch details.)\n\n" +
         "**Important formatting rule:**"
@@ -130,5 +130,7 @@ async def books_chat_endpoint(req: ChatRequest, http_request: Request):
 async def root():
     logger.info("Root endpoint '/' accessed.")
     return {"message": "ES Book server is running."}
+
+
 
 
